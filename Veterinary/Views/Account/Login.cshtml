@@ -7,6 +7,7 @@
     <div class="box">
 
         <form method="post">
+
             <div class="contact-wrap w-100 p-md-5 p-4">
 
                 <h2 style="font-size: 60px"><span class="flaticon-pawprint-1 mr-2" style="color:green"></span>Login</h2>
@@ -26,6 +27,8 @@
             <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
         </form>
         <div class="text-center small m-4">Don't have an account? <a asp-controller="Account" asp-action="Register">Sign up</a></div>
+
+        <div asp-validation-summary="ModelOnly"></div>
     </div>
 </div>
 

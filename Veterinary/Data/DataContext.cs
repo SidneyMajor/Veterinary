@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using Veterinary.Data.Entities;
 
 namespace Veterinary.Data
 {
-    public class DataContext:DbContext
+    public class DataContext: IdentityDbContext<User>
     {
         public DbSet<Client> Clients { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }

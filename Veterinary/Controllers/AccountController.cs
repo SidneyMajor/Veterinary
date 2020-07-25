@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -126,6 +127,13 @@ namespace Veterinary.Controllers
         {
             await _userHelper.LogoutAsync();
             return this.RedirectToAction("Index", "Home");
+        }
+
+        // GET: Clients
+        public async Task<IActionResult> ListClient()
+        {
+
+            return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
 
     }

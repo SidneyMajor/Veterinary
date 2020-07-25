@@ -38,26 +38,24 @@
     <div class="wrap">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 d-flex align-items-center">
+                <div class="col-md-6 d-flex align-items-sm-start">
                     <p class="mb-0 phone pl-md-2">
                         <a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span> +00 1234 567</a>
                         <a href="#"><span class="fa fa-paper-plane mr-1"></span> youremail@email.com</a>
                     </p>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end">
-                    <div class="social-media">
-                        @if (this.User.Identity.IsAuthenticated)
-                        {
-                            <a asp-area="" asp-controller="Account" asp-action="ChangeUser" style="color:white">@this.User.Identity.Name</a>
-                            <a asp-area="" asp-controller="Account" asp-action="Logout" class="d-flex align-items-center justify-content-center" style="color:white">Logout</a>
-                        }
-                        else
-                        {
-                            <a asp-area="" asp-controller="Account" asp-action="Login" class="d-flex align-items-center justify-content-center" style="color:white">Login</a>
-                        }
-
-                    </div>
+                <div class="col-md-6 d-lg-flex justify-content-end">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="ChangeUser" style="color:white">@this.User.Identity.Name</a>
+                        <a asp-area="" asp-controller="Account" asp-action="Logout" style="color:white; padding-left:40px">Logout</a>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="Login" style="color:white">Login</a>
+                    }
                 </div>
+               
             </div>
         </div>
     </div>
@@ -72,11 +70,12 @@
                     <li class="nav-item active"><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
                     <li class="nav-item "><a asp-area="" asp-controller="DocumentTypes" asp-action="Index" class="nav-link">Document</a></li>
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+                    <li class="nav-item "><a asp-area="" asp-controller="Account" asp-action="ListClient" class="nav-link">Client</a></li>
                     @*<li class="nav-item"><a href="vet.html" class="nav-link">Veterinarian</a></li>
-        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-        <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
-        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>*@
+                        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+                        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
+                        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>*@
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
                     @*<li class="nav-item "><a asp-area="" asp-controller="Clientes" asp-action="Index" class="nav-link">Clients</a></li>*@
                 </ul>

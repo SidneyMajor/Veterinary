@@ -32,24 +32,22 @@ namespace Veterinary
         {
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-                //cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-                cfg.SignIn.RequireConfirmedEmail = true;
+                              
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
-                cfg.Password.RequiredUniqueChars = 0;
                 cfg.Password.RequireLowercase = false;
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
 
             })
-           //.AddDefaultTokenProviders()
            .AddEntityFrameworkStores<DataContext>();
 
             services.AddDbContext<DataContext>(cfg =>
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddTransient<SeedDb>();
 
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
@@ -80,6 +78,7 @@ namespace Veterinary
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
