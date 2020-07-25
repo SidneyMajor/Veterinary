@@ -35,5 +35,9 @@ namespace Veterinary.Data.Repository
 
         }
 
+        public async Task<DocumentType> GetDocumentType(int id)
+        {
+            return await _context.DocumentTypes.FindAsync(id);
+        }
     }
 }

@@ -9,8 +9,7 @@ namespace Veterinary.Models
 {
     public class RegisterNewUserViewModel
     {
-
-
+       
         public string FisrtName { get; set; }
 
 

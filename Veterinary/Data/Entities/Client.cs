@@ -21,14 +21,13 @@ namespace Veterinary.Data.Entities
         [MaxLength(100, ErrorMessage = "The field {0} only can contain {1} characters.")]
         public string Address { get; set; }
 
+        public string ZipCode { get; set; }
+
 
         public string TaxNumber { get; set; }
 
 
         public string Gender { get; set; }
-
-
-        public string ZipCode { get; set; }
 
 
         public string PhoneNumber { get; set; }
@@ -57,7 +56,7 @@ namespace Veterinary.Data.Entities
 
         public User User { get; set; }
 
-      
+
         public int DocumentTypeID { get; set; }
 
 

@@ -1,0 +1,153 @@
+﻿@model Veterinary.Models.RegisterNewUserViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Client</h4>
+<hr />
+
+
+<section class="ftco-section bg-light">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="wrapper">
+
+                    <div class="row no-gutters">
+                        <div class="col-md-7">
+                            <div class="contact-wrap w-100 p-md-5 p-4">
+
+                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">First Name</label>
+                                                <input asp-for="FisrtName" class="form-control" placeholder="Nome" />
+                                                <span asp-validation-for="FisrtName" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Last Name</label>
+                                                <input asp-for="LastName" class="form-control" placeholder="Apelido" />
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                       
+                                      
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Gender</label>
+                                                <input asp-for="Gender" class="form-control" placeholder="Género" />
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Address</label>
+                                                <input asp-for="Address" class="form-control" placeholder="Morada" />
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="DocumentTypeID" class="control-label"></label>
+                                                <select asp-for="DocumentTypeID" class="form-control" asp-items="Model.Documents"></select>
+                                                <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
+                                            </div>
+                                            </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">NIF</label>
+                                                <input asp-for="TaxNumber" class="form-control" placeholder="Contribuinte" />
+                                                <span asp-validation-for="TaxNumber" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="contacto">Contacto</label>
+                                                <input asp-for="PhoneNumber" class="form-control" placeholder="Contacto" />
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">BirthOfDate</label>
+                                                <input asp-for="DateOfBirth" class="form-control" placeholder="Date" />
+                                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="label" for="name">Nacionalidade</label>
+                                                <input asp-for="Nationality" class="form-control" placeholder="Nacionalidade" />
+                                                <span asp-validation-for="Nationality" class="text-danger"></span>
+                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label" for="name">Email</label>
+                                                    <input asp-for="" class="form-control" placeholder="email" />
+                                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                                    <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="label" for="name">Ativo</label>
+                                                    <input asp-for="WasDeleted" class="checkbox"  />
+                                                    <span asp-validation-for="WasDeleted" class="text-danger"></span>
+                                                    <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+                                                </div>
+                                            </div>*@
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @*<input type="submit" value="Send Message" class="btn btn-primary">*@
+                                                <input type="submit" value="Create" class="btn btn-outline-success" />
+                                                <div class="submitting"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <div>
+                                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back to List</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
