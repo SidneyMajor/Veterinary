@@ -46,6 +46,9 @@ namespace Veterinary.Data
             {
 
                 var user = await _userHelper.GetUserByEmailAsync("Sidney.major@seed.pt");
+
+                var user1 = await _userHelper.GetUserByEmailAsync("Isabel@seed.pt");
+
                 if (user == null)
                 {
                     user = new User
@@ -60,7 +63,22 @@ namespace Veterinary.Data
                     }
                 }
 
+                if (user1 == null)
+                {
+                    user1 = new User
+                    {
+                        Email = "Isabel@seed.pt",
+                        UserName = "Isabel@seed.pt",
+                    };
+                    var result = await _userHelper.AddUserAsync(user1, "123456");
+                    if (result != IdentityResult.Success)
+                    {
+                        throw new InvalidOperationException("Could not create the user in seeder");
+                    }
+                }
+
                 this.AddClient("Sidney", user);
+                this.AddClient("Isabel", user1);
 
                 await _context.SaveChangesAsync();
 

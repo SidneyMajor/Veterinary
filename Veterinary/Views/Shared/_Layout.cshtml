@@ -25,7 +25,8 @@
         <link rel="stylesheet" href="~/css/flaticon.css">
         <link rel="stylesheet" href="~/css/style.css">
 
-
+        <!-- Syncfusion Essential JS 2 Styles -->
+        <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
 
     </environment>
 
@@ -55,7 +56,7 @@
                         <a asp-area="" asp-controller="Account" asp-action="Login" style="color:white">Login</a>
                     }
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -92,10 +93,6 @@
     @RenderBody()
 
 
-
-
-
-
     <environment include="Development">
 
         <script src="~/js/jquery.min.js"></script>
@@ -114,12 +111,13 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
         <script src="~/js/google-map.js"></script>
         <script src="~/js/main.js"></script>
+        <!-- Syncfusion Essential JS 2 Scripts -->
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 
     </environment>
 
-
     @RenderSection("Scripts", required: false)
-
+    <ejs-scripts></ejs-scripts>
 
 </body>
 </html>

@@ -140,6 +140,7 @@ namespace Veterinary.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var documentType = await _documentTypeRepository.GetByIdAsync(id);
+            //documentType.WasDeleted = false;
            await _documentTypeRepository.DeleteAsync(documentType);
            
             return RedirectToAction(nameof(Index));

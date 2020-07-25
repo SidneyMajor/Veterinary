@@ -62,7 +62,7 @@ namespace Veterinary.Controllers
                         PhoneNumber=model.PhoneNumber,
                         TaxNumber=model.TaxNumber,
                         Gender=model.Gender,
-                        DateOfBirth=model.DateOfBirth,
+                        DateOfBirth=model.DateOfBirth.Value,
                         Nationality=model.Nationality,
                         DocumentTypeID=model.DocumentTypeID,
                         DocumetType=document,

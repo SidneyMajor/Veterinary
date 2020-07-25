@@ -33,9 +33,8 @@ namespace Veterinary.Models
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DateOfBirth { get; set; }
+        [Required]        
+        public DateTime? DateOfBirth { get; set; }
 
 
         public string Nationality { get; set; }

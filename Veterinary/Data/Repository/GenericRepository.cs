@@ -20,14 +20,15 @@ namespace Veterinary.Data.Repository
         public async Task CreateAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-
             await SaveAllAsync();
         }
 
 
 
         public async Task DeleteAsync(T entity)
-        {          
+        {
+            entity.WasDeleted = true;
+            entity.UpdatedDate = DateTime.Now;
             _context.Set<T>().Update(entity);
             await SaveAllAsync();
         }
