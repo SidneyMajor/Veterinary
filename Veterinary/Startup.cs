@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Veterinary.Data;
+using Veterinary.Data.Repository;
 
 namespace Veterinary
 {
@@ -32,7 +33,8 @@ namespace Veterinary
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
 
 
             services.Configure<CookiePolicyOptions>(options =>

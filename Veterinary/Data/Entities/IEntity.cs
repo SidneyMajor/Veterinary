@@ -12,7 +12,7 @@ namespace Veterinary.Data.Entities
         DateTime CreatedDate { get; set; }
 
 
-        DateTime UpdateDate { get; set; }
+        DateTime UpdatedDate { get; set; }
 
 
         bool WasDeleted { get; set; }
