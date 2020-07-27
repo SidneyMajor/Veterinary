@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
@@ -31,9 +32,9 @@ namespace Veterinary.Models
 
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "Date Of Birth")]
-        [DataType(DataType.Date)]
-        [Required]        
+        [Display(Name = "Date Of Birth")]        
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfBirth { get; set; }
 
 
@@ -44,7 +45,7 @@ namespace Veterinary.Models
         [Range(1, int.MaxValue, ErrorMessage = "You  must select a {0}")]
         public int DocumentTypeID { get; set; }
 
-        public IEnumerable<SelectListItem> Documents { get; set; }
+        public IEnumerable<DocumentType> Documents { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]

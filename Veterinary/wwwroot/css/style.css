@@ -9791,33 +9791,10 @@ textarea.form-control {
 @keyframes loader-dash {
   0% {
     stroke-dasharray: 1, 200;
-    stroke-dashoffset: 0; 
-
-  }
+    stroke-dashoffset: 0; }
   50% {
     stroke-dasharray: 89, 200;
-    stroke-dashoffset: -35px; 
-
-  }
+    stroke-dashoffset: -35px; }
   100% {
     stroke-dasharray: 89, 200;
-    stroke-dashoffset: -136px; 
-
-  } 
-
-}
-
-.login-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.login-box {
-    width: 300px;
-    height: 300px;
-}
-
-
+    stroke-dashoffset: -136px; } }

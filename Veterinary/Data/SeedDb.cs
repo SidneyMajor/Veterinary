@@ -33,9 +33,8 @@ namespace Veterinary.Data
                 var document = new DocumentType
                 {
                     Document = "Cartão do Cidadão",
-                    CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,
-                    WasDeleted = false
+                    CreatedDate = DateTime.Now,
                 };
 
                 _context.DocumentTypes.Add(document);
@@ -98,9 +97,9 @@ namespace Veterinary.Data
                 DocumetType = _context.DocumentTypes.FirstOrDefault(),
                 TaxNumber = _random.Next(100000000, 399999999).ToString(),
                 DateOfBirth = new DateTime(_random.Next(1930, 2020), _random.Next(1, 12), _random.Next(1, 32)),
-                WasDeleted = false,
                 User = user,
-
+                UpdatedDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
             });
         }
 

@@ -9,8 +9,7 @@ namespace Veterinary.Data.Repository
 {
     public interface IDocumentTypeRepository: IGenericRepository<DocumentType>
     {
-        IEnumerable<SelectListItem> GetComboDocuments();
-
+        //IEnumerable<SelectListItem> GetComboDocuments();        
         Task<DocumentType> GetDocumentType(int id);
     }
 }

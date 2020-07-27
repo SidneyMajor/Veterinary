@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.EJ2.Linq;
+using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -17,25 +20,31 @@ namespace Veterinary.Controllers
         private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly IUserHelper _userHelper;
         private readonly IClientRepository _clientRepository;
+        private readonly DataContext context;
 
         public AccountController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper,
-            IClientRepository clientRepository)
+            IClientRepository clientRepository, DataContext context)
         {
             _documentTypeRepository = documentTypeRepository;
            _userHelper = userHelper;
            _clientRepository = clientRepository;
+            this.context = context;
         }
 
         public IActionResult Register()
         {
             var model = new RegisterNewUserViewModel
             {
-                Documents = _documentTypeRepository.GetComboDocuments(),   
+                Documents = _documentTypeRepository.GetAll().ToList(),
             };
 
+            //ViewBag.Data = _documentTypeRepository.GetAll().ToList();
+            ViewBag.Gender = new List<string> { "M", "F" };
             return View(model);
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
@@ -62,14 +71,11 @@ namespace Veterinary.Controllers
                         PhoneNumber=model.PhoneNumber,
                         TaxNumber=model.TaxNumber,
                         Gender=model.Gender,
-                        DateOfBirth=model.DateOfBirth.Value,
+                        DateOfBirth=model.DateOfBirth.Value.Date,
                         Nationality=model.Nationality,
                         DocumentTypeID=model.DocumentTypeID,
                         DocumetType=document,
-                        User=user,
-                        CreatedDate=DateTime.Now,
-                        UpdatedDate=DateTime.Now,
-                        WasDeleted=false
+                        User=user,                       
                     };
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
@@ -129,7 +135,8 @@ namespace Veterinary.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
-        // GET: Clients
+        // GET: Clients only for admin
+        //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
         public async Task<IActionResult> ListClient()
         {
 

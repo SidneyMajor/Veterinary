@@ -5,172 +5,196 @@
 }
 
 
-    <div class="container" >
-        <div class="justify-content-start">
+<div class="container">
+    <div class="justify-content-start">
 
-            <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Register</a>
+        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Register</a>
 
-        </div>
-        <div class="row justify-content-center">
-            
-            <div class="col-md-12">
-                <div class="wrapper">
+    </div>
+    <div class="row justify-content-center">
 
-                    <div class="row no-gutters">
+        <div class="col-md-12">
+            <div class="wrapper">
 
-                        <div class="col-md-7">
-                            <div class="contact-wrap w-100 p-md-5 p-4" style="background-color:lightcyan">
+                <div class="row no-gutters">
 
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                    <div class="col-md-7">
+                        <div class="contact-wrap w-100 p-md-5 p-4" style="background-color:lightcyan">
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="FisrtName" class="label" for="name"></label>
-                                                <input asp-for="FisrtName" class="form-control" placeholder="First Name" />
-                                                <span asp-validation-for="FisrtName" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
+                            <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="FisrtName" class="label" for="name"></label>
+                                                <input asp-for="FisrtName" class="form-control" placeholder="First Name" />*@
+                                            <ejs-textbox ejs-for="FisrtName" id="firstname" type="text" placeholder="First Name" floatLabelType="Auto"></ejs-textbox>
+
+                                            <span asp-validation-for="FisrtName" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="LastName" class="label" for="name"></label>
-                                                <input asp-for="LastName" class="form-control" placeholder="LastName" />
-                                                <span asp-validation-for="LastName" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Gender" class="label" for="name"></label>
-                                                <input asp-for="Gender" class="form-control" placeholder="Gender" />
-                                                <span asp-validation-for="Gender" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Address" class="label" for="name"></label>
-                                                <input asp-for="Address" class="form-control" placeholder="Address" />
-                                                <span asp-validation-for="Address" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="ZipCode" class="label" for="name"></label>
-                                                <input asp-for="ZipCode" class="form-control" placeholder="0000-000" />
-                                                <span asp-validation-for="ZipCode" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="DocumentTypeID" class="label"></label>
-                                                <select asp-for="DocumentTypeID" class="form-control" asp-items="Model.Documents"></select>
-                                                <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="TaxNumber" class="label" for="name"></label>
-                                                <input asp-for="TaxNumber" class="form-control" placeholder="000000000" />
-                                                <span asp-validation-for="TaxNumber" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="PhoneNumber" class="label"></label>
-                                                <input asp-for="PhoneNumber" class="form-control" placeholder="Contacto" />
-                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                @*<label asp-for="DateOfBirth" class="label" for="name"></label>*@
-                                                @*<input asp-for="DateOfBirth" type="date" class="form-control" placeholder="date" />*@
-                                                <ejs-datepicker ejs-for="DateOfBirth" id="datetimepicker" placeholder="Select a date and time" max="DateTime.Now" renderDayCell="onRenderCell" floatLabelType="Auto"></ejs-datepicker>
-                                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                @*<label asp-for="Nationality" class="label" for="name"></label>*@
-                                                @*<input asp-for="Nationality" class="form-control" placeholder="Nationality" />*@                                                
-                                                <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nacionality" floatLabelType="Auto"></ejs-textbox>
-                                                <span asp-validation-for="Nationality" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label asp-for="Email" class="label"></label>
-                                                <input asp-for="Email" class="form-control" placeholder="email@email.com" />
-                                                <span asp-validation-for="Email" class="text-danger"></span>
-                                                @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Password" class="label">Password</label>
-                                                <input asp-for="Password" type="password" class="form-control" placeholder="*******************"/>
-                                                <span asp-validation-for="Password" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="Confirm" class="label">Confirm</label>
-                                                <input asp-for="Confirm" type="password" class="form-control" placeholder="*******************"/>
-                                                <span asp-validation-for="Confirm" class="text-danger"></span>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                @*<input type="submit" value="Send Message" class="btn btn-primary">*@
-                                                <input type="submit" value="Register" class="btn btn-outline-success" />
-                                                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back to List</a>
-                                                <div class="submitting"></div>
-
-                                            </div>
-                                        </div>
-
-
                                     </div>
-                                </form>
 
-                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="LastName" class="label" for="name"></label>
+                                                <input asp-for="LastName" class="form-control" placeholder="LastName" />*@
+                                            <ejs-textbox ejs-for="LastName" id="lastname" type="text" placeholder="Last Name" floatLabelType="Auto"></ejs-textbox>
+
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="Gender" class="label" for="name"></label>
+                                                <input asp-for="Gender" class="form-control" placeholder="Gender" />*@
+                                            <ejs-dropdownlist ejs-for="Gender" id="gender" dataSource="ViewBag.Gender" placeholder="Gender" floatLabelType="Auto"></ejs-dropdownlist>
+                                            <span asp-validation-for="Gender" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="Address" class="label" for="name"></label>
+                                                <input asp-for="Address" class="form-control" placeholder="Address" />*@
+                                            <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Address" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="ZipCode" class="label" for="name"></label>
+                                                <input asp-for="ZipCode" class="form-control" placeholder="0000-000" />*@
+                                            <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="DocumentTypeID" class="label"></label>
+                                                <select asp-for="DocumentTypeID" class="form-control" asp-items="Model.Documents"></select>*@
+                                            @*<ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto">
+                                                <e-dropdownlist-fields text="Document" value="Id"></e-dropdownlist-fields>
+                                            </ejs-dropdownlist>*@
+
+                                            <ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document"  floatLabelType="Auto" >
+                                                <e-dropdownlist-fields text="Document" value="Id"></e-dropdownlist-fields>
+                                            </ejs-dropdownlist>
+
+                                            <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="TaxNumber" class="label" for="name"></label>
+                                                <input asp-for="TaxNumber" class="form-control" placeholder="000000000" />*@
+                                            <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="TaxNumber" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="PhoneNumber" class="label"></label>
+                                                <input asp-for="PhoneNumber" class="form-control" placeholder="Contacto" />*@
+                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto"></ejs-textbox>
+
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="datepicker">
+                                            @*<label asp-for="DateOfBirth" class="label" for="name"></label>*@
+                                            @*<input asp-for="DateOfBirth" type="date" class="form-control" placeholder="date" />*@
+                                            <ejs-datepicker ejs-for="DateOfBirth" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" renderDayCell="onRenderCell" floatLabelType="Auto"> </ejs-datepicker>
+                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="Nationality" class="label" for="name"></label>*@
+                                            @*<input asp-for="Nationality" class="form-control" placeholder="Nationality" />*@
+                                            <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nacionality" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Nationality" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<label asp-for="Email" class="label"></label>
+                                                <input asp-for="Email" class="form-control" placeholder="email@email.com" />*@
+
+                                            <ejs-textbox ejs-for="Email" id="email" placeholder="email@email.com" type="email" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                            @*<input type="text" class="form-control" name="name" id="name" placeholder="Name">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="Password" class="label">Password</label>
+                                                <input asp-for="Password" type="password" class="form-control" placeholder="*******************"/>*@
+                                            <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto"></ejs-textbox>
+
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @*<label asp-for="Confirm" class="label">Confirm</label>
+                                                <input asp-for="Confirm" type="password" class="form-control" placeholder="*******************" />*@
+                                            <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto"></ejs-textbox>
+
+                                            <span asp-validation-for="Confirm" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<input type="submit" value="Send Message" class="btn btn-primary">*@
+                                            <input type="submit" value="Register" class="btn btn-outline-success" />
+                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back to List</a>
+                                            <div class="submitting"></div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </form>
+
                         </div>
+                    </div>
 
-                        <div class="col-md-5 d-flex align-items-stretch">
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
-                            </div>
+                    <div class="col-md-5 d-flex align-items-stretch">
+                        <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-   @section Scripts{ 
+@section Scripts{
     <script>
         function onRenderCell(args) {
             if (args.date.getDay() == 0 || args.date.getDay() == 6) {

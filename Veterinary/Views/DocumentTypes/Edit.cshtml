@@ -6,44 +6,27 @@
 
 <h2>Edit</h2>
 
-<h4>DocumentType</h4>
+<h4>Document Type</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+           
             <div class="form-group">
-                <label asp-for="Document" class="control-label"></label>
-                <input asp-for="Document" class="form-control" />
+                @*<label asp-for="Document" class="control-label"></label>
+            <input asp-for="Document" class="form-control" />*@
+                <ejs-textbox ejs-for="Document" id="document" placeholder="Description" type="text" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="Document" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="WasDeleted" /> @Html.DisplayNameFor(model => model.WasDeleted)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

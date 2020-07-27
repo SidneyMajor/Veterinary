@@ -68,6 +68,10 @@ namespace Veterinary
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            //Register Syncfusion license
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjk0ODA2QDMxMzgyZTMyMmUzMEs4dTVPL1JWWVVHRmpFR3lpWHZqeSsrWC9od2dJQ2xRWHNyVlN6S3czbUE9");
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

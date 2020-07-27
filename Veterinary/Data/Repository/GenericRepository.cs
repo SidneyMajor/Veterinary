@@ -19,6 +19,9 @@ namespace Veterinary.Data.Repository
 
         public async Task CreateAsync(T entity)
         {
+            entity.WasDeleted = false;
+            entity.UpdatedDate = DateTime.Now;
+            entity.CreatedDate = DateTime.Now;
             await _context.Set<T>().AddAsync(entity);
             await SaveAllAsync();
         }
@@ -36,7 +39,7 @@ namespace Veterinary.Data.Repository
 
         public async Task<bool> ExistAsync(int id)
         {
-            return await _context.Set<T>().AnyAsync(e => e.Id == id);
+            return await _context.Set<T>().AnyAsync(e => e.Id == id && e.WasDeleted == false);
         }
 
 
