@@ -8,5 +8,6 @@ namespace Veterinary.Data.Repository
 {
     public interface IClientRepository:IGenericRepository<Client>
     {
+        Task<Client> GetClientByUserEmailAsync(string email);
     }
 }

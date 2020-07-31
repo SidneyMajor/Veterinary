@@ -38,9 +38,7 @@ namespace Veterinary.Controllers
             {
                 Documents = _documentTypeRepository.GetAll().ToList(),
             };
-
-            //ViewBag.Data = _documentTypeRepository.GetAll().ToList();
-            ViewBag.Gender = new List<string> { "M", "F" };
+            
             return View(model);
         }
 
@@ -61,10 +59,10 @@ namespace Veterinary.Controllers
                         PhoneNumber = model.PhoneNumber,
                     };
 
-                    var document = await _documentTypeRepository.GetDocumentType(model.DocumentTypeID);
+                    var documentType = await _documentTypeRepository.GetDocumentType(model.DocumentTypeID);
                     var client = new Client
                     {
-                        FisrtName=model.FisrtName,
+                        FirstName=model.FirstName,
                         LastName=model.LastName,
                         Address=model.Address,
                         ZipCode=model.ZipCode,
@@ -74,7 +72,8 @@ namespace Veterinary.Controllers
                         DateOfBirth=model.DateOfBirth.Value.Date,
                         Nationality=model.Nationality,
                         DocumentTypeID=model.DocumentTypeID,
-                        DocumetType=document,
+                        DocumentType=documentType,
+                        Document=model.Document,
                         User=user,                       
                     };
 
@@ -82,6 +81,7 @@ namespace Veterinary.Controllers
                     if (result!=IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                        model.Documents = _documentTypeRepository.GetAll().ToList();
                         return this.View(model);
                     }
 
@@ -91,6 +91,7 @@ namespace Veterinary.Controllers
                 }
             }
             this.ModelState.AddModelError(string.Empty, "The user already exists.");
+            model.Documents = _documentTypeRepository.GetAll().ToList();
             return this.View(model);
         }
 
@@ -142,6 +143,101 @@ namespace Veterinary.Controllers
 
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
+
+
+        public async Task<IActionResult> ChangeUser()
+        {
+            //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);           
+            var model = new ChangeUserViewModel();
+
+            if (client != null)
+            {
+                model.FirstName = client.FirstName;
+                model.LastName = client.LastName;
+                model.Address = client.Address;
+                model.ZipCode = client.ZipCode;
+                model.PhoneNumber = client.PhoneNumber;
+                model.TaxNumber = client.TaxNumber;
+                model.Gender = client.Gender;
+                model.DateOfBirth = client.DateOfBirth.Date;
+                model.Nationality = client.Nationality;
+                model.Document = client.Document;                
+
+                var document = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
+                if (document != null)
+                {
+                    
+                        model.DocumentTypeID = document.Id;
+                        model.Documents = _documentTypeRepository.GetAll().Where(d => d.Id == document.Id);
+                      
+                }
+            }
+           
+            model.Documents = _documentTypeRepository.GetAll();
+            return this.View(model);
+          
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+        {
+            
+            var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
+            if (ModelState.IsValid)
+            {
+
+                if (client != null)
+                {
+                    var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
+
+                    client.FirstName = model.FirstName;
+                    client.LastName = model.LastName;
+                    client.Address = model.Address;
+                    client.ZipCode = model.ZipCode;
+                    client.PhoneNumber = model.PhoneNumber;
+                    client.TaxNumber = model.TaxNumber;
+                    client.Gender = model.Gender;
+                    client.DateOfBirth = model.DateOfBirth == null ? client.DateOfBirth : model.DateOfBirth.Value;
+                    client.Nationality = model.Nationality;
+                    client.Document = model.Document;
+                    client.DocumentTypeID = model.DocumentTypeID;
+                    client.DocumentType = documentType;
+                   
+
+                    try
+                    {
+                        await _clientRepository.UpdateAsync(client);
+
+                        //this.context.Clients.Update(client);
+
+                        //await this.context.SaveChangesAsync();
+
+                        this.ViewBag.UserMessage = "User updated!";
+                        //return this.RedirectToAction("Index", "Home");
+
+
+                        //this.ModelState.AddModelError(string.Empty, "The user couldn't be updated.");
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                        this.ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+
+                }
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, "User no found.");
+                }
+
+            }
+            model.Documents = _documentTypeRepository.GetAll();
+            return this.View(model);
+
+        }
+
 
     }
 }

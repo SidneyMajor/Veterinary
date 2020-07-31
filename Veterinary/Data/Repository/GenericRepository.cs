@@ -27,7 +27,6 @@ namespace Veterinary.Data.Repository
         }
 
 
-
         public async Task DeleteAsync(T entity)
         {
             entity.WasDeleted = true;
@@ -52,14 +51,14 @@ namespace Veterinary.Data.Repository
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _context.Set<T>()
-                 .AsNoTracking()
+            return await _context.Set<T>()                
                  .FirstOrDefaultAsync(e => e.Id == id && e.WasDeleted == false);
         }
 
 
         public async Task UpdateAsync(T entity)
         {
+            entity.UpdatedDate = DateTime.Now;
             _context.Set<T>().Update(entity);
             await SaveAllAsync();
         }

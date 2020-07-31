@@ -10,11 +10,11 @@ namespace Veterinary.Data.Entities
     {
         public int Id { get; set; }
         
-        [Display(Name ="Description")]
-        [Required]
-        public string Document { get; set; }
+        
+        public string Description { get; set; }
 
 
+        [Display(Name = "Is Inactive?")]
         public bool WasDeleted { get; set; }
 
 

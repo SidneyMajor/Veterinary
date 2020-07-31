@@ -32,7 +32,7 @@ namespace Veterinary.Data
             {
                 var document = new DocumentType
                 {
-                    Document = "Cartão do Cidadão",
+                    Description = "Cartão do Cidadão",
                     UpdatedDate = DateTime.Now,
                     CreatedDate = DateTime.Now,
                 };
@@ -90,13 +90,15 @@ namespace Veterinary.Data
 
             _context.Clients.Add(new Client
             {
-                FisrtName = name,
+                FirstName = name,
                 LastName = "Major",
                 Address = "Rua dos milagres",
                 DocumentTypeID = _context.DocumentTypes.FirstOrDefault().Id,
-                DocumetType = _context.DocumentTypes.FirstOrDefault(),
+                DocumentType = _context.DocumentTypes.FirstOrDefault(),
+                Document = _random.Next(10000, 999999).ToString(),
                 TaxNumber = _random.Next(100000000, 399999999).ToString(),
                 DateOfBirth = new DateTime(_random.Next(1930, 2020), _random.Next(1, 12), _random.Next(1, 32)),
+                Gender="N/N",
                 User = user,
                 UpdatedDate = DateTime.Now,
                 CreatedDate = DateTime.Now,

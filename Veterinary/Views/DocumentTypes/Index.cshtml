@@ -4,38 +4,49 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Document List</h2>
 
+<br />
 <p>
-    <a asp-action="Create" class="btn btn-info">Create New</a>
+    <a asp-action="Create" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> New</a>
 </p>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Documents</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped " id="MyTable">
+                    <thead class="table-borderless">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
 
-<table class="table " >
-    <thead class="table-borderless">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Document)
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Document)
-                </td>
-               
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-list"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                   
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-list"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

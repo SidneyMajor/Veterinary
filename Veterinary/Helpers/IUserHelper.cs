@@ -17,5 +17,7 @@ namespace Veterinary.Helpers
         Task LogoutAsync();
 
         Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        //Task<IdentityResult> UpdateUserAsync(User user);
     }
 }

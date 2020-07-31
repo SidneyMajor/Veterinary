@@ -1,15 +1,12 @@
-﻿@model Veterinary.Models.RegisterNewUserViewModel
-
+﻿@model Veterinary.Models.ChangeUserViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "ChangeUser";
 }
-
-
 
 <div class="container">
     <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Register</a>
+        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Update User</a>
 
     </div>
     <div class="row justify-content-center">
@@ -38,6 +35,7 @@
                                             <span asp-validation-for="LastName" class="text-danger"></span>
                                         </div>
                                     </div>
+                                    <br />
 
 
                                     <div class="col-md-6">
@@ -94,6 +92,7 @@
                                     </div>
 
 
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto"></ejs-textbox>
@@ -112,35 +111,15 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Email" id="email" placeholder="Email (email@email.com)" type="email" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Password" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Confirm" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input type="submit" value="Register" class="btn btn-outline-success" />
-                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back </a>
+                                            <input type="submit" value="Change User" class="btn btn-outline-success" />
+                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Home</a>
+                                            <a asp-action="" asp-controller="" class="btn btn-outline-primary">Change Password</a>
                                             <div class="submitting"></div>
+
                                         </div>
                                     </div>
 
+                                    <div class="text-success">@ViewBag.UserMessage</div>
 
                                 </div>
                             </form>
@@ -157,15 +136,3 @@
         </div>
     </div>
 </div>
-
-@*@section Scripts{
-    <script>
-        function onRenderCell(args) {
-            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
-                //sets isDisabled to true to disable the date.
-                args.isDisabled = true;
-            }
-        }
-    </script>
-}*@
-
