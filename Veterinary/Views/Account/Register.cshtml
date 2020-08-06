@@ -22,7 +22,7 @@
                     <div class="col-md-7">
                         <div class="contact-wrap w-100 p-md-5 p-4" style="background-color:lightcyan">
 
-                            <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                            <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -103,8 +103,8 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
-                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
+                                            <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -132,6 +132,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        
+                                        <div class="form-group">
+                                            <label >Select a Image</label>
+                                            <input asp-for="ImageFile" type="file" id="image" co/>
+                                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -159,13 +167,13 @@
 </div>
 
 @*@section Scripts{
-    <script>
-        function onRenderCell(args) {
-            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
-                //sets isDisabled to true to disable the date.
-                args.isDisabled = true;
+        <script>
+            function onRenderCell(args) {
+                if (args.date.getDay() == 0 || args.date.getDay() == 6) {
+                    //sets isDisabled to true to disable the date.
+                    args.isDisabled = true;
+                }
             }
-        }
-    </script>
-}*@
+        </script>
+    }*@
 

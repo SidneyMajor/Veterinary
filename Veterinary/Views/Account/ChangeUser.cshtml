@@ -19,8 +19,10 @@
                     <div class="col-md-7">
                         <div class="contact-wrap w-100 p-md-5 p-4" style="background-color:lightcyan">
 
-                            <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                            <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="ImageUrl" />
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -102,12 +104,18 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
-                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
+                                            <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
-
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label >Select a Image</label>
+                                            <input asp-for="ImageFile" type="file" id="image" />
+                                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -128,8 +136,18 @@
                     </div>
 
                     <div class="col-md-5 d-flex align-items-stretch">
-                        <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
-                        </div>
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(@Url.Content(Model.ImageUrl));">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>

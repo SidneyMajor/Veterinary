@@ -193,4 +193,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Clients\" />
+  </ItemGroup>
+
 </Project>

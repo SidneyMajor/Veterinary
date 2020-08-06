@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,55 +9,9 @@ using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
-    public class RegisterNewUserViewModel
+    public class RegisterNewUserViewModel:Client
     {
-       
-        public string FirstName { get; set; }
-
-
-        public string LastName { get; set; }
-
-
-        [Required]
-        [MaxLength(100, ErrorMessage = "The field {0} only can contain {1} characters.")]
-        public string Address { get; set; }
-
-
-        public string ZipCode { get; set; }
-
-
-        public string TaxNumber { get; set; }
-
-
-        public string Gender { get; set; }        
-
-
-        public string PhoneNumber { get; set; }
-
-        [Display(Name = "Date Of Birth")]        
-        [Required]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? DateOfBirth { get; set; }
-
-
-        public string Nationality { get; set; }
-
-
-        [Display(Name = "Document Type")]
-        [Range(1, int.MaxValue, ErrorMessage = "You  must select a {0}")]
-        public int DocumentTypeID { get; set; }
-
-
         public IEnumerable<DocumentType> Documents { get; set; }
-
-
-        [Display(Name = "Nº Document")]
-        [Required]
-        [MaxLength(20, ErrorMessage = "The  field {0} only can contain {1} characters.")]
-        [MinLength(5, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
-        public string Document { get; set; }
-
-
 
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -65,10 +20,19 @@ namespace Veterinary.Models
         [Required]
         public string Password { get; set; }
 
+        [Display(Name = "Date Of Birth")]
+        [DataType(DataType.Date)]
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? SelectDate { get; set; }
 
         [Required]
         [Compare("Password")]
         public string Confirm { get; set; }
+
+
+        [Display(Name = "Image")]
+        public IFormFile ImageFile { get; set; }
 
     }
 }

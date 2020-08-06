@@ -41,8 +41,8 @@ namespace Veterinary.Data.Entities
 
         public string Nationality { get; set; }
 
-
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
+        [Display(Name = "Image")]
+        public string ImageUrl { get; set; }       
 
 
         public bool WasDeleted { get; set; }
@@ -58,8 +58,9 @@ namespace Veterinary.Data.Entities
 
 
         [Display(Name = "Nº Document")]
-        [Required(ErrorMessage = "The field {0} only can contain {1} characters.")]
-        [StringLength(20, ErrorMessage = "The  field {0} must contain between {2} and {1} characters", MinimumLength = 5)]
+        [Required]
+        [MaxLength(20, ErrorMessage = "The  field {0} only can contain {1} characters.")]
+        [MinLength(5, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
         public string Document { get; set; }
 
 
@@ -68,5 +69,9 @@ namespace Veterinary.Data.Entities
 
 
         public DocumentType DocumentType { get; set; }
+
+
+
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
     }
 }

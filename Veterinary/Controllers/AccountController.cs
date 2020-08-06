@@ -20,16 +20,20 @@ namespace Veterinary.Controllers
         private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly IUserHelper _userHelper;
         private readonly IClientRepository _clientRepository;
-        private readonly DataContext context;
+        private readonly IImageHelper _imageHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public AccountController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper,
-            IClientRepository clientRepository, DataContext context)
+            IClientRepository clientRepository, 
+            IImageHelper imageHelper,
+            IConverterHelper converterHelper)
         {
             _documentTypeRepository = documentTypeRepository;
            _userHelper = userHelper;
            _clientRepository = clientRepository;
-            this.context = context;
+           _imageHelper = imageHelper;
+           _converterHelper = converterHelper;
         }
 
         public IActionResult Register()
@@ -49,6 +53,12 @@ namespace Veterinary.Controllers
         {
             if (ModelState.IsValid)
             {
+                var path = string.Empty;
+                if (model.ImageFile!=null && model.ImageFile.Length > 0)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                }
+
                 var user = await _userHelper.GetUserByEmailAsync(model.Email);
                 if (user==null)
                 {
@@ -60,22 +70,22 @@ namespace Veterinary.Controllers
                     };
 
                     var documentType = await _documentTypeRepository.GetDocumentType(model.DocumentTypeID);
-                    var client = new Client
-                    {
-                        FirstName=model.FirstName,
-                        LastName=model.LastName,
-                        Address=model.Address,
-                        ZipCode=model.ZipCode,
-                        PhoneNumber=model.PhoneNumber,
-                        TaxNumber=model.TaxNumber,
-                        Gender=model.Gender,
-                        DateOfBirth=model.DateOfBirth.Value.Date,
-                        Nationality=model.Nationality,
-                        DocumentTypeID=model.DocumentTypeID,
-                        DocumentType=documentType,
-                        Document=model.Document,
-                        User=user,                       
-                    };
+                    //var client = new Client
+                    //{
+                    //    FirstName=model.FirstName,
+                    //    LastName=model.LastName,
+                    //    Address=model.Address,
+                    //    ZipCode=model.ZipCode,
+                    //    PhoneNumber=model.PhoneNumber,
+                    //    TaxNumber=model.TaxNumber,
+                    //    Gender=model.Gender,
+                    //    DateOfBirth=model.DateOfBirth.Value.Date,
+                    //    Nationality=model.Nationality,
+                    //    DocumentTypeID=model.DocumentTypeID,
+                    //    DocumentType=documentType,
+                    //    Document=model.Document,
+                    //    User=user,                       
+                    //};
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
                     if (result!=IdentityResult.Success)
@@ -85,12 +95,15 @@ namespace Veterinary.Controllers
                         return this.View(model);
                     }
 
+                    var client = _converterHelper.ToClient(model, documentType, path);
+                    client.User = user;
                     await _clientRepository.CreateAsync(client);
 
                     return this.RedirectToAction("Login", "Account");
                 }
+                this.ModelState.AddModelError(string.Empty, "The user already exists.");
             }
-            this.ModelState.AddModelError(string.Empty, "The user already exists.");
+            
             model.Documents = _documentTypeRepository.GetAll().ToList();
             return this.View(model);
         }
@@ -149,31 +162,26 @@ namespace Veterinary.Controllers
         {
             //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
             var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);           
-            var model = new ChangeUserViewModel();
+            
 
-            if (client != null)
+            if (client == null)
             {
-                model.FirstName = client.FirstName;
-                model.LastName = client.LastName;
-                model.Address = client.Address;
-                model.ZipCode = client.ZipCode;
-                model.PhoneNumber = client.PhoneNumber;
-                model.TaxNumber = client.TaxNumber;
-                model.Gender = client.Gender;
-                model.DateOfBirth = client.DateOfBirth.Date;
-                model.Nationality = client.Nationality;
-                model.Document = client.Document;                
-
-                var document = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
-                if (document != null)
-                {
-                    
-                        model.DocumentTypeID = document.Id;
-                        model.Documents = _documentTypeRepository.GetAll().Where(d => d.Id == document.Id);
-                      
-                }
+                //model.FirstName = client.FirstName;
+                //model.LastName = client.LastName;
+                //model.Address = client.Address;
+                //model.ZipCode = client.ZipCode;
+                //model.PhoneNumber = client.PhoneNumber;
+                //model.TaxNumber = client.TaxNumber;
+                //model.Gender = client.Gender;
+                //model.DateOfBirth = client.DateOfBirth.Date;
+                //model.Nationality = client.Nationality;
+                //model.Document = client.Document;                
+                return NotFound();
+                
             }
-           
+
+            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);            
+            var model = _converterHelper.ToChangeUserViewModel(client,documentType);
             model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
           
@@ -182,28 +190,35 @@ namespace Veterinary.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
-            
-            var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
-            if (ModelState.IsValid)
-            {
 
-                if (client != null)
-                {
+            if (this.ModelState.IsValid)
+            {
+                //var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
+
+                
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
 
-                    client.FirstName = model.FirstName;
-                    client.LastName = model.LastName;
-                    client.Address = model.Address;
-                    client.ZipCode = model.ZipCode;
-                    client.PhoneNumber = model.PhoneNumber;
-                    client.TaxNumber = model.TaxNumber;
-                    client.Gender = model.Gender;
-                    client.DateOfBirth = model.DateOfBirth == null ? client.DateOfBirth : model.DateOfBirth.Value;
-                    client.Nationality = model.Nationality;
-                    client.Document = model.Document;
-                    client.DocumentTypeID = model.DocumentTypeID;
-                    client.DocumentType = documentType;
-                   
+
+                    var path = string.Empty;
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                    }
+
+                    //client.FirstName = model.FirstName;
+                    //client.LastName = model.LastName;
+                    //client.Address = model.Address;
+                    //client.ZipCode = model.ZipCode;
+                    //client.PhoneNumber = model.PhoneNumber;
+                    //client.TaxNumber = model.TaxNumber;
+                    //client.Gender = model.Gender;
+                    //client.DateOfBirth = model.SelectDate.Value;
+                    //client.Nationality = model.Nationality;
+                    //client.Document = model.Document;
+                    //client.DocumentTypeID = model.DocumentTypeID;
+                    //client.DocumentType = documentType;
+
+                    var client = _converterHelper.ToClient(model, documentType, path);
 
                     try
                     {
@@ -224,16 +239,11 @@ namespace Veterinary.Controllers
                     {
 
                         this.ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }
+                    }               
+               
 
-                }
-                else
-                {
-                    this.ModelState.AddModelError(string.Empty, "User no found.");
-                }
-
-            }
-            model.Documents = _documentTypeRepository.GetAll();
+            }            
+           // model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
 
         }
