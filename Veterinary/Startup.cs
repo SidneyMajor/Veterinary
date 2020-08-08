@@ -32,7 +32,8 @@ namespace Veterinary
         {
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-                              
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+                cfg.SignIn.RequireConfirmedEmail = true;
                 cfg.User.RequireUniqueEmail = true;
                 cfg.Password.RequireDigit = false;
                 cfg.Password.RequireLowercase = false;
@@ -40,7 +41,7 @@ namespace Veterinary
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
 
-            })
+            }).AddDefaultTokenProviders()
            .AddEntityFrameworkStores<DataContext>();
 
             services.AddDbContext<DataContext>(cfg =>
@@ -54,6 +55,7 @@ namespace Veterinary
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
 
             services.Configure<CookiePolicyOptions>(options =>

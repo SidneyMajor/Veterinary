@@ -90,6 +90,11 @@ namespace Veterinary.Data
                 {
                     await _userHelper.AddUserToRoleAsync(userOwner, "Owner");
                 }
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userAdmin);
+                await _userHelper.ConfirmEmailAsync(userAdmin, token);
+
+                var tokenOwner = await _userHelper.GenerateEmailConfirmationTokenAsync(userOwner);
+                await _userHelper.ConfirmEmailAsync(userOwner, tokenOwner);
 
                 this.AddClient("Sidney","Major" ,userAdmin);
                 this.AddClient("Isabel","Frazão" ,userOwner);

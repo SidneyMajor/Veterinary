@@ -22,19 +22,66 @@ namespace Veterinary.Controllers
         private readonly IClientRepository _clientRepository;
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IMailHelper _mailHelper;
 
         public AccountController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper,
             IClientRepository clientRepository, 
             IImageHelper imageHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IMailHelper mailHelper)
         {
             _documentTypeRepository = documentTypeRepository;
            _userHelper = userHelper;
            _clientRepository = clientRepository;
            _imageHelper = imageHelper;
            _converterHelper = converterHelper;
+            _mailHelper = mailHelper;
         }
+
+
+        public IActionResult Login()
+        {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userHelper.LoginAsync(model);
+                if (result.Succeeded)
+                {
+                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                    {
+                        //Direção de retorno
+                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                    }
+                    return this.RedirectToAction("Index", "Home");
+                }
+
+
+            }
+
+            this.ModelState.AddModelError(string.Empty, "Failed to login");
+            return this.View(model);
+        }
+
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await _userHelper.LogoutAsync();
+            return this.RedirectToAction("Index", "Home");
+        }
+
+
 
         public IActionResult Register()
         {
@@ -99,7 +146,21 @@ namespace Veterinary.Controllers
                     client.User = user;
                     await _clientRepository.CreateAsync(client);
 
-                    return this.RedirectToAction("Login", "Account");
+                    var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                    var tokenLink = this.Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userid = user.Id,
+                        token = myToken,
+
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    _mailHelper.SendMail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                       $"To allow the user, " +
+                       $"plase click in this link: </br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+                    this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
+
+                    return this.View(model);
                 }
                 this.ModelState.AddModelError(string.Empty, "The user already exists.");
             }
@@ -109,54 +170,31 @@ namespace Veterinary.Controllers
         }
 
 
-        public IActionResult Login()
+
+        //Todo: melhorar essa view
+        public async Task<IActionResult> ConfirmEmail(string userid, string token)
         {
-            if (this.User.Identity.IsAuthenticated)
+            if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(token))
             {
-                return this.RedirectToAction("Index", "Home");
+                return NotFound();
+            }
+            var user = await _userHelper.GetUserByIdAsync(userid);
+            if (user == null)
+            {
+                return NotFound();
             }
 
-            return this.View();
-        }
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
+            if (!result.Succeeded)
             {
-                var result = await _userHelper.LoginAsync(model);
-                if (result.Succeeded)
-                {
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-                        //Direção de retorno
-                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
-                    }
-                    return this.RedirectToAction("Index", "Home");
-                }
-
-
+                return NotFound();
             }
-
-            this.ModelState.AddModelError(string.Empty, "Failed to login");
-            return this.View(model);
+            return View();
         }
+        
 
-
-        public async Task<IActionResult> Logout()
-        {
-            await _userHelper.LogoutAsync();
-            return this.RedirectToAction("Index", "Home");
-        }
-
-        // GET: Clients only for admin
-        //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
-        public async Task<IActionResult> ListClient()
-        {
-
-            return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
-        }
-
+        
         // GET: Clients
         public async Task<IActionResult> ChangeUser()
         {
@@ -249,5 +287,13 @@ namespace Veterinary.Controllers
         }
 
 
+
+        // GET: Clients only for admin
+        //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
+        public async Task<IActionResult> ListClient()
+        {
+
+            return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
+        }
     }
 }

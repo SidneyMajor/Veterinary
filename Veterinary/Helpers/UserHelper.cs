@@ -27,15 +27,21 @@ namespace Veterinary.Helpers
             _roleManager = roleManager;
         }
 
+
+
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
             return await _userManager.CreateAsync(user, password);
         }
 
+
+
         public async Task AddUserToRoleAsync(User user, string roleName)
         {
             await _userManager.AddToRoleAsync(user, roleName);
         }
+
+
 
         public async Task CheckRoleAsync(string roleName)
         {
@@ -52,15 +58,37 @@ namespace Veterinary.Helpers
         }
 
 
+
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
+
+
 
         public async Task<SignInResult> LoginAsync(LoginViewModel model)
         {
@@ -71,10 +99,14 @@ namespace Veterinary.Helpers
                  false);
         }
 
+
+
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
         }
+
+
 
         //public async Task<IdentityResult> UpdateUserAsync(User user)
         //{
