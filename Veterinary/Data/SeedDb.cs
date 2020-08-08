@@ -27,6 +27,8 @@ namespace Veterinary.Data
 
             //Certificar a base de dados esta criada se não ela a cria.
             await _context.Database.EnsureCreatedAsync();
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Owner");
 
             if (!_context.DocumentTypes.Any())
             {
@@ -44,54 +46,67 @@ namespace Veterinary.Data
             if (!_context.Clients.Any())
             {
 
-                var user = await _userHelper.GetUserByEmailAsync("Sidney.major@seed.pt");
+                var userAdmin = await _userHelper.GetUserByEmailAsync("Sidney.major@seed.pt");
 
-                var user1 = await _userHelper.GetUserByEmailAsync("Isabel@seed.pt");
+                var userOwner = await _userHelper.GetUserByEmailAsync("Isabel@seed.pt");
 
-                if (user == null)
+                if (userAdmin == null)
                 {
-                    user = new User
+                    userAdmin = new User
                     {
                         Email = "Sidney.major@seed.pt",
                         UserName = "Sidney.major@seed.pt",
                     };
-                    var result = await _userHelper.AddUserAsync(user, "123456");
+                    var result = await _userHelper.AddUserAsync(userAdmin, "123456");
                     if (result != IdentityResult.Success)
                     {
                         throw new InvalidOperationException("Could not create the user in seeder");
                     }
                 }
 
-                if (user1 == null)
+                if (userOwner == null)
                 {
-                    user1 = new User
+                    userOwner = new User
                     {
                         Email = "Isabel@seed.pt",
                         UserName = "Isabel@seed.pt",
                     };
-                    var result = await _userHelper.AddUserAsync(user1, "123456");
+                    var result = await _userHelper.AddUserAsync(userOwner, "123456");
                     if (result != IdentityResult.Success)
                     {
                         throw new InvalidOperationException("Could not create the user in seeder");
                     }
                 }
 
-                this.AddClient("Sidney", user);
-                this.AddClient("Isabel", user1);
+                var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
+                var isInRoleOwner = await _userHelper.IsUserInRoleAsync(userOwner, "Admin");
+
+                if (!isInRoleAdmin)
+                {
+                    await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
+                }
+
+                if (!isInRoleOwner)
+                {
+                    await _userHelper.AddUserToRoleAsync(userOwner, "Owner");
+                }
+
+                this.AddClient("Sidney","Major" ,userAdmin);
+                this.AddClient("Isabel","Frazão" ,userOwner);
 
                 await _context.SaveChangesAsync();
 
             }
         }
 
-        private void AddClient(string name, User user)
+        private void AddClient(string name, string apelido,User user)
         {
 
 
             _context.Clients.Add(new Client
             {
                 FirstName = name,
-                LastName = "Major",
+                LastName = apelido,
                 Address = "Rua dos milagres",
                 DocumentTypeID = _context.DocumentTypes.FirstOrDefault().Id,
                 DocumentType = _context.DocumentTypes.FirstOrDefault(),

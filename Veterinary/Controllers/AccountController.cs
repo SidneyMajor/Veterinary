@@ -91,10 +91,10 @@ namespace Veterinary.Controllers
                     if (result!=IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                        model.Documents = _documentTypeRepository.GetAll().ToList();
+                        //model.Documents = _documentTypeRepository.GetAll().ToList();
                         return this.View(model);
                     }
-
+                    await _userHelper.AddUserToRoleAsync(user, "Owner");
                     var client = _converterHelper.ToClient(model, documentType, path);
                     client.User = user;
                     await _clientRepository.CreateAsync(client);
@@ -104,7 +104,7 @@ namespace Veterinary.Controllers
                 this.ModelState.AddModelError(string.Empty, "The user already exists.");
             }
             
-            model.Documents = _documentTypeRepository.GetAll().ToList();
+            //model.Documents = _documentTypeRepository.GetAll().ToList();
             return this.View(model);
         }
 
@@ -157,7 +157,7 @@ namespace Veterinary.Controllers
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
 
-
+        // GET: Clients
         public async Task<IActionResult> ChangeUser()
         {
             //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);

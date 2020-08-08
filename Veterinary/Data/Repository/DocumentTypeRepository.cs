@@ -40,14 +40,14 @@ namespace Veterinary.Data.Repository
             return await _context.DocumentTypes.FindAsync(id);
         }
 
-        public List<DocumentType> Getallteste()
-        {
-            _ = new List<DocumentType>();
+        //public List<DocumentType> Getallteste()
+        //{
+        //    _ = new List<DocumentType>();
 
-            List<DocumentType> list = _context.DocumentTypes.ToList();
+        //    List<DocumentType> list = _context.DocumentTypes.ToList();
 
-            return list;
-        }
+        //    return list;
+        //}
 
     }
 }
