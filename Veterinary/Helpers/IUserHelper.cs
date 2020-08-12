@@ -18,7 +18,7 @@ namespace Veterinary.Helpers
 
         Task<SignInResult> LoginAsync(LoginViewModel model);
 
-        //Task<IdentityResult> ChangePasswordAsync(User user, string olpassword, string newpassword);
+        Task<IdentityResult> ChangePasswordAsync(User user, string olpassword, string newpassword);
 
         //Task<SignInResult> ValidatePasswordAsync(User user, string password);
 

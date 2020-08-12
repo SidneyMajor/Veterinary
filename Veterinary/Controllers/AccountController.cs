@@ -55,18 +55,21 @@ namespace Veterinary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _userHelper.LoginAsync(model);
-                if (result.Succeeded)
+                var client = await _clientRepository.GetClientByUserEmailAsync(model.Username);
+
+                if (client!=null && client.WasDeleted==false)
                 {
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                    var result = await _userHelper.LoginAsync(model);
+                    if (result.Succeeded)
                     {
-                        //Direção de retorno
-                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                        if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                        {
+                            //Direção de retorno
+                            return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                        }
+                        return this.RedirectToAction("Index", "Home");
                     }
-                    return this.RedirectToAction("Index", "Home");
-                }
-
-
+                }  
             }
 
             this.ModelState.AddModelError(string.Empty, "Failed to login");
@@ -88,8 +91,8 @@ namespace Veterinary.Controllers
             var model = new RegisterNewUserViewModel
             {
                 Documents = _documentTypeRepository.GetAll().ToList(),
-            };
-            
+            };            
+
             return View(model);
         }
 
@@ -141,7 +144,9 @@ namespace Veterinary.Controllers
                         //model.Documents = _documentTypeRepository.GetAll().ToList();
                         return this.View(model);
                     }
+                    //add role
                     await _userHelper.AddUserToRoleAsync(user, "Owner");
+
                     var client = _converterHelper.ToClient(model, documentType, path);
                     client.User = user;
                     await _clientRepository.CreateAsync(client);
@@ -183,19 +188,20 @@ namespace Veterinary.Controllers
             {
                 return NotFound();
             }
-
+            
             var result = await _userHelper.ConfirmEmailAsync(user, token);
 
             if (!result.Succeeded)
             {
                 return NotFound();
             }
+            //user.IsActive = true;
             return View();
         }
         
 
         
-        // GET: Clients
+        // GET: Client
         public async Task<IActionResult> ChangeUser()
         {
             //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -231,11 +237,11 @@ namespace Veterinary.Controllers
 
             if (this.ModelState.IsValid)
             {
-                //var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
+                var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
 
-                
+                if (client!=null)
+                {
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-
 
                     var path = string.Empty;
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
@@ -256,7 +262,7 @@ namespace Veterinary.Controllers
                     //client.DocumentTypeID = model.DocumentTypeID;
                     //client.DocumentType = documentType;
 
-                    var client = _converterHelper.ToClient(model, documentType, path);
+                    client = _converterHelper.ToClient(model, documentType, path);
 
                     try
                     {
@@ -275,9 +281,15 @@ namespace Veterinary.Controllers
                     }
                     catch (Exception ex)
                     {
+                        //Todo: Fazer melhor tratamento de erro.
 
                         this.ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }               
+                    }                
+                }
+                else
+                {
+                    this.ModelState.AddModelError(string.Empty, "User no found.");
+                }
                
 
             }            
@@ -286,13 +298,46 @@ namespace Veterinary.Controllers
 
         }
 
+        // GET:
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+                if (user!=null)
+                {
+                    var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(ChangeUser));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found");
+                }
+            }
+
+            return View(model);
+        }
 
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
         public async Task<IActionResult> ListClient()
         {
-
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
     }

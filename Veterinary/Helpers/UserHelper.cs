@@ -41,7 +41,10 @@ namespace Veterinary.Helpers
             await _userManager.AddToRoleAsync(user, roleName);
         }
 
-
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string olpassword, string newpassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, olpassword, newpassword);
+        }
 
         public async Task CheckRoleAsync(string roleName)
         {
@@ -61,7 +64,7 @@ namespace Veterinary.Helpers
 
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
-            return await _userManager.ConfirmEmailAsync(user, token);
+            return await _userManager.ConfirmEmailAsync(user, token);           
         }
 
 
