@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace Veterinary.Models
 {
-    public class ChangePasswordViewModel
+    public class ResetPasswordViewModel
     {
-
         [Required]
-        [DataType(DataType.Password)]
-        public string OldPassword { get; set; }
-
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
-
+        public string Username { get; set; }
 
 
         [Required]
         [DataType(DataType.Password)]
-        [Compare("NewPassword")]
-        public string Confirm { get; set; }
+        public string Password { get; set; }
 
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
+
+
+        [Required]
+        public string Token { get; set; }
     }
 }

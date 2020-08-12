@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -26,16 +27,16 @@ namespace Veterinary.Controllers
 
         public AccountController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper,
-            IClientRepository clientRepository, 
+            IClientRepository clientRepository,
             IImageHelper imageHelper,
             IConverterHelper converterHelper,
             IMailHelper mailHelper)
         {
             _documentTypeRepository = documentTypeRepository;
-           _userHelper = userHelper;
-           _clientRepository = clientRepository;
-           _imageHelper = imageHelper;
-           _converterHelper = converterHelper;
+            _userHelper = userHelper;
+            _clientRepository = clientRepository;
+            _imageHelper = imageHelper;
+            _converterHelper = converterHelper;
             _mailHelper = mailHelper;
         }
 
@@ -57,7 +58,7 @@ namespace Veterinary.Controllers
             {
                 var client = await _clientRepository.GetClientByUserEmailAsync(model.Username);
 
-                if (client!=null && client.WasDeleted==false)
+                if (client != null && client.WasDeleted == false)
                 {
                     var result = await _userHelper.LoginAsync(model);
                     if (result.Succeeded)
@@ -69,7 +70,7 @@ namespace Veterinary.Controllers
                         }
                         return this.RedirectToAction("Index", "Home");
                     }
-                }  
+                }
             }
 
             this.ModelState.AddModelError(string.Empty, "Failed to login");
@@ -91,12 +92,12 @@ namespace Veterinary.Controllers
             var model = new RegisterNewUserViewModel
             {
                 Documents = _documentTypeRepository.GetAll().ToList(),
-            };            
+            };
 
             return View(model);
         }
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
@@ -104,13 +105,13 @@ namespace Veterinary.Controllers
             if (ModelState.IsValid)
             {
                 var path = string.Empty;
-                if (model.ImageFile!=null && model.ImageFile.Length > 0)
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
                 }
 
                 var user = await _userHelper.GetUserByEmailAsync(model.Email);
-                if (user==null)
+                if (user == null)
                 {
                     user = new User
                     {
@@ -138,7 +139,7 @@ namespace Veterinary.Controllers
                     //};
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
-                    if (result!=IdentityResult.Success)
+                    if (result != IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
                         //model.Documents = _documentTypeRepository.GetAll().ToList();
@@ -169,7 +170,7 @@ namespace Veterinary.Controllers
                 }
                 this.ModelState.AddModelError(string.Empty, "The user already exists.");
             }
-            
+
             //model.Documents = _documentTypeRepository.GetAll().ToList();
             return this.View(model);
         }
@@ -188,7 +189,7 @@ namespace Veterinary.Controllers
             {
                 return NotFound();
             }
-            
+
             var result = await _userHelper.ConfirmEmailAsync(user, token);
 
             if (!result.Succeeded)
@@ -198,15 +199,15 @@ namespace Veterinary.Controllers
             //user.IsActive = true;
             return View();
         }
-        
 
-        
+
+
         // GET: Client
         public async Task<IActionResult> ChangeUser()
         {
             //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-            var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);           
-            
+            var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
+
 
             if (client == null)
             {
@@ -221,14 +222,14 @@ namespace Veterinary.Controllers
                 //model.Nationality = client.Nationality;
                 //model.Document = client.Document;                
                 return NotFound();
-                
+
             }
 
-            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);            
-            var model = _converterHelper.ToChangeUserViewModel(client,documentType);
+            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
+            var model = _converterHelper.ToChangeUserViewModel(client, documentType);
             model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
-          
+
         }
 
         [HttpPost]
@@ -239,7 +240,7 @@ namespace Veterinary.Controllers
             {
                 var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
 
-                if (client!=null)
+                if (client != null)
                 {
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
 
@@ -284,16 +285,16 @@ namespace Veterinary.Controllers
                         //Todo: Fazer melhor tratamento de erro.
 
                         this.ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }                
+                    }
                 }
                 else
                 {
                     this.ModelState.AddModelError(string.Empty, "User no found.");
                 }
-               
 
-            }            
-           // model.Documents = _documentTypeRepository.GetAll();
+
+            }
+            // model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
 
         }
@@ -311,7 +312,7 @@ namespace Veterinary.Controllers
             {
                 var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
-                if (user!=null)
+                if (user != null)
                 {
                     var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
@@ -333,6 +334,66 @@ namespace Veterinary.Controllers
             return View(model);
         }
 
+        public IActionResult RecoverPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RecoverPassword(RecoverPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "The email doesn't correspont to a registered user.");
+                    return View(model);
+                }
+                var myToken = await _userHelper.GeneratePasswordResetTokenAsync(user);
+
+                var link = this.Url.Action("ResetPassword", "Account",
+                    new { token = myToken }, protocol: HttpContext.Request.Scheme);
+
+                _mailHelper.SendMail(model.Email, "Veterinary Password Reset", $"<h1>Veterinary Password Reset</h1>" +
+               $"To reset the password click in this link:</br></br>" +
+               $"<a href = \"{link}\">Reset Password</a>");
+
+                this.ViewBag.Message = "The instructions to recover your password has been sent to email.";
+
+                return this.View();
+            }
+
+            return View(model);
+        }
+
+        public IActionResult ResetPassword(string token)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(model.Username);
+            if (user != null)
+            {
+                var result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
+
+                if (result.Succeeded)
+                {
+                    ViewBag.Message = "Password reset Successful!";
+                    return View();
+                }
+
+                ViewBag.Message = "Error while resetting the password.";
+                return View(model);
+            }
+
+            ViewBag.Message = "User not found.";
+            return View(model);
+        }
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.

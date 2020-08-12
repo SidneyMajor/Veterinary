@@ -34,8 +34,8 @@ namespace Veterinary.Helpers
 
         Task<User> GetUserByIdAsync(string userId);
 
-       // Task<string> GeneratePasswordResetTokenAsync(User user);
+       Task<string> GeneratePasswordResetTokenAsync(User user);
 
-        //Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+       Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
     }
 }
