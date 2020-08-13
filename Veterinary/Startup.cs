@@ -56,6 +56,8 @@ namespace Veterinary
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
+            services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
 
             services.Configure<CookiePolicyOptions>(options =>

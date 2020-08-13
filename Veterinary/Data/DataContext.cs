@@ -12,6 +12,7 @@ namespace Veterinary.Data
     {
         public DbSet<Client> Clients { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<Species> Species { get; set; }
         //public DbSet<Animal> Animals { get; set; }
         //public DbSet<Doctor> Doctors { get; set; }
 
@@ -33,6 +34,8 @@ namespace Veterinary.Data
             }
             base.OnModelCreating(modelbuilder);
         }
+
+        
     }
 
 }

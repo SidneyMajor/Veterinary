@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -56,21 +59,17 @@ namespace Veterinary.Controllers
         {
             if (ModelState.IsValid)
             {
-                var client = await _clientRepository.GetClientByUserEmailAsync(model.Username);
-
-                if (client != null && client.WasDeleted == false)
+                var result = await _userHelper.LoginAsync(model);
+                if (result.Succeeded)
                 {
-                    var result = await _userHelper.LoginAsync(model);
-                    if (result.Succeeded)
+                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
                     {
-                        if (this.Request.Query.Keys.Contains("ReturnUrl"))
-                        {
-                            //Direção de retorno
-                            return this.Redirect(this.Request.Query["ReturnUrl"].First());
-                        }
-                        return this.RedirectToAction("Index", "Home");
+                        //Direção de retorno
+                        return this.Redirect(this.Request.Query["ReturnUrl"].First());
                     }
+                    return this.RedirectToAction("Index", "Home");
                 }
+
             }
 
             this.ModelState.AddModelError(string.Empty, "Failed to login");
@@ -107,7 +106,16 @@ namespace Veterinary.Controllers
                 var path = string.Empty;
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                    if (ValidFileTypes(model.ImageFile))
+                    {
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                    }
+                    else
+                    {
+                        this.ModelState.AddModelError(string.Empty, "Invalid File. Please upload a File with extension (bmp, gif, png, jpg, jpeg)");
+                        return this.View(model);
+                    }
+
                 }
 
                 var user = await _userHelper.GetUserByEmailAsync(model.Email);
@@ -120,7 +128,7 @@ namespace Veterinary.Controllers
                         PhoneNumber = model.PhoneNumber,
                     };
 
-                    var documentType = await _documentTypeRepository.GetDocumentType(model.DocumentTypeID);
+                    var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
                     //var client = new Client
                     //{
                     //    FirstName=model.FirstName,
@@ -171,7 +179,7 @@ namespace Veterinary.Controllers
                 this.ModelState.AddModelError(string.Empty, "The user already exists.");
             }
 
-            //model.Documents = _documentTypeRepository.GetAll().ToList();
+            model.Documents = _documentTypeRepository.GetAll().ToList();
             return this.View(model);
         }
 
@@ -397,9 +405,28 @@ namespace Veterinary.Controllers
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListClient()
         {
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
+        }
+
+        private bool ValidFileTypes(IFormFile file)
+        {
+            string[] validFileTypes = { "bmp", "gif", "png", "jpg", "jpeg" };
+            string ext = Path.GetExtension(file.FileName);
+            bool isValidFile = false;
+            for (int i = 0; i < validFileTypes.Length; i++)
+            {
+                if (ext == "." + validFileTypes[i])
+                {
+                    isValidFile = true;
+                    break;
+                }
+            }
+
+
+            return isValidFile;
         }
     }
 }

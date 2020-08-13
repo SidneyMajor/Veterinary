@@ -31,7 +31,7 @@ namespace Veterinary.Models
         public string Confirm { get; set; }
 
 
-        [Display(Name = "Image")]
+        [Display(Name = "Image")]        
         public IFormFile ImageFile { get; set; }
 
     }

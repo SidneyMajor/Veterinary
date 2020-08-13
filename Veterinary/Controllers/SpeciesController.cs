@@ -12,25 +12,24 @@ using Veterinary.Data.Repository;
 
 namespace Veterinary.Controllers
 {
-    [Authorize(Roles ="Admin")]
-    public class DocumentTypesController : Controller
+    [Authorize(Roles = "Admin")]
+    public class SpeciesController : Controller
     {
        
-        private readonly IDocumentTypeRepository _documentTypeRepository;
+        private readonly ISpeciesRepository _speciesRepository;
 
-        public DocumentTypesController(IDocumentTypeRepository documentTypeRepository)
+        public SpeciesController(ISpeciesRepository speciesRepository)
         {           
-           _documentTypeRepository = documentTypeRepository;
+            _speciesRepository = speciesRepository;
         }
 
-        // GET: DocumentTypes
+        // GET: Species
         public async Task<IActionResult> Index()
         {
-            //ViewBag.Document = await _documentTypeRepository.GetAll().ToListAsync();
-            return View(await _documentTypeRepository.GetAll().ToListAsync());
+            return View(await _speciesRepository.GetAll().ToListAsync());
         }
 
-        // GET: DocumentTypes/Details/5
+        // GET: Species/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,37 +37,37 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
-            if (documentType == null)
+            var species = await _speciesRepository.GetByIdAsync(id.Value);
+            if (species == null)
             {
                 return NotFound();
             }
 
-            return View(documentType);
+            return View(species);
         }
 
-        // GET: DocumentTypes/Create
+        // GET: Species/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: DocumentTypes/Create
+        // POST: Species/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( DocumentType documentType)
+        public async Task<IActionResult> Create(Species model)
         {
             if (ModelState.IsValid)
             {
-               await _documentTypeRepository.CreateAsync(documentType);                
+               await _speciesRepository.CreateAsync(model);               
                 return RedirectToAction(nameof(Index));
             }
-            return View(documentType);
+            return View(model);
         }
 
-        // GET: DocumentTypes/Edit/5
+        // GET: Species/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,22 +75,22 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
-            if (documentType == null)
+            var model = await _speciesRepository.GetByIdAsync(id.Value);
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(documentType);
+            return View(model);
         }
 
-        // POST: DocumentTypes/Edit/5
+        // POST: Species/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DocumentType documentType)
+        public async Task<IActionResult> Edit(int id, Species model)
         {
-            if (id != documentType.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -100,12 +99,11 @@ namespace Veterinary.Controllers
             {
                 try
                 {
-                    await _documentTypeRepository.UpdateAsync(documentType);
-                   
+                    await _speciesRepository.UpdateAsync(model);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _documentTypeRepository.ExistAsync(documentType.Id))
+                    if (!await _speciesRepository.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -116,10 +114,10 @@ namespace Veterinary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(documentType);
+            return View(model);
         }
 
-        // GET: DocumentTypes/Delete/5
+        // GET: Species/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,27 +125,24 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var documentType =  await _documentTypeRepository.GetByIdAsync(id.Value);
-            if (documentType == null)
+            var model = await _speciesRepository.GetByIdAsync(id.Value);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return View(documentType);
+            return View(model);
         }
 
-        // POST: DocumentTypes/Delete/5
+        // POST: Species/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var documentType = await _documentTypeRepository.GetByIdAsync(id);
-            //documentType.WasDeleted = false;
-           await _documentTypeRepository.DeleteAsync(documentType);
-           
+            var model = await _speciesRepository.GetByIdAsync(id);            
+            await _speciesRepository.DeleteAsync(model);
             return RedirectToAction(nameof(Index));
         }
-
         
     }
 }

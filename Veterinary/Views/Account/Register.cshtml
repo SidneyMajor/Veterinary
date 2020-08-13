@@ -132,18 +132,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        
+                                    <div class="col-md-12">
+
                                         <div class="form-group">
-                                            <label >Select a Image</label>
-                                            <input asp-for="ImageFile" type="file" id="image" co/>
+                                            <label>Select a Image </label>
+                                            <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Register" class="btn btn-outline-success" />
+                                            <input type="submit" onclick="ValidateFile()" value="Register" class="btn btn-outline-success" />
                                             <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back </a>
                                             <div class="submitting"></div>
                                         </div>
@@ -172,14 +172,44 @@
     </p>
 </div>
 
-@*@section Scripts{
-        <script>
-            function onRenderCell(args) {
-                if (args.date.getDay() == 0 || args.date.getDay() == 6) {
-                    //sets isDisabled to true to disable the date.
-                    args.isDisabled = true;
+@section Scripts{
+    <script type="text/javascript">
+        var validFilesTypes = ["bmp", "gif", "png", "jpg", "jpeg"];
+        //function ValidateFile() {
+        var file = document.getElementById("image");
+        var isValidFile = false;
+        file.onchange = function () {
+            var path = file.value;
+            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+            alert(ext);
+
+            for (var i = 0; i < validFilesTypes.length; i++) {
+                if (ext == validFilesTypes[i]) {
+                    isValidFile = true;
+                    break;
                 }
             }
-        </script>
-    }*@
+            alert(isValidFile);
+            if (!isValidFile) {
+
+                alert("Invalid File. Please upload a File with" +
+                    " extension:\n" + validFilesTypes.join(", "));
+                file.value = "";
+                //document.getElementById("image").click();
+
+            }
+            //return isValidFile;
+        }
+
+        // }
+    </script>
+    <script type="text/javascript">
+        function onRenderCell(args) {
+            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
+                //sets isDisabled to true to disable the date.
+                args.isDisabled = true;
+            }
+        }
+    </script>
+}
 
