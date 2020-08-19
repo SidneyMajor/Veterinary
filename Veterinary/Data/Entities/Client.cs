@@ -67,9 +67,7 @@ namespace Veterinary.Data.Entities
         public int DocumentTypeID { get; set; }
 
 
-
         public DocumentType DocumentType { get; set; }
-
 
 
         public string FullName { get { return $"{FirstName} {LastName}"; } }

@@ -5,9 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\js\dist\**" />
+    <Compile Remove="wwwroot\js\src\**" />
     <Compile Remove="wwwroot\lib\css\**" />
+    <Content Remove="wwwroot\js\dist\**" />
+    <Content Remove="wwwroot\js\src\**" />
     <Content Remove="wwwroot\lib\css\**" />
+    <EmbeddedResource Remove="wwwroot\js\dist\**" />
+    <EmbeddedResource Remove="wwwroot\js\src\**" />
     <EmbeddedResource Remove="wwwroot\lib\css\**" />
+    <None Remove="wwwroot\js\dist\**" />
+    <None Remove="wwwroot\js\src\**" />
     <None Remove="wwwroot\lib\css\**" />
   </ItemGroup>
 
@@ -28,44 +36,8 @@
     <None Include="wwwroot\images\banner1.svg" />
     <None Include="wwwroot\images\banner2.svg" />
     <None Include="wwwroot\images\banner3.svg" />
-    <None Include="wwwroot\js\dist\alert.js" />
-    <None Include="wwwroot\js\dist\alert.js.map" />
-    <None Include="wwwroot\js\dist\button.js" />
-    <None Include="wwwroot\js\dist\button.js.map" />
-    <None Include="wwwroot\js\dist\carousel.js" />
-    <None Include="wwwroot\js\dist\carousel.js.map" />
-    <None Include="wwwroot\js\dist\collapse.js" />
-    <None Include="wwwroot\js\dist\collapse.js.map" />
-    <None Include="wwwroot\js\dist\dropdown.js" />
-    <None Include="wwwroot\js\dist\dropdown.js.map" />
-    <None Include="wwwroot\js\dist\index.js" />
-    <None Include="wwwroot\js\dist\index.js.map" />
-    <None Include="wwwroot\js\dist\modal.js" />
-    <None Include="wwwroot\js\dist\modal.js.map" />
-    <None Include="wwwroot\js\dist\popover.js" />
-    <None Include="wwwroot\js\dist\popover.js.map" />
-    <None Include="wwwroot\js\dist\scrollspy.js" />
-    <None Include="wwwroot\js\dist\scrollspy.js.map" />
-    <None Include="wwwroot\js\dist\tab.js" />
-    <None Include="wwwroot\js\dist\tab.js.map" />
-    <None Include="wwwroot\js\dist\tooltip.js" />
-    <None Include="wwwroot\js\dist\tooltip.js.map" />
-    <None Include="wwwroot\js\dist\util.js" />
-    <None Include="wwwroot\js\dist\util.js.map" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\js\site.min.js" />
-    <None Include="wwwroot\js\src\alert.js" />
-    <None Include="wwwroot\js\src\button.js" />
-    <None Include="wwwroot\js\src\carousel.js" />
-    <None Include="wwwroot\js\src\collapse.js" />
-    <None Include="wwwroot\js\src\dropdown.js" />
-    <None Include="wwwroot\js\src\index.js" />
-    <None Include="wwwroot\js\src\modal.js" />
-    <None Include="wwwroot\js\src\popover.js" />
-    <None Include="wwwroot\js\src\scrollspy.js" />
-    <None Include="wwwroot\js\src\tab.js" />
-    <None Include="wwwroot\js\src\tooltip.js" />
-    <None Include="wwwroot\js\src\util.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />

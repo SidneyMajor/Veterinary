@@ -27,6 +27,7 @@ namespace Veterinary.Helpers
                 DocumentType = documentType,
                 Document = model.Document,
                 ImageUrl = model.ImageUrl,
+                CreatedDate=model.CreatedDate,
             };
         }
 
@@ -70,6 +71,7 @@ namespace Veterinary.Helpers
                 DocumentType = documentType,
                 Document = model.Document,
                 ImageUrl = path,
+                CreatedDate=model.CreatedDate,
             };
         }
 

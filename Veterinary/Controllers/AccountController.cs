@@ -27,13 +27,14 @@ namespace Veterinary.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IMailHelper _mailHelper;
+        private readonly DataContext context;
 
         public AccountController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper,
             IClientRepository clientRepository,
             IImageHelper imageHelper,
             IConverterHelper converterHelper,
-            IMailHelper mailHelper)
+            IMailHelper mailHelper, DataContext context)
         {
             _documentTypeRepository = documentTypeRepository;
             _userHelper = userHelper;
@@ -41,6 +42,7 @@ namespace Veterinary.Controllers
             _imageHelper = imageHelper;
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
+            this.context = context;
         }
 
 
@@ -150,7 +152,7 @@ namespace Veterinary.Controllers
                     if (result != IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                        //model.Documents = _documentTypeRepository.GetAll().ToList();
+                        model.Documents = _documentTypeRepository.GetAll().ToList();
                         return this.View(model);
                     }
                     //add role
@@ -246,63 +248,58 @@ namespace Veterinary.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
 
-                if (client != null)
+                try
                 {
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
 
-                    var path = string.Empty;
+                    var path = model.ImageUrl;
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
-                    }
-
-                    //client.FirstName = model.FirstName;
-                    //client.LastName = model.LastName;
-                    //client.Address = model.Address;
-                    //client.ZipCode = model.ZipCode;
-                    //client.PhoneNumber = model.PhoneNumber;
-                    //client.TaxNumber = model.TaxNumber;
-                    //client.Gender = model.Gender;
-                    //client.DateOfBirth = model.SelectDate.Value;
-                    //client.Nationality = model.Nationality;
-                    //client.Document = model.Document;
-                    //client.DocumentTypeID = model.DocumentTypeID;
-                    //client.DocumentType = documentType;
-
-                    client = _converterHelper.ToClient(model, documentType, path);
-
-                    try
-                    {
-                        await _clientRepository.UpdateAsync(client);
-
-                        //this.context.Clients.Update(client);
-
-                        //await this.context.SaveChangesAsync();
-
-                        this.ViewBag.UserMessage = "User updated!";
-                        //return this.RedirectToAction("Index", "Home");
-
-
-                        //this.ModelState.AddModelError(string.Empty, "The user couldn't be updated.");
+                        if (ValidFileTypes(model.ImageFile))
+                        {
+                            path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                        }
+                        else
+                        {
+                            this.ModelState.AddModelError(string.Empty, "Invalid File. Please upload a File with extension (bmp, gif, png, jpg, jpeg)");
+                            return this.View(model);
+                        }
 
                     }
-                    catch (Exception ex)
-                    {
-                        //Todo: Fazer melhor tratamento de erro.
 
-                        this.ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }
+                    var client = _converterHelper.ToClient(model, documentType, path);
+                    client.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+                    await _clientRepository.UpdateAsync(client);
+
+                    //this.context.Clients.Update(client);
+
+                    //await this.context.SaveChangesAsync();
+
+                    this.ViewBag.UserMessage = "User updated!";
+                    //return this.RedirectToAction("Index", "Home");
+
+
+                    //this.ModelState.AddModelError(string.Empty, "The user couldn't be updated.");
+
                 }
-                else
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, "User no found.");
+                    //Todo: Fazer melhor tratamento de erro.
+                    if (!await _clientRepository.ExistAsync(model.Id))
+                    {
+                        this.ModelState.AddModelError(string.Empty, "User no found.");
+                    }
+                    else
+                    {
+                        this.ModelState.AddModelError(string.Empty, ex.Message);
+                    }                   
+                    
                 }
-
 
             }
-            // model.Documents = _documentTypeRepository.GetAll();
+            model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
 
         }
@@ -408,13 +405,73 @@ namespace Veterinary.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListClient()
         {
+            var userAdmin = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
+            if (isInRoleAdmin)
+            {
+                return View(await _clientRepository.GetAll().Where(c=> c.User!= userAdmin && c.WasDeleted==false).Include(u => u.User).ToListAsync());
+            }
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
+
+        // GET: Client/Details/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ClientDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var model = await _clientRepository.GetByIdAsync(id.Value);
+            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
+            model.DocumentType = documentType;
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+
+        // GET: Cliente/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var model = await _clientRepository.GetByIdAsync(id.Value);
+            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
+            model.DocumentType = documentType;
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        // POST: Species/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var model = await _clientRepository.GetByIdAsync(id);
+            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
+            model.DocumentType = documentType;
+            await _clientRepository.DeleteAsync(model);
+            return RedirectToAction(nameof(ListClient));
+        }
+
+
 
         private bool ValidFileTypes(IFormFile file)
         {
             string[] validFileTypes = { "bmp", "gif", "png", "jpg", "jpeg" };
-            string ext = Path.GetExtension(file.FileName);
+            string ext = Path.GetExtension(file.FileName).ToLower();
             bool isValidFile = false;
             for (int i = 0; i < validFileTypes.Length; i++)
             {

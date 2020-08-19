@@ -23,6 +23,7 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
+                                <input type="hidden" asp-for="CreatedDate" />
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -111,8 +112,8 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label >Select a Image</label>
-                                            <input asp-for="ImageFile" type="file" id="image" />
+                                            <label>Select a Image</label>
+                                            <input asp-for="ImageFile" type="file" id="image" accept="image/*" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -139,12 +140,12 @@
                         @if (!string.IsNullOrEmpty(Model.ImageUrl))
                         {
                             @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(@Url.Content(Model.ImageUrl));">
+                            <div class="img" style=" background-image: url( @Url.Content(Model.ImageUrl) );" >
                             </div>
                         }
                         else
                         {
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);" >
                             </div>
                         }
 
@@ -154,3 +155,45 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        var validFilesTypes = ["bmp", "gif", "png", "jpg", "jpeg"];
+        //function ValidateFile() {
+        var file = document.getElementById("image");
+        var isValidFile = false;
+        file.onchange = function () {
+            var path = file.value;
+            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+            alert(ext);
+
+            for (var i = 0; i < validFilesTypes.length; i++) {
+                if (ext == validFilesTypes[i]) {
+                    isValidFile = true;
+                    break;
+                }
+            }
+            alert(isValidFile);
+            if (!isValidFile) {
+
+                alert("Invalid File. Please upload a File with" +
+                    " extension:\n" + validFilesTypes.join(", "));
+                file.value = "";
+            }
+            //return isValidFile;
+        }
+
+
+        // }
+    </script>
+    <script type="text/javascript">
+        function onRenderCell(args) {
+            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
+                //sets isDisabled to true to disable the date.
+                args.isDisabled = true;
+            }
+        }
+    </script>
+
+   
+}

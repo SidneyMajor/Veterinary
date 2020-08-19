@@ -60,7 +60,7 @@ namespace Veterinary.Data.Repository
         {
             entity.UpdatedDate = DateTime.Now;
             _context.Set<T>().Update(entity);
-            await SaveAllAsync();
+           await SaveAllAsync();            
         }
 
 
