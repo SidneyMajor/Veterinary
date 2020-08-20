@@ -16,5 +16,9 @@ namespace Veterinary.Helpers
         ChangeUserViewModel ToChangeUserViewModel(Client model, DocumentType documentType);
 
         Client ToClient(ChangeUserViewModel model, DocumentType documentType, string path);
+
+        Animal ToAnimal(AnimalViewModel model, Species species, string path, bool isNew);
+
+        AnimalViewModel ToRegisterNewAnimalViewModel(Animal model, Species species);
     }
 }

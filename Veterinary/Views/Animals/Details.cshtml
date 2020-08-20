@@ -1,0 +1,123 @@
+﻿@model Veterinary.Data.Entities.Animal
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div class="container">
+    <div class="justify-content-start">
+
+        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>@Model.Name Details </a>
+
+    </div>
+    <div class="row justify-content-center">
+
+        <div class="col-md-12">
+            <div class="wrapper">
+
+                <div class="row no-gutters">
+
+                    <div class="col-md-7">
+                        <div class="contact-wrap w-100 p-md-5 p-4" style="background-color:lightcyan">
+
+                            <form method="get" id="contactForm" name="contactForm" class="contactForm" >
+                               
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto" enabled="false"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto" enabled="false"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <h3>Gender</h3>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="datepicker">
+                                            <ejs-datepicker ejs-for="DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Auto" enabled="false" > </ejs-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Color" id="color" placeholder="Color" type="text" floatLabelType="Auto" enabled="false"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-numerictextbox ejs-for="Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto" enabled="false"></ejs-numerictextbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-numerictextbox ejs-for="Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto" enabled="false"></ejs-numerictextbox>                                            
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox id="SpeciesID" ejs-for="Species.Description" placeholder="Select a Species" floatLabelType="Auto" enabled="false">
+                                            </ejs-textbox>
+                                           
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" enabled="false"></ejs-textbox>                                            
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary">Back </a>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 d-flex align-items-stretch">
+
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url( @Url.Content(Model.ImageUrl));">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../../images/img.jpg);">
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

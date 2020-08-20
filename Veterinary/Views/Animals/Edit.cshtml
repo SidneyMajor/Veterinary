@@ -1,12 +1,12 @@
-﻿@model Veterinary.Models.ChangeUserViewModel
+﻿@model Veterinary.Models.AnimalViewModel
 @{
-    ViewData["Title"] = "ChangeUser";
+    ViewData["Title"] = "Edit";
 }
 
 <div class="container">
     <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Update User</a>
+        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Change your animal</a>
 
     </div>
     <div class="row justify-content-center">
@@ -25,28 +25,20 @@
                                 <input type="hidden" asp-for="ImageUrl" />
                                 <input type="hidden" asp-for="CreatedDate" />
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="FirstName" id="firstname" type="text" placeholder="First Name" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            <ejs-textbox ejs-for="Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Name" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="LastName" id="lastname" type="text" placeholder="Last Name" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                            <ejs-textbox ejs-for="Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Breed" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <br />
 
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nacionality" type="text" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Nationality" class="text-danger"></span>
-                                        </div>
-                                    </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -57,78 +49,70 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Address" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code (0000-000)" type="text" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="ZipCode" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="TaxNumber" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto">
-                                                <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
-                                            </ejs-dropdownlist>
-                                            <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Document" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now" floatLabelType="Auto"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Color" id="color" placeholder="Color" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Color" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-numerictextbox ejs-for="Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto"></ejs-numerictextbox>
+                                            <span asp-validation-for="Weight" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-numerictextbox ejs-for="Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto"></ejs-numerictextbox>
+                                            <span asp-validation-for="Size" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Select a Image</label>
-                                            <input asp-for="ImageFile" type="file" id="image" accept="image/*" />
+                                            <ejs-dropdownlist id="SpeciesID" ejs-for="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto">
+                                                <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
+                                            </ejs-dropdownlist>
+                                            <span asp-validation-for="SpeciesID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <label>Select a Image </label>
+                                            <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Change User" class="btn btn-outline-success" />
-                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Home</a>
-                                            <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-outline-primary">Change Password</a>
+                                            <input type="submit" onclick="ValidateFile()" value="Change" class="btn btn-outline-success" />
+                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-outline-secondary">Back </a>
                                             <div class="submitting"></div>
-
                                         </div>
                                     </div>
 
-                                    <div class="text-success">@ViewBag.UserMessage</div>
 
                                 </div>
                             </form>
@@ -140,21 +124,21 @@
                         @if (!string.IsNullOrEmpty(Model.ImageUrl))
                         {
                             @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="img" style=" background-image: url( @Url.Content(Model.ImageUrl) );" >
+                            <div class="img" style=" background-image: url( @Url.Content(Model.ImageUrl) );">
                             </div>
                         }
                         else
                         {
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);" >
+                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../../images/img.jpg);">
                             </div>
                         }
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     <script type="text/javascript">
@@ -195,5 +179,5 @@
         }
     </script>
 
-   
+
 }

@@ -108,7 +108,7 @@ namespace Veterinary.Controllers
                 var path = string.Empty;
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    if (ValidFileTypes(model.ImageFile))
+                    if (_imageHelper.ValidFileTypes(model.ImageFile))
                     {
                         path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
                     }
@@ -256,7 +256,7 @@ namespace Veterinary.Controllers
                     var path = model.ImageUrl;
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        if (ValidFileTypes(model.ImageFile))
+                        if (_imageHelper.ValidFileTypes(model.ImageFile))
                         {
                             path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
                         }
@@ -409,7 +409,7 @@ namespace Veterinary.Controllers
             var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
             if (isInRoleAdmin)
             {
-                return View(await _clientRepository.GetAll().Where(c=> c.User!= userAdmin && c.WasDeleted==false).Include(u => u.User).ToListAsync());
+                return View(await _clientRepository.GetAll().Where(c=> c.User!= userAdmin).Include(u => u.User).ToListAsync());
             }
             return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
         }
@@ -468,22 +468,22 @@ namespace Veterinary.Controllers
 
 
 
-        private bool ValidFileTypes(IFormFile file)
-        {
-            string[] validFileTypes = { "bmp", "gif", "png", "jpg", "jpeg" };
-            string ext = Path.GetExtension(file.FileName).ToLower();
-            bool isValidFile = false;
-            for (int i = 0; i < validFileTypes.Length; i++)
-            {
-                if (ext == "." + validFileTypes[i])
-                {
-                    isValidFile = true;
-                    break;
-                }
-            }
+        //private bool ValidFileTypes(IFormFile file)
+        //{
+        //    string[] validFileTypes = { "bmp", "gif", "png", "jpg", "jpeg" };
+        //    string ext = Path.GetExtension(file.FileName).ToLower();
+        //    bool isValidFile = false;
+        //    for (int i = 0; i < validFileTypes.Length; i++)
+        //    {
+        //        if (ext == "." + validFileTypes[i])
+        //        {
+        //            isValidFile = true;
+        //            break;
+        //        }
+        //    }
 
 
-            return isValidFile;
-        }
+        //    return isValidFile;
+        //}
     }
 }

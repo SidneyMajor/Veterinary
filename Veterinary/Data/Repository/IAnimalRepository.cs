@@ -8,5 +8,10 @@ namespace Veterinary.Data.Repository
 {
    public interface IAnimalRepository:IGenericRepository<Animal>
     {
+        //get a animal
+        Task<IQueryable<Animal>> GetAllAnimalAsync(string username);
+
+        //get a animal
+        Task<Animal> GetDetailAnimalAsync(int id, string username);
     }
 }
