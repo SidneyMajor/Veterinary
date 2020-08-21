@@ -20,10 +20,10 @@ namespace Veterinary.Data.Entities
         public Specialty Specialty { get; set; }
 
 
-        public int ClinicID { get; set; }
+        //public int ClinicID { get; set; }
 
 
-        public Clinic Clinic { get; set; }
+        //public Clinic Clinic { get; set; }
 
 
 

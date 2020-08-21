@@ -17,20 +17,18 @@ namespace Veterinary.Controllers
 {
     [Authorize(Roles ="Owner")]
     public class AnimalsController : Controller
-    {
-        private readonly DataContext _context;
+    {       
         private readonly IAnimalRepository _animalRepository;
         private readonly IUserHelper _userHelper;
         private readonly ISpeciesRepository _speciesRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IImageHelper _imageHelper;
 
-        public AnimalsController(DataContext context, IAnimalRepository animalRepository, IUserHelper userHelper,
+        public AnimalsController(IAnimalRepository animalRepository, IUserHelper userHelper,
             ISpeciesRepository speciesRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper)
-        {
-            _context = context;
+        {           
             _animalRepository = animalRepository;
             _userHelper = userHelper;
             _speciesRepository = speciesRepository;

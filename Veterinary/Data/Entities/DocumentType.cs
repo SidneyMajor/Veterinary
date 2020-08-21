@@ -10,7 +10,7 @@ namespace Veterinary.Data.Entities
     {
         public int Id { get; set; }
         
-        
+        [Required]
         public string Description { get; set; }
 
 

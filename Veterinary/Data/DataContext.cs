@@ -15,6 +15,8 @@ namespace Veterinary.Data
         public DbSet<Species> Species { get; set; }
         public DbSet<Animal> Animals { get; set; }
         //public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Specialty> Specialties { get; set; }
+        //public DbSet<Clinic> Clinics { get; set; }
 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
@@ -33,9 +35,7 @@ namespace Veterinary.Data
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
             base.OnModelCreating(modelbuilder);
-        }
-
-        public DbSet<Veterinary.Data.Entities.Animal> Animal { get; set; }
+        }     
 
         
     }

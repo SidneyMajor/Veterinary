@@ -156,7 +156,8 @@ namespace Veterinary.Controllers
                         return this.View(model);
                     }
                     //add role
-                    await _userHelper.AddUserToRoleAsync(user, "Owner");
+                    await _userHelper.CheckRoleAsync("Customer");
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
 
                     var client = _converterHelper.ToClient(model, documentType, path);
                     client.User = user;

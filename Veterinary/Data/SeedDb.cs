@@ -43,6 +43,19 @@ namespace Veterinary.Data
                 await _context.SaveChangesAsync();
             }
 
+            if (!_context.Species.Any())
+            {
+                var species = new Species
+                {
+                    Description = "Cat",
+                    UpdatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                };
+
+                _context.Species.Add(species);
+                await _context.SaveChangesAsync();
+            }
+
             if (!_context.Clients.Any())
             {
 
@@ -96,29 +109,47 @@ namespace Veterinary.Data
                 var tokenOwner = await _userHelper.GenerateEmailConfirmationTokenAsync(userOwner);
                 await _userHelper.ConfirmEmailAsync(userOwner, tokenOwner);
 
-                this.AddClient("Sidney","Major" ,userAdmin);
-                this.AddClient("Isabel","Frazão" ,userOwner);
+                this.AddClient("Sidney", "Major", userAdmin);
+                this.AddClient("Isabel", "Frazão", userOwner);
+
+                this.AddAnimal("Piter", userOwner);
+                this.AddAnimal("Xana", userOwner);
 
                 await _context.SaveChangesAsync();
 
             }
         }
 
-        private void AddClient(string name, string apelido,User user)
+        private void AddClient(string name, string apelido, User user)
         {
-
-
             _context.Clients.Add(new Client
             {
                 FirstName = name,
                 LastName = apelido,
                 Address = "Rua dos milagres",
+                City="Loures",
                 DocumentTypeID = _context.DocumentTypes.FirstOrDefault().Id,
                 DocumentType = _context.DocumentTypes.FirstOrDefault(),
                 Document = _random.Next(10000, 999999).ToString(),
                 TaxNumber = _random.Next(100000000, 399999999).ToString(),
                 DateOfBirth = new DateTime(_random.Next(1930, 2020), _random.Next(1, 12), _random.Next(1, 32)),
-                Gender="N/N",
+                Gender = "N/N",
+                User = user,
+                UpdatedDate = DateTime.Now,
+                CreatedDate = DateTime.Now,
+            });
+        }
+
+
+        private void AddAnimal(string name, User user)
+        {
+            _context.Animals.Add(new Animal
+            {
+                Name = name,
+                DateOfBirth = new DateTime(_random.Next(2000, 2020), _random.Next(1, 12), _random.Next(1, 32)),
+                Gender = "F",
+                SpeciesID= _context.Species.FirstOrDefault().Id,
+                Species= _context.Species.FirstOrDefault(),
                 User = user,
                 UpdatedDate = DateTime.Now,
                 CreatedDate = DateTime.Now,

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewData["Title"] - TestesTemplete</title>
+    <title>@ViewData["Title"] - Veterinary</title>
 
 
     <environment include="Development">
@@ -75,22 +75,23 @@
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                     {
-                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="ListClient" class="nav-link">Client</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="DocumentTypes" asp-action="Index" class="nav-link">Document</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="ListClient" class="nav-link">Clients</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="DocumentTypes" asp-action="Index" class="nav-link">Documents</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Species" asp-action="Index" class="nav-link">Species</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Specialties" asp-action="Index" class="nav-link">Specialties</a></li>
 
                     }
                     else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Owner"))
                     {
-                        <li class="nav-item"><a asp-area="" asp-controller="Animals" asp-action="Index" class="nav-link">Animal</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Animals" asp-action="Index" class="nav-link">Animals</a></li>
                     }
 
 
                     @*<li class="nav-item"><a href="vet.html" class="nav-link">Veterinarian</a></li>
-                        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
-                        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>*@
+        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+        <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
+        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>*@
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
                     @*<li class="nav-item "><a asp-area="" asp-controller="Clientes" asp-action="Index" class="nav-link">Clients</a></li>*@
                 </ul>
