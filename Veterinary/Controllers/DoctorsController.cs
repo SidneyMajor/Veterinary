@@ -130,63 +130,63 @@ namespace Veterinary.Controllers
         }
 
 
-        ////Todo: melhorar essa view
-        //public async Task<IActionResult> ConfirmDoctorEmail(string userid, string token)
-        //{
-        //    if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(token))
-        //    {
-        //        return NotFound();
-        //    }
-        //    var user = await _userHelper.GetUserByIdAsync(userid);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //Todo: melhorar essa view
+        public async Task<IActionResult> ConfirmDoctorEmail(string userid, string token)
+        {
+            if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(token))
+            {
+                return NotFound();
+            }
+            var user = await _userHelper.GetUserByIdAsync(userid);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    var result = await _userHelper.ConfirmEmailAsync(user, token);
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
 
-        //    if (!result.Succeeded)
-        //    {
-        //        return NotFound();
-        //    }
+            if (!result.Succeeded)
+            {
+                return NotFound();
+            }
 
-        //    var model = new SetPasswordViewModel { UserId = userid };
-        //    return View(model);
-
-
-        //}
+            var model = new SetPasswordViewModel { UserId = userid };
+            return View(model);
 
 
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> ConfirmDoctorEmail(SetPasswordViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = await _userHelper.GetUserByIdAsync(model.UserId);
 
-        //        if (user != null)
-        //        {
-        //            var result = await _userHelper.AddPasswordAsync(user, model.NewPassword);
 
-        //            if (result.Succeeded)
-        //            {
-        //                return RedirectToAction("Login","Account");
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "User not found");
-        //        }
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDoctorEmail(SetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByIdAsync(model.UserId);
 
-        //    return View(model);
+                if (user != null)
+                {
+                    var result = await _userHelper.AddPasswordAsync(user, model.NewPassword);
 
-        //}
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Login", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User not found");
+                }
+            }
+
+            return View(model);
+
+        }
 
 
 

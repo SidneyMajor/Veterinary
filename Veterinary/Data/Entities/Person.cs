@@ -73,7 +73,6 @@ namespace Veterinary.Data.Entities
 
         public DocumentType DocumentType { get; set; }
 
-
         
     }
 }
