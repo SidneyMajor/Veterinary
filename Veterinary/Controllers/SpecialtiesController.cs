@@ -12,7 +12,7 @@ using Veterinary.Data.Repository;
 
 namespace Veterinary.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class SpecialtiesController : Controller
     {
         private readonly DataContext _context;

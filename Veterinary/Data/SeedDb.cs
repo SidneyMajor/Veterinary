@@ -28,7 +28,7 @@ namespace Veterinary.Data
             //Certificar a base de dados esta criada se não ela a cria.
             await _context.Database.EnsureCreatedAsync();
             await _userHelper.CheckRoleAsync("Admin");
-            await _userHelper.CheckRoleAsync("Owner");
+            await _userHelper.CheckRoleAsync("Customer");
 
             if (!_context.DocumentTypes.Any())
             {
@@ -101,7 +101,7 @@ namespace Veterinary.Data
 
                 if (!isInRoleOwner)
                 {
-                    await _userHelper.AddUserToRoleAsync(userOwner, "Owner");
+                    await _userHelper.AddUserToRoleAsync(userOwner, "Customer");
                 }
                 var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userAdmin);
                 await _userHelper.ConfirmEmailAsync(userAdmin, token);

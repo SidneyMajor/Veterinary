@@ -60,7 +60,7 @@ namespace Veterinary
             services.AddScoped<ISpeciesRepository, SpeciesRepository>();
             services.AddScoped<ISpecialtyRepository, SpecialtyRepsitory>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
-
+            services.AddScoped<IAppointmentRepsitory, AppointmentRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

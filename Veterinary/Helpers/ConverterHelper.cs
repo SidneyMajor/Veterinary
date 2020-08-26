@@ -184,6 +184,20 @@ namespace Veterinary.Helpers
                 SSNumber = model.SSNumber,
             };
         }
+
+        public Appointment ToAppointment(NewAppointmentViewModel model, bool isNew)
+        {
+            return new Appointment
+            {
+                Id = isNew ? 0 : model.Id,
+                AppointmentDate = model.AppointmentDate,
+                AppointmentTime = model.AppointmentTime,
+                AnimalID=model.AnimalID,
+                DoctorID=model.DoctorID,
+                Status = "Checked",
+               
+            };
+        }
         //public RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType)
         //{
         //    return new RegisterNewUserViewModel

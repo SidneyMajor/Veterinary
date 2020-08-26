@@ -17,7 +17,7 @@ namespace Veterinary.Helpers
         Doctor ToDoctor(RegisterNewDoctorViewModel model, DocumentType documentType, Specialty specialty ,string path);
 
         Doctor ToDoctor(ChangeUserViewModel model, DocumentType documentType,Specialty specialty, string path);
-        //RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType);
+       
 
         ChangeUserViewModel ToChangeUserViewModel(Client model);
 
@@ -28,5 +28,8 @@ namespace Veterinary.Helpers
         Animal ToAnimal(AnimalViewModel model, Species species, string path, bool isNew);
 
         AnimalViewModel ToAnimalViewModel(Animal model);
+
+
+        Appointment ToAppointment(NewAppointmentViewModel model, bool isNew);
     }
 }

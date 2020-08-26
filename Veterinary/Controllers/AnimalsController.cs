@@ -15,7 +15,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
-    [Authorize(Roles ="Owner")]
+    [Authorize(Roles ="Customer")]
     public class AnimalsController : Controller
     {       
         private readonly IAnimalRepository _animalRepository;

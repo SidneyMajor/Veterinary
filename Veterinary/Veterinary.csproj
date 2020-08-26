@@ -24,6 +24,8 @@
     <Compile Remove="Migrations\20200727100826_AlterDocumentType.Designer.cs" />
     <Compile Remove="Migrations\20200825152901_AddIsChangePw.cs" />
     <Compile Remove="Migrations\20200825152901_AddIsChangePw.Designer.cs" />
+    <Compile Remove="Migrations\20200826133324_AddAppointment.cs" />
+    <Compile Remove="Migrations\20200826133324_AddAppointment.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +37,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.2.0.46" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.2.0.55" />
   </ItemGroup>
 
   <ItemGroup>

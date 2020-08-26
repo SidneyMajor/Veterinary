@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Veterinary.Data.Entities;
@@ -11,6 +12,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
+    
     public class DoctorsController : Controller
     {
         private readonly IDoctorRepository _doctorRepository;
@@ -38,7 +40,7 @@ namespace Veterinary.Controllers
             return View(_doctorRepository.GetAll().ToList());
         }
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult RegisterDoctor()
         {
             var model = new RegisterNewDoctorViewModel
@@ -51,7 +53,7 @@ namespace Veterinary.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> RegisterDoctor(RegisterNewDoctorViewModel model)
         {
@@ -86,7 +88,7 @@ namespace Veterinary.Controllers
                     var specialty = await _specialtyRepository.GetByIdAsync(model.SpecialtyID);
 
 
-                    var result = await _userHelper.AddUserAsync(user,"");
+                    var result = await _userHelper.AddUserAsync(user, "");
                     if (result != IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
@@ -199,7 +201,7 @@ namespace Veterinary.Controllers
             }
 
             var model = await _doctorRepository.GetByIdAsync(id.Value);
-           
+
             if (model == null)
             {
                 return NotFound();
