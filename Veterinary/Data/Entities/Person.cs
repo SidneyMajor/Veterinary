@@ -67,7 +67,7 @@ namespace Veterinary.Data.Entities
         [MinLength(5, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
         public string Document { get; set; }
 
-
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select a Document Type.")]
         public int DocumentTypeID { get; set; }
 
 

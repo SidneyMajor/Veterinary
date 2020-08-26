@@ -14,7 +14,7 @@ namespace Veterinary.Data
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<Species> Species { get; set; }
         public DbSet<Animal> Animals { get; set; }
-        //public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
         //public DbSet<Clinic> Clinics { get; set; }
 

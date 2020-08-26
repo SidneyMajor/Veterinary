@@ -22,6 +22,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200727100826_AlterDocumentType.cs" />
     <Compile Remove="Migrations\20200727100826_AlterDocumentType.Designer.cs" />
+    <Compile Remove="Migrations\20200825152901_AddIsChangePw.cs" />
+    <Compile Remove="Migrations\20200825152901_AddIsChangePw.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -79,6 +79,7 @@
                         <li class="nav-item"><a asp-area="" asp-controller="DocumentTypes" asp-action="Index" class="nav-link">Documents</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Species" asp-action="Index" class="nav-link">Species</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Specialties" asp-action="Index" class="nav-link">Specialties</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Doctors" asp-action="ListDoctor" class="nav-link">Doctors</a></li>
 
                     }
                     else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Owner"))

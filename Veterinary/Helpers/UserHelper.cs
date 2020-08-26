@@ -31,6 +31,10 @@ namespace Veterinary.Helpers
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
+            if (string.IsNullOrEmpty(password))
+            {
+                return await _userManager.CreateAsync(user);
+            }
             return await _userManager.CreateAsync(user, password);
         }
 
@@ -40,6 +44,12 @@ namespace Veterinary.Helpers
         {
             await _userManager.AddToRoleAsync(user, roleName);
         }
+
+        public async Task<IdentityResult> AddPasswordAsync(User user, string password)
+        {
+            return await _userManager.AddPasswordAsync(user, password);
+        }
+
 
         public async Task<IdentityResult> ChangePasswordAsync(User user, string olpassword, string newpassword)
         {

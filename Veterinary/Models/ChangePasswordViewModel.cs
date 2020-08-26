@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Veterinary.Models
 {
     public class ChangePasswordViewModel
-    {
+    {       
 
         [Required]
         [DataType(DataType.Password)]

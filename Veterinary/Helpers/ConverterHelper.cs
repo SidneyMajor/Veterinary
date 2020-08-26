@@ -29,7 +29,7 @@ namespace Veterinary.Helpers
             };
         }
 
-        public AnimalViewModel ToRegisterNewAnimalViewModel(Animal model, Species species)
+        public AnimalViewModel ToAnimalViewModel(Animal model)
         {
             return new AnimalViewModel
             {
@@ -43,13 +43,12 @@ namespace Veterinary.Helpers
                 Remarks = model.Remarks,
                 SelectDate = model.DateOfBirth,
                 SpeciesID = model.SpeciesID,
-                Species = species,
                 ImageUrl = model.ImageUrl,
                 CreatedDate = model.CreatedDate,
             };
         }
 
-        public ChangeUserViewModel ToChangeUserViewModel(Client model, DocumentType documentType)
+        public ChangeUserViewModel ToChangeUserViewModel(Client model)
         {
             return new ChangeUserViewModel
             {
@@ -64,7 +63,6 @@ namespace Veterinary.Helpers
                 SelectDate = model.DateOfBirth,
                 Nationality = model.Nationality,
                 DocumentTypeID = model.DocumentTypeID,
-                DocumentType = documentType,
                 Document = model.Document,
                 ImageUrl = model.ImageUrl,
                 CreatedDate = model.CreatedDate,
@@ -114,6 +112,78 @@ namespace Veterinary.Helpers
             };
         }
 
+        public Doctor ToDoctor(RegisterNewDoctorViewModel model, DocumentType documentType, Specialty specialty, string path)
+        {
+            return new Doctor
+            {
+                
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                ZipCode = model.ZipCode,
+                PhoneNumber = model.PhoneNumber,
+                TaxNumber = model.TaxNumber,
+                Gender = model.Gender,
+                DateOfBirth = model.SelectDate.Value,
+                Nationality = model.Nationality,
+                DocumentTypeID = model.DocumentTypeID,
+                DocumentType = documentType,
+                Document = model.Document,
+                ImageUrl = path,
+                SpecialtyID = model.SpecialtyID,
+                Specialty = specialty,
+                SSNumber = model.SSNumber,
+            };
+        }
+
+
+        //Todo: completar a conversão para changeuser para o medico
+        public ChangeUserViewModel ToChangeUserViewModel(Doctor model)
+        {
+            return new ChangeUserViewModel
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                ZipCode = model.ZipCode,
+                PhoneNumber = model.PhoneNumber,
+                TaxNumber = model.TaxNumber,
+                Gender = model.Gender,
+                SelectDate = model.DateOfBirth,
+                Nationality = model.Nationality,
+                DocumentTypeID = model.DocumentTypeID,
+                SpecialtyID=model.SpecialtyID,
+                Document = model.Document,
+                ImageUrl = model.ImageUrl,
+                CreatedDate = model.CreatedDate,
+                SSNumber=model.SSNumber,
+            };
+        }
+
+        public Doctor ToDoctor(ChangeUserViewModel model, DocumentType documentType,Specialty specialty,string path)
+        {
+            return new Doctor
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Address = model.Address,
+                ZipCode = model.ZipCode,
+                PhoneNumber = model.PhoneNumber,
+                TaxNumber = model.TaxNumber,
+                Gender = model.Gender,
+                DateOfBirth = model.SelectDate.Value,
+                Nationality = model.Nationality,
+                DocumentTypeID = model.DocumentTypeID,
+                DocumentType = documentType,
+                Document = model.Document,
+                ImageUrl = path,
+                SpecialtyID = model.SpecialtyID,
+                Specialty = specialty,
+                SSNumber = model.SSNumber,
+            };
+        }
         //public RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType)
         //{
         //    return new RegisterNewUserViewModel

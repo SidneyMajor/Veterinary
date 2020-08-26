@@ -7,18 +7,26 @@ using Veterinary.Models;
 
 namespace Veterinary.Helpers
 {
-   public interface IConverterHelper
+    public interface IConverterHelper
     {
         Client ToClient(RegisterNewUserViewModel model, DocumentType documentType, string path);
 
+        Client ToClient(ChangeUserViewModel model, DocumentType documentType, string path);
+
+
+        Doctor ToDoctor(RegisterNewDoctorViewModel model, DocumentType documentType, Specialty specialty ,string path);
+
+        Doctor ToDoctor(ChangeUserViewModel model, DocumentType documentType,Specialty specialty, string path);
         //RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType);
 
-        ChangeUserViewModel ToChangeUserViewModel(Client model, DocumentType documentType);
+        ChangeUserViewModel ToChangeUserViewModel(Client model);
 
-        Client ToClient(ChangeUserViewModel model, DocumentType documentType, string path);
+        ChangeUserViewModel ToChangeUserViewModel(Doctor model);
+
+       
 
         Animal ToAnimal(AnimalViewModel model, Species species, string path, bool isNew);
 
-        AnimalViewModel ToRegisterNewAnimalViewModel(Animal model, Species species);
+        AnimalViewModel ToAnimalViewModel(Animal model);
     }
 }

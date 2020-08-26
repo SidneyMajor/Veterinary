@@ -1,12 +1,15 @@
-﻿@model Veterinary.Models.ChangeUserViewModel
+﻿@model Veterinary.Models.RegisterNewDoctorViewModel
+
 @{
-    ViewData["Title"] = "ChangeUser";
+    ViewData["Title"] = "Register Doctor";
 }
+
+
 
 <div class="container">
     <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Update User</a>
+        <a style="font-size: 40px"><i class="fa fa-user-md mr-2" style="color:green"></i>Register</a>
 
     </div>
     <div class="row justify-content-center">
@@ -21,9 +24,6 @@
 
                             <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="Id" />
-                                <input type="hidden" asp-for="ImageUrl" />
-                                <input type="hidden" asp-for="CreatedDate" />
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -38,7 +38,6 @@
                                             <span asp-validation-for="LastName" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <br />
 
 
                                     <div class="col-md-6">
@@ -51,8 +50,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <h3>Gender</h3>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M"></ejs-radiobutton>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="M" value="M"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="F" value="F"></ejs-radiobutton>
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -78,25 +77,21 @@
                                         </div>
                                     </div>
 
-                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Doctor"))
-                                    {
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <ejs-textbox ejs-for="SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Auto"></ejs-textbox>
-                                                <span asp-validation-for="SSNumber" class="text-danger"></span>
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="SSNumber" class="text-danger"></span>
                                         </div>
+                                    </div>
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" enabled="false" >
-                                                    <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
-                                                </ejs-dropdownlist>
-                                                <span asp-validation-for="SpecialtyID" class="text-danger"></span>
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto">
+                                                <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
+                                            </ejs-dropdownlist>
+                                            <span asp-validation-for="SpecialtyID" class="text-danger"></span>
                                         </div>
-                                    }
-
+                                    </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -107,13 +102,14 @@
                                         </div>
                                     </div>
 
+
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="Document" class="text-danger"></span>
                                         </div>
                                     </div>
-
 
 
                                     <div class="col-md-6">
@@ -125,30 +121,54 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-18)" floatLabelType="Auto"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
+
+
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Select a Image</label>
-                                            <input asp-for="ImageFile" type="file" id="image" accept="image/*" />
+                                            <ejs-textbox ejs-for="Email" id="email" placeholder="Enter Email (email@email.com)" type="email" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="Confirm" class="text-danger"></span>
+                                        </div>
+                                    </div>*@
+
+
+
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+                                            <label>Select a Image </label>
+                                            <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Change User" class="btn btn-outline-success" />
-                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Home</a>
-                                            <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-outline-primary">Change Password</a>
+                                            <input type="submit" onclick="ValidateFile()" value="Register" class="btn btn-outline-success" />
+                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back </a>
                                             <div class="submitting"></div>
-
                                         </div>
                                     </div>
 
-                                    <div class="text-success">@ViewBag.UserMessage</div>
 
                                 </div>
                             </form>
@@ -157,23 +177,19 @@
                     </div>
 
                     <div class="col-md-5 d-flex align-items-stretch">
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="img" style=" background-image: url( @Url.Content(Model.ImageUrl) );" >
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);" >
-                            </div>
-                        }
-
+                        <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="text-success">
+    <p>
+        @ViewBag.Message
+    </p>
 </div>
 
 @section Scripts{
@@ -215,5 +231,5 @@
         }
     </script>
 
-   
+
 }

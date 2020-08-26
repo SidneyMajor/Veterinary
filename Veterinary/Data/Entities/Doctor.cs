@@ -13,10 +13,10 @@ namespace Veterinary.Data.Entities
 
         public string SSNumber { get; set; }
 
-
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select a Specialty.")]
         public int SpecialtyID { get; set; }
 
-
+       
         public Specialty Specialty { get; set; }
 
 

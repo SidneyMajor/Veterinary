@@ -1,14 +1,15 @@
-﻿@model Veterinary.Data.Entities.Client
+﻿
+@model Veterinary.Data.Entities.Doctor
 
 @{
-    ViewData["Title"] = "Client Details";
+    ViewData["Title"] = "Doctor Details";
 }
 
 
 <div class="container">
     <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>User Details</a>
+        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>Doctor Details</a>
 
     </div>
     <div class="row justify-content-center">
@@ -19,18 +20,18 @@
                 <div class="row no-gutters">
 
                     <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4">
+                        <div class="contact-wrap w-100 p-md-5 p-4" >
 
                             <form method="get" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
                                 <div class="row">
-                                    <partial name="_ClientParcial" />
+                                    <partial name="_DoctorParcial" />
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <a asp-action="ListClient" asp-controller="Account" class="btn btn-outline-primary">Back to List</a>
-                                            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Account" class="btn btn-danger">Delete</a>
+                                            <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-outline-primary">Back to List</a>
+                                            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Doctors" class="btn btn-danger">Delete</a>
                                         </div>
                                     </div>
 

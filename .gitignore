@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 /Veterinary/Helpers/ImageHelper.cs
 /Veterinary/Helpers/IImageHelper.cs
+/Veterinary/Views/Doctors/ConfirmDoctorEmail.cshtml
+/Veterinary/Models/SetPasswordViewModel.cs

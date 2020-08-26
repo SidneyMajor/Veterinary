@@ -9,7 +9,7 @@ using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
-    public class ChangeUserViewModel:Client
+    public class ChangeUserViewModel:Person
     {
 
         public IEnumerable<DocumentType> Documents { get; set; }
@@ -26,6 +26,15 @@ namespace Veterinary.Models
 
         [Display(Name = "Image")]        
         public IFormFile ImageFile { get; set; }
+
+
+        public string SSNumber { get; set; }
+
+
+        public int SpecialtyID { get; set; }
+
+
+        public IEnumerable<Specialty> Specialties { get; set; }
 
     }
 }

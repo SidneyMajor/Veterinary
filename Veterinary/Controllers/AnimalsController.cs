@@ -127,8 +127,8 @@ namespace Veterinary.Controllers
             {
                 return NotFound();
             }
-            var species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
-            var model = _converterHelper.ToRegisterNewAnimalViewModel(animal, species);
+            ///var species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
+            var model = _converterHelper.ToAnimalViewModel(animal);
             model.GetSpecies = _speciesRepository.GetAll().ToList();
             //ViewData["SpeciesID"] = new SelectList(_context.Species, "Id", "Id", animal.SpeciesID);
             return View(model);
