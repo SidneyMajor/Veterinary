@@ -353,3 +353,4 @@ MigrationBackup/
 /Veterinary/Views/Doctors/ConfirmDoctorEmail.cshtml
 /Veterinary/Models/SetPasswordViewModel.cs
 /Veterinary/Data/Entities/Appointment.cs
+*.cs

@@ -6,27 +6,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WasDeleted)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.AppointmentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AppointmentTime)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Remarks)
             </th>
@@ -45,27 +32,14 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.AppointmentDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AppointmentTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Remarks)
             </td>
@@ -78,10 +52,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Doctor.FullName)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td>                
+                <a asp-action="AppointmentDetails" asp-route-id="@item.Id">Details</a>               
             </td>
         </tr>
 }

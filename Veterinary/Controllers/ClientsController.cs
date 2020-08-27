@@ -34,7 +34,7 @@ namespace Veterinary.Controllers
         }
 
         // GET: Appointments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> AppointmentList()
         {
             //var dataContext = _context.Appointment.Include(a => a.Animal).Include(a => a.Doctor).ThenInclude(a=> a.User);
             return View(await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name));
@@ -45,6 +45,9 @@ namespace Veterinary.Controllers
         {
             //ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id");
             //ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address");
+            ViewBag.minVal = DateTime.Today.AddHours(-16);
+            ViewBag.maxVal = DateTime.Today.AddHours(-6);
+            ViewBag.value = DateTime.Now;
 
             var model = new NewAppointmentViewModel
             {
@@ -53,6 +56,9 @@ namespace Veterinary.Controllers
             };
             return View(model);
         }
+              
+
+
 
         // POST: Appointments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -68,8 +74,14 @@ namespace Veterinary.Controllers
                 appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                 appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
-                await _appointmentRepsitory.CreateAsync(appointment);
-                return RedirectToAction(nameof(Index));
+                //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+                if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
+                {                    
+                    await _appointmentRepsitory.CreateAsync(appointment);
+                    return RedirectToAction(nameof(AppointmentList)); 
+                }               
+
+                ModelState.AddModelError(string.Empty, "The appointment already exists.");
             }
             //ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id", appointment.AnimalID);
             //ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address", appointment.DoctorID);

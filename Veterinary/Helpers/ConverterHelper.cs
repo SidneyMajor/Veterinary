@@ -190,8 +190,8 @@ namespace Veterinary.Helpers
             return new Appointment
             {
                 Id = isNew ? 0 : model.Id,
-                AppointmentDate = model.AppointmentDate,
-                AppointmentTime = model.AppointmentTime,
+                AppointmentDate = model.SelectDate.Value,
+                AppointmentTime = model.SelectTime.Value,
                 AnimalID=model.AnimalID,
                 DoctorID=model.DoctorID,
                 Status = "Checked",

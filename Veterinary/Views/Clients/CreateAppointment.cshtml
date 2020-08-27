@@ -1,58 +1,34 @@
 ﻿@model Veterinary.Models.NewAppointmentViewModel
 
-<h4>Appointment Model</h4>
+<h4>Create Appointment </h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateAppointment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="WasDeleted" /> @Html.DisplayNameFor(model => model.WasDeleted)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppointmentDate" class="control-label"></label>
-                <input asp-for="AppointmentDate" class="form-control" />
+                <ejs-datepicker id="datepicker" ejs-for="SelectDate" placeholder="Seletc a Date" floatLabelType="Auto" format="dd-MM-yyyy" value="@DateTime.Now"
+                                 min="@DateTime.Today"></ejs-datepicker>
+                @*<label asp-for="AppointmentDate" class="control-label"></label>
+                <input asp-for="AppointmentDate" class="form-control" />*@
                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="AppointmentTime" class="control-label"></label>
-                <input asp-for="AppointmentTime" class="form-control" />
+                <ejs-timepicker id="timepicker" ejs-for="SelectTime" placeholder="Seletc a Time" floatLabelType="Auto" format="HH:mm" value="@DateTime.Now" 
+                                max="@DateTime.Today.AddHours(-6).AddMinutes(-30)" min="@DateTime.Today.AddHours(-16)"></ejs-timepicker>
+                @*<label asp-for="AppointmentTime" class="control-label"></label>
+                <input asp-for="AppointmentTime" class="form-control" />*@
                 <span asp-validation-for="AppointmentTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            
+            @*<div class="form-group">
                 <label asp-for="Remarks" class="control-label"></label>
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+            </div>*@
+            
             <div class="form-group">
                 <ejs-dropdownlist id="AnimalID" ejs-for="AnimalID" dataSource="Model.Animals" placeholder="Select an Animal" floatLabelType="Auto">
                     <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
@@ -71,6 +47,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="AppointmentList">Back to List</a>
 </div>
 

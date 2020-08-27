@@ -20,6 +20,13 @@ namespace Veterinary.Data.Repository
            _userHelper = userHelper;
         }
 
+        public async Task<bool> CheckAppointmentAsync(Appointment model)
+        {
+            return await _context.Appointments.AnyAsync(a => a.AppointmentDate.Equals(model.AppointmentDate) &&
+            a.AppointmentTime.Equals(model.AppointmentTime) && a.AnimalID.Equals(model.AnimalID) &&
+            a.DoctorID.Equals(model.DoctorID));
+        }
+
         public async Task<IQueryable<Appointment>> GetAllAppointmentlAsync(string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
@@ -32,12 +39,14 @@ namespace Veterinary.Data.Repository
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor)
-                    .ThenInclude(a => a.User).OrderByDescending(a => a.AppointmentDate);
+                    .ThenInclude(a => a.User).OrderByDescending(a => a.AppointmentDate)
+                    .ThenByDescending(a => a.AppointmentTime);
             }
 
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor)
                 .Where(a => a.User == user && a.WasDeleted == false)
-                .OrderByDescending(a => a.AppointmentDate);
+                .OrderByDescending(a => a.AppointmentDate)
+                .ThenByDescending(a=> a.AppointmentTime);
         }
 
         public async  Task<Appointment> GetAppointmentByIdAsync(int id)

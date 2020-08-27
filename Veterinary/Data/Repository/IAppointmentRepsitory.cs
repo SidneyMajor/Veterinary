@@ -13,5 +13,7 @@ namespace Veterinary.Data.Repository
         Task<Appointment> GetUserAppointmentDetailAsync(int id, string username);
 
         Task<Appointment> GetAppointmentByIdAsync(int id);
+
+        Task<bool> CheckAppointmentAsync(Appointment model);
     }
 }
