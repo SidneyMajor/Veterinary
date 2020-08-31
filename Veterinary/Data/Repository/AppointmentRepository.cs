@@ -23,7 +23,7 @@ namespace Veterinary.Data.Repository
         public async Task<bool> CheckAppointmentAsync(Appointment model)
         {
             return await _context.Appointments.AnyAsync(a => a.AppointmentDate.Equals(model.AppointmentDate) &&
-            a.AppointmentTime.Equals(model.AppointmentTime) && a.AnimalID.Equals(model.AnimalID) &&
+            a.AppointmentTime.Equals(model.AppointmentTime) /*&& (!a.AnimalID.Equals(model.AnimalID) || a.AnimalID.Equals(model.AnimalID))*/ &&
             a.DoctorID.Equals(model.DoctorID));
         }
 

@@ -53,7 +53,7 @@ namespace Veterinary.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost]
         public async Task<IActionResult> RegisterDoctor(RegisterNewDoctorViewModel model)
         {
@@ -192,7 +192,8 @@ namespace Veterinary.Controllers
 
 
 
-        // GET: doctor/Details       
+        // GET: doctor/Details  
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DoctorDetails(int? id)
         {
             if (id == null)
@@ -215,6 +216,7 @@ namespace Veterinary.Controllers
 
 
         // GET: Cliente/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

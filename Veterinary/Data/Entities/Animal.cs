@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace Veterinary.Data.Entities
 
         public bool WasDeleted { get; set ; }
 
-
+        [Required]
+        [MaxLength(50, ErrorMessage = "The field {0} only can contain {1} characters.")]
         public string Name { get; set; }
 
-
+        [Required]
         public string Breed { get; set; }  
         
 
@@ -31,7 +33,7 @@ namespace Veterinary.Data.Entities
 
         public string Color { get; set; }
 
-
+        
         public double Weight { get; set; }
 
 
@@ -48,7 +50,8 @@ namespace Veterinary.Data.Entities
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select a Species.")]
         public int SpeciesID { get; set;}
 
 

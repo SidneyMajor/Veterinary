@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
@@ -100,7 +96,7 @@ namespace Veterinary.Controllers
             {
                 try
                 {
-                   
+
                     await _specialtyRepository.UpdateAsync(specialty);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -142,9 +138,9 @@ namespace Veterinary.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var model = await _specialtyRepository.GetByIdAsync(id);
-            await _specialtyRepository.DeleteAsync(model);            
+            await _specialtyRepository.DeleteAsync(model);
             return RedirectToAction(nameof(Index));
         }
-       
+
     }
 }

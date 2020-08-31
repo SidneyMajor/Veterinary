@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq;
+using System.Threading.Tasks;
 using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
@@ -22,11 +19,12 @@ namespace Veterinary.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IUserHelper _userHelper;
         private readonly DataContext _context;
+        private readonly ISpecialtyRepository _specialtyRepository;
 
         public AppointmentsController(IAppointmentRepsitory appointmentRepsitory,
             IAnimalRepository animalRepository,
-            IDoctorRepository doctorRepository,IConverterHelper converterHelper,
-            IUserHelper userHelper,DataContext context)
+            IDoctorRepository doctorRepository, IConverterHelper converterHelper,
+            IUserHelper userHelper, ISpecialtyRepository specialtyRepository, DataContext context)
         {
             _appointmentRepsitory = appointmentRepsitory;
             _animalRepository = animalRepository;
@@ -34,12 +32,12 @@ namespace Veterinary.Controllers
             _converterHelper = converterHelper;
             _userHelper = userHelper;
             _context = context;
+            _specialtyRepository = specialtyRepository;
         }
 
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            //var dataContext = _context.Appointment.Include(a => a.Animal).Include(a => a.Doctor).ThenInclude(a=> a.User);
             return View(await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name));
         }
 
@@ -60,7 +58,55 @@ namespace Veterinary.Controllers
             return View(appointment);
         }
 
-       
+
+
+        // GET: Appointments/Create
+        public async Task<IActionResult> CreateAppointment()
+        {
+            var model = new NewAppointmentViewModel
+            {
+                Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name),
+                Specialties = await _specialtyRepository.GetAll().ToListAsync(),
+                Doctors = await _doctorRepository.GetAll().ToListAsync(),
+            };
+            ViewBag.Enabled = false;
+            return View(model);
+        }
+
+
+
+
+        // POST: Appointments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAppointment(NewAppointmentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //Todo: Fazer as validaçoes necessarias antes de criar uma consulta
+                Appointment appointment = _converterHelper.ToAppointment(model, true);
+                appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+                appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+                appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+                //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+                if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
+                {
+                    await _appointmentRepsitory.CreateAsync(appointment);
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ModelState.AddModelError(string.Empty, "The appointment you have chosen is no longer available. Please choose another time.");
+            }
+            model.Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name);
+            model.Doctors = await _doctorRepository.GetAll().ToListAsync();
+            model.Specialties = await _specialtyRepository.GetAll().ToListAsync();
+            ViewBag.Enabled = true;
+            return View(model);
+        }
+
 
         // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)

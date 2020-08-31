@@ -10,6 +10,8 @@ namespace Veterinary.Models
     {
         public IEnumerable<Animal> Animals { get; set; }
 
+        public IEnumerable<Specialty> Specialties { get; set; }
+
         public IEnumerable<Doctor> Doctors { get; set; }
 
         public DateTime? SelectTime { get; set; }

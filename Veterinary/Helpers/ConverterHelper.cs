@@ -194,7 +194,8 @@ namespace Veterinary.Helpers
                 AppointmentTime = model.SelectTime.Value,
                 AnimalID=model.AnimalID,
                 DoctorID=model.DoctorID,
-                Status = "Checked",
+                SpecialtyID=model.SpecialtyID,
+                Status = "N/Checked",
                
             };
         }

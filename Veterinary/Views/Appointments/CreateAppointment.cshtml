@@ -1,0 +1,154 @@
+﻿@model Veterinary.Models.NewAppointmentViewModel
+
+<h4>Create Appointment </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+
+        <form asp-action="CreateAppointment">
+            <div asp-validation-summary="ModelOnly" class="text-danger" onformchange="doctorchange"></div>
+
+            <div class="form-group">
+                <ejs-datepicker id="datepicker" ejs-for="SelectDate" placeholder="Seletc a Date" floatLabelType="Auto" format="dd-MM-yyyy" value="@DateTime.Now"
+                                renderDayCell="onRenderCell" min="@DateTime.Today"></ejs-datepicker>
+                @*<label asp-for="AppointmentDate" class="control-label"></label>
+                    <input asp-for="AppointmentDate" class="form-control" />*@
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <ejs-timepicker id="timepicker" ejs-for="SelectTime" placeholder="Seletc a Time" floatLabelType="Auto" format="HH:mm" value="@DateTime.Now"
+                                max="@DateTime.Today.AddHours(-6).AddMinutes(-30)" min="@DateTime.Today.AddHours(-16)"></ejs-timepicker>
+                @*<label asp-for="AppointmentTime" class="control-label"></label>
+                    <input asp-for="AppointmentTime" class="form-control" />*@
+                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+                    <label asp-for="Remarks" class="control-label"></label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group">
+                <ejs-dropdownlist id="AnimalID" ejs-for="AnimalID" dataSource="Model.Animals" placeholder="Select an Animal" floatLabelType="Auto">
+                    <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+            <div class="form-group">
+                <ejs-dropdownlist id="specialtyid" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto"
+                                  change="specialtychange" popupHeight="auto" value="null" filterBarPlaceholder="e.g: gul" allowFiltering="true" ignoreAccent="true">
+                    <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+            <div class="form-group">
+                <ejs-dropdownlist id="doctorid" ejs-for="DoctorID" dataSource="Model.Doctors" placeholder="Select a Doctor" floatLabelType="Auto" enabled="@ViewBag.Enabled"
+                                  popupHeight="auto" value="null" filterBarPlaceholder="e.g: gul" allowFiltering="true" ignoreAccent="true">
+                    <e-dropdownlist-fields text="FullName" value="Id"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@*<div class="control-section">
+    <div class="content-wrapper">
+        <div class="schedule-container">
+            <ejs-schedule id="schedule" width="100%" height="650px" cssClass="block-events" resourceHeaderTemplate="#resource-template" currentView="TimelineWeek" selectedDate="DateTime.Now">
+                <e-schedule-group enableCompactView="false" resources="@ViewBag.Resources"></e-schedule-group>
+                <e-schedule-resources>
+                    <e-schedule-resource dataSource="@Model.Doctors" field="EmployeeId" title="Employees" name="Employee" textField="FullName" idField="Id" colorField="green" groupIDField="groupId" allowMultiple="false"></e-schedule-resource>
+                </e-schedule-resources>
+                <e-schedule-views>
+                    <e-schedule-view option="Day"></e-schedule-view>
+                    <e-schedule-view option="TimelineWorkWeek"></e-schedule-view>
+                    <e-schedule-view option="TimelineMonth"></e-schedule-view>
+                </e-schedule-views>
+                <e-schedule-eventsettings dataSource="@ViewBag.datasource">
+                </e-schedule-eventsettings>
+            </ejs-schedule>
+        </div>
+
+    </div>
+</div>
+
+
+<script id="resource-template" type="text/x-template">
+    <div class="template-wrap">
+        <div class="employee-category">
+            ${getEmployeeImage(data)}
+            <div class="employee-name">${getEmployeeName(data)}</div>
+            <div class="employee-designation">${getEmployeeDesignation(data)}</div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+        function getEmployeeName(value) {
+            return value.resourceData[value.resource.textField];
+        };
+
+        function getEmployeeImage(value) {
+            let resourceName = value.resourceData[value.resource.textField];
+            var path = "@Url.Content("~/images/Doctors/51718b90-04c5-42ff-be22-35fd31bd006a.jpg" )";
+            var src = path + resourceName.toLowerCase() + ".png";
+            return '<img class="employee-image" src=' + src + '></img>';
+        };
+
+        function getEmployeeDesignation(value) {
+            let resourceName = value.resourceData[value.resource.textField];
+            return value.resourceData.designation;
+        };
+</script>*@
+
+
+
+
+<script type="text/javascript">
+
+
+    function specialtychange() {
+        // disable the doctor DropDownList
+        var doctor = document.getElementById('doctorid').ej2_instances[0];
+        var specialty = document.getElementById('specialtyid').ej2_instances[0];
+        doctor.enabled = true;
+        //frame the query based on selected value in specialty DropDownList.
+        var tempQuery = new ej.data.Query().where('SpecialtyID', 'equal', specialty.value);
+        // set the framed query based on selected value in specialty DropDownList.
+        doctor.query = tempQuery;
+        // set null value to doctor DropDownList text property
+        doctor.text = null;
+        //  bind the property changes to doctor DropDownList
+        doctor.dataBind();
+    }
+
+    //function doctorchange() {
+    //    // disable the doctor DropDownList
+    //    var doctor = document.getElementById('doctorid').ej2_instances[0];
+    //    var specialty = document.getElementById('specialtyid').ej2_instances[0];
+    //    alert("teste");
+    //    if (specialty.text!=null) {
+    //        doctor.enabled = true;
+    //    }
+    //}
+
+
+
+    function onRenderCell(args) {
+        if (args.date.getDay() == 0 || args.date.getDay() == 6) {
+            //sets isDisabled to true to disable the date.
+            args.isDisabled = true;
+        }
+    }
+
+</script>
+

@@ -75,7 +75,7 @@
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                     {
-                        <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="ListClient" class="nav-link">Clients</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="ListClient" class="nav-link">Clients</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="DocumentTypes" asp-action="Index" class="nav-link">Documents</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Species" asp-action="Index" class="nav-link">Species</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Specialties" asp-action="Index" class="nav-link">Specialties</a></li>
@@ -86,7 +86,7 @@
                     else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
                     {
                         <li class="nav-item"><a asp-area="" asp-controller="Animals" asp-action="Index" class="nav-link">Animals</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Clients" asp-action="AppointmentList" class="nav-link">Appointments</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>
                     }
 
 

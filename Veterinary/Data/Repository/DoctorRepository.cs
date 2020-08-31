@@ -16,6 +16,11 @@ namespace Veterinary.Data.Repository
             _context = context;
         }
 
+        //public  IQueryable<Doctor> GetDoctorBySpecialtyAsync(int id)
+        //{
+        //    return  _context.Doctors.Where(d => d.SpecialtyID == id);
+        //}
+
         public async Task<Doctor> GetDoctorByUserEmailAsync(string email)
         {
             return await _context.Doctors.SingleAsync(c => c.User.Email == email);

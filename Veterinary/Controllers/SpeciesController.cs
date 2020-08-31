@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Veterinary.Data;
+using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 
@@ -15,11 +10,11 @@ namespace Veterinary.Controllers
     [Authorize(Roles = "Admin")]
     public class SpeciesController : Controller
     {
-       
+
         private readonly ISpeciesRepository _speciesRepository;
 
         public SpeciesController(ISpeciesRepository speciesRepository)
-        {           
+        {
             _speciesRepository = speciesRepository;
         }
 
@@ -61,7 +56,7 @@ namespace Veterinary.Controllers
         {
             if (ModelState.IsValid)
             {
-               await _speciesRepository.CreateAsync(model);               
+                await _speciesRepository.CreateAsync(model);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -139,10 +134,10 @@ namespace Veterinary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var model = await _speciesRepository.GetByIdAsync(id);            
+            var model = await _speciesRepository.GetByIdAsync(id);
             await _speciesRepository.DeleteAsync(model);
             return RedirectToAction(nameof(Index));
         }
-        
+
     }
 }

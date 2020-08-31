@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Syncfusion.EJ2.DropDowns;
-using Veterinary.Data;
-using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
 using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    [Authorize(Roles = "Customer")]
     public class AnimalsController : Controller
-    {       
+    {
         private readonly IAnimalRepository _animalRepository;
         private readonly IUserHelper _userHelper;
         private readonly ISpeciesRepository _speciesRepository;
@@ -28,7 +22,7 @@ namespace Veterinary.Controllers
             ISpeciesRepository speciesRepository,
             IConverterHelper converterHelper,
             IImageHelper imageHelper)
-        {           
+        {
             _animalRepository = animalRepository;
             _userHelper = userHelper;
             _speciesRepository = speciesRepository;
@@ -40,8 +34,6 @@ namespace Veterinary.Controllers
         //Todo: usar uma data table
         public async Task<IActionResult> Index()
         {
-            //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-            //var dataContext = await _animalRepository.GetAll().Where(u => u.User == user).Include(a => a.Species).ToListAsync();
             return View(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
         }
 
@@ -50,22 +42,15 @@ namespace Veterinary.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
-            //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            
             var animal = await _animalRepository.GetDetailAnimalAsync(id.Value, this.User.Identity.Name);
             animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
 
             if (animal == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
             return View(animal);
@@ -101,7 +86,7 @@ namespace Veterinary.Controllers
                     {
                         this.ModelState.AddModelError(string.Empty, "Invalid File. Please upload a File with extension (bmp, gif, png, jpg, jpeg)");
                         return this.View(model);
-                    }                   
+                    }
                 }
 
                 var species = await _speciesRepository.GetByIdAsync(model.SpeciesID);
@@ -119,18 +104,17 @@ namespace Veterinary.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
             var animal = await _animalRepository.GetByIdAsync(id.Value);
             if (animal == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
             ///var species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
             var model = _converterHelper.ToAnimalViewModel(animal);
             model.GetSpecies = _speciesRepository.GetAll().ToList();
-            //ViewData["SpeciesID"] = new SelectList(_context.Species, "Id", "Id", animal.SpeciesID);
             return View(model);
         }
 
@@ -139,23 +123,23 @@ namespace Veterinary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  AnimalViewModel model)
+        public async Task<IActionResult> Edit(int id, AnimalViewModel model)
         {
             if (id != model.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var path =model.ImageUrl;
+                    var path = model.ImageUrl;
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
                         if (_imageHelper.ValidFileTypes(model.ImageFile))
                         {
-                            path = await _imageHelper.UploadImageAsync(model.ImageFile, "Animals"); 
+                            path = await _imageHelper.UploadImageAsync(model.ImageFile, "Animals");
                         }
                         else
                         {
@@ -170,13 +154,13 @@ namespace Veterinary.Controllers
                     animal.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
                     await _animalRepository.UpdateAsync(animal);
-                   
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!await _animalRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("AnimalNotFound");
                     }
                     else
                     {
@@ -194,14 +178,14 @@ namespace Veterinary.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
             var animal = await _animalRepository.GetByIdAsync(id.Value);
             animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
             if (animal == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AnimalNotFound");
             }
 
             return View(animal);
@@ -216,6 +200,11 @@ namespace Veterinary.Controllers
             await _animalRepository.DeleteAsync(animal);
             return RedirectToAction(nameof(Index));
         }
-        
+
+        public IActionResult AnimalNotFound()
+        {
+            return View();
+        }
+
     }
 }

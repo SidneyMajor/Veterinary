@@ -44,13 +44,19 @@ namespace Veterinary.Data.Entities
         
         public User User { get; set; }
 
-
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select an Animal.")]
         public int AnimalID { get; set; }
         
         
         public Animal Animal { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select a Specialty.")]
+        public int SpecialtyID { get; set; }
 
+
+        public Specialty Specialty { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "You  must select a Veterinary.")]
         public int DoctorID { get; set; }
 
 

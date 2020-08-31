@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.EJ2.Linq;
-using Veterinary.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -88,7 +82,7 @@ namespace Veterinary.Controllers
         }
 
 
-
+       
         public IActionResult Register()
         {
             var model = new RegisterNewUserViewModel
@@ -208,37 +202,6 @@ namespace Veterinary.Controllers
 
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> ConfirmEmail(SetPasswordViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = await _userHelper.GetUserByIdAsync(model.UserId);
-
-        //        if (user != null)
-        //        {
-        //            var result = await _userHelper.AddPasswordAsync(user, model.NewPassword);
-
-        //            if (result.Succeeded)
-        //            {
-        //                return RedirectToAction(nameof(Login));
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "User not found");
-        //        }
-        //    }
-
-        //    return View(model);
-
-        //}
-
-
         // GET: Client
         public async Task<IActionResult> ChangeUser()
         {
@@ -312,6 +275,7 @@ namespace Veterinary.Controllers
                     var path = model.ImageUrl;
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
+                        //Todo: Fazer com JS essa validação.
                         if (_imageHelper.ValidFileTypes(model.ImageFile))
                         {
                             path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
@@ -469,90 +433,9 @@ namespace Veterinary.Controllers
             return View(model);
         }
 
-        // GET: Clients only for admin
-        //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ListClient()
+        public IActionResult NotAuthorized()
         {
-            var userAdmin = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-            var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
-            if (isInRoleAdmin)
-            {
-                return View(await _clientRepository.GetAll().Where(c => c.User != userAdmin).Include(u => u.User).ToListAsync());
-            }
-            return View(await _clientRepository.GetAll().Include(u => u.User).ToListAsync());
+            return View();
         }
-
-        // GET: Client/Details/5
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ClientDetails(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _clientRepository.GetByIdAsync(id.Value);
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            model.DocumentType = documentType;
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-
-        // GET: Cliente/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _clientRepository.GetByIdAsync(id.Value);
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            model.DocumentType = documentType;
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        // POST: Species/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var model = await _clientRepository.GetByIdAsync(id);
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            model.DocumentType = documentType;
-            await _clientRepository.DeleteAsync(model);
-            return RedirectToAction(nameof(ListClient));
-        }
-
-
-
-        //private bool ValidFileTypes(IFormFile file)
-        //{
-        //    string[] validFileTypes = { "bmp", "gif", "png", "jpg", "jpeg" };
-        //    string ext = Path.GetExtension(file.FileName).ToLower();
-        //    bool isValidFile = false;
-        //    for (int i = 0; i < validFileTypes.Length; i++)
-        //    {
-        //        if (ext == "." + validFileTypes[i])
-        //        {
-        //            isValidFile = true;
-        //            break;
-        //        }
-        //    }
-
-
-        //    return isValidFile;
-        //}
     }
 }

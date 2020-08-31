@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Veterinary.Data.Entities
 {
-    public abstract class Person:IEntity
+    public abstract class Person : IEntity
     {
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(30, ErrorMessage = "The field {0} only can contain {1} characters.")]
         public string FirstName { get; set; }
 
         [Required]
+        [MaxLength(30, ErrorMessage = "The field {0} only can contain {1} characters.")]
         public string LastName { get; set; }
 
 
@@ -21,13 +20,16 @@ namespace Veterinary.Data.Entities
         [MaxLength(100, ErrorMessage = "The field {0} only can contain {1} characters.")]
         public string Address { get; set; }
 
-
+        [Required]
+        [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
 
 
         public string City { get; set; }
 
-
+        [Required]
+        [Display(Name = "Tax Number")]
+        [MaxLength(9, ErrorMessage = "The  field {0} only can contain {1} characters.")]
         public string TaxNumber { get; set; }
 
 
@@ -73,6 +75,6 @@ namespace Veterinary.Data.Entities
 
         public DocumentType DocumentType { get; set; }
 
-        
+
     }
 }

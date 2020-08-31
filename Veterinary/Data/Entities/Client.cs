@@ -8,7 +8,6 @@ namespace Veterinary.Data.Entities
 {
     public class Client : Person
     {
-
         public string FullName { get { return $"{FirstName} {LastName}"; } }
     }
 }

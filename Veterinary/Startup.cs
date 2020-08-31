@@ -69,6 +69,12 @@ namespace Veterinary
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Erro 400
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath= "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -90,6 +96,7 @@ namespace Veterinary
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

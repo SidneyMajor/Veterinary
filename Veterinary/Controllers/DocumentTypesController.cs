@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Veterinary.Data;
+using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 
 namespace Veterinary.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class DocumentTypesController : Controller
     {
-       
+
         private readonly IDocumentTypeRepository _documentTypeRepository;
 
         public DocumentTypesController(IDocumentTypeRepository documentTypeRepository)
-        {           
-           _documentTypeRepository = documentTypeRepository;
+        {
+            _documentTypeRepository = documentTypeRepository;
         }
 
         // GET: DocumentTypes
@@ -58,11 +53,11 @@ namespace Veterinary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( DocumentType documentType)
+        public async Task<IActionResult> Create(DocumentType documentType)
         {
             if (ModelState.IsValid)
             {
-               await _documentTypeRepository.CreateAsync(documentType);                
+                await _documentTypeRepository.CreateAsync(documentType);
                 return RedirectToAction(nameof(Index));
             }
             return View(documentType);
@@ -101,7 +96,7 @@ namespace Veterinary.Controllers
                 try
                 {
                     await _documentTypeRepository.UpdateAsync(documentType);
-                   
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,7 +122,7 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var documentType =  await _documentTypeRepository.GetByIdAsync(id.Value);
+            var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
             if (documentType == null)
             {
                 return NotFound();
@@ -143,11 +138,11 @@ namespace Veterinary.Controllers
         {
             var documentType = await _documentTypeRepository.GetByIdAsync(id);
             //documentType.WasDeleted = false;
-           await _documentTypeRepository.DeleteAsync(documentType);
-           
+            await _documentTypeRepository.DeleteAsync(documentType);
+
             return RedirectToAction(nameof(Index));
         }
 
-        
+
     }
 }
