@@ -50,6 +50,12 @@ namespace Veterinary.Data.Repository
                 return null;
             }
 
+            if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+            {
+                var animals = _context.Animals.Include(u => u.User);
+                return await animals.FirstOrDefaultAsync(a => a.Id == id && a.WasDeleted == false);
+            }
+
             return await _context.Animals.FirstOrDefaultAsync(a => a.User == user && a.Id==id && a.WasDeleted==false );
         }
     }

@@ -2069,7 +2069,7 @@ textarea.form-control {
 a.btn.disabled,
 fieldset:disabled a.btn {
   pointer-events: none; }
-
+/*
 .btn-primary {
   color: #fff;
   background-color: #007bff;
@@ -2093,7 +2093,7 @@ fieldset:disabled a.btn {
     .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
     .show > .btn-primary.dropdown-toggle:focus {
       -webkit-box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); }
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); }*/
 
 .btn-secondary {
   color: #fff;
@@ -8415,7 +8415,7 @@ h1, h2, h3, h4, h5,
   font-weight: 700; }
   .btn:hover, .btn:active, .btn:focus {
     outline: none; }
-  .btn.btn-primary {
+  /*.btn.btn-primary {
     background: #00bd56;
     border: 1px solid #00bd56;
     color: #fff; }
@@ -8430,7 +8430,7 @@ h1, h2, h3, h4, h5,
       .btn.btn-primary.btn-outline-primary:hover {
         border: 1px solid transparent;
         background: #00bd56;
-        color: #fff; }
+        color: #fff; }*/
   .btn.btn-white {
     background: #fff;
     border: 1px solid #fff;
@@ -8901,7 +8901,7 @@ textarea.form-control {
       background: rgba(0, 0, 0, 0.05); }
     .block-7 .pricing-text li span.fa {
       color: #207dff; }
-  .block-7 .btn-primary {
+ /* .block-7 .btn-primary {
     color: #fff;
     text-transform: uppercase;
     font-style: 16px;
@@ -8911,7 +8911,7 @@ textarea.form-control {
     margin: 0 auto; }
     .block-7 .btn-primary:hover, .block-7 .btn-primary:focus {
       background: #00bd56 !important;
-      color: #fff; }
+      color: #fff; }*/
   .block-7:hover, .block-7:focus {
     -webkit-box-shadow: 0px 24px 48px -13px rgba(0, 0, 0, 0.11);
     -moz-box-shadow: 0px 24px 48px -13px rgba(0, 0, 0, 0.11);
@@ -9140,7 +9140,8 @@ textarea.form-control {
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center; }
+  background-position: center center;  
+}
 
 .aside-stretch-right {
   background: #00bd56; }
@@ -9485,6 +9486,11 @@ textarea.form-control {
 
 .contact-wrap {
   background-color: whitesmoke; }
+
+
+.contact-wrap1 {
+    background-color: #fff;
+}
 
 @media (max-width: 767.98px) {
   .info-wrap {

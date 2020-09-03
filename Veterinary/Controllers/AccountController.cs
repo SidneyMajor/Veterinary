@@ -206,29 +206,15 @@ namespace Veterinary.Controllers
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-
-
+           
             if (await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
                 var doctor = await _doctorRepository.GetDoctorByUserEmailAsync(this.User.Identity.Name);
                 if (doctor == null)
                 {
-                    //model.FirstName = client.FirstName;
-                    //model.LastName = client.LastName;
-                    //model.Address = client.Address;
-                    //model.ZipCode = client.ZipCode;
-                    //model.PhoneNumber = client.PhoneNumber;
-                    //model.TaxNumber = client.TaxNumber;
-                    //model.Gender = client.Gender;
-                    //model.DateOfBirth = client.DateOfBirth.Date;
-                    //model.Nationality = client.Nationality;
-                    //model.Document = client.Document;                
                     return NotFound();
-
                 }
 
-                //var documentType = await _documentTypeRepository.GetByIdAsync(doctor.DocumentTypeID);
-                //var specialty = await _specialtyRepository.GetByIdAsync(doctor.SpecialtyID);
                 var model = _converterHelper.ToChangeUserViewModel(doctor);
                 model.Documents = _documentTypeRepository.GetAll();
                 model.Specialties = _specialtyRepository.GetAll();
@@ -239,26 +225,14 @@ namespace Veterinary.Controllers
                 var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
                 if (client == null)
                 {
-                    //model.FirstName = client.FirstName;
-                    //model.LastName = client.LastName;
-                    //model.Address = client.Address;
-                    //model.ZipCode = client.ZipCode;
-                    //model.PhoneNumber = client.PhoneNumber;
-                    //model.TaxNumber = client.TaxNumber;
-                    //model.Gender = client.Gender;
-                    //model.DateOfBirth = client.DateOfBirth.Date;
-                    //model.Nationality = client.Nationality;
-                    //model.Document = client.Document;                
                     return NotFound();
-
                 }
-
-                //var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
                 var model = _converterHelper.ToChangeUserViewModel(client);
                 model.Documents = _documentTypeRepository.GetAll();
                 return this.View(model);
             }
 
+            
         }
 
         [HttpPost]
@@ -279,6 +253,7 @@ namespace Veterinary.Controllers
                         if (_imageHelper.ValidFileTypes(model.ImageFile))
                         {
                             path = await _imageHelper.UploadImageAsync(model.ImageFile, "Clients");
+                            model.ImageUrl = path;
                         }
                         else
                         {
@@ -288,7 +263,7 @@ namespace Veterinary.Controllers
 
                     }
 
-                    if (this.User.IsInRole("Customer"))
+                    if (this.User.IsInRole("Customer") || this.User.IsInRole("Admin"))
                     {
                         var client = _converterHelper.ToClient(model, documentType, path);
                         client.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -305,16 +280,7 @@ namespace Veterinary.Controllers
                         await _doctorRepository.UpdateAsync(doctor);
                     }
 
-                    //this.context.Clients.Update(client);
-
-                    //await this.context.SaveChangesAsync();
-
-                    this.ViewBag.UserMessage = "User updated!";
-                    //return this.RedirectToAction("Index", "Home");
-
-
-                    //this.ModelState.AddModelError(string.Empty, "The user couldn't be updated.");
-
+                   
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -331,7 +297,8 @@ namespace Veterinary.Controllers
                 }
 
             }
-            model.Documents = _documentTypeRepository.GetAll();
+          
+            model.Documents = _documentTypeRepository.GetAll();            
             return this.View(model);
 
         }

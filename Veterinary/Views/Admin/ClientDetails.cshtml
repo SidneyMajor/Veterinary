@@ -31,6 +31,7 @@
                                         <div class="form-group">
                                             <a asp-action="ListClient" asp-controller="Admin" class="btn btn-outline-primary">Back to List</a>
                                             <a asp-action="DeleteCliente" asp-route-id="@Model.Id" asp-controller="Admin" class="btn btn-danger">Delete</a>
+                                            <a asp-action="GetAnimalByClientId" asp-route-id="@Model.Id" asp-controller="Admin" class="btn btn-danger">Animal</a>
                                         </div>
                                     </div>
 
@@ -43,13 +44,14 @@
                     <div class="col-md-5 d-flex align-items-stretch">
                         @if (!string.IsNullOrEmpty(Model.ImageUrl))
                         {
-                            @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="info-wrap w-100 p-5 img" style=" background-image: url( @Url.Content(Model.ImageUrl) );">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
                             </div>
                         }
                         else
                         {
-                            <div class="info-wrap w-100 p-5 img" style="  background-image: url(@Url.Content("~/images/img.jpg") );">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
                             </div>
                         }
 

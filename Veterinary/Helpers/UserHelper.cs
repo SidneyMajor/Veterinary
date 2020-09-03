@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Models;
 
@@ -16,15 +18,18 @@ namespace Veterinary.Helpers
         private readonly SignInManager<User> _signInManager;
         //Manager role
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DataContext _context;
 
         public UserHelper(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            DataContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
 
@@ -126,6 +131,14 @@ namespace Veterinary.Helpers
         {
             return await _userManager.ResetPasswordAsync(user, token, password);
         }
+
+        public async Task<User> GetUserByClientIdAsync(int id)
+        {
+            var clients = _context.Clients.Include(u=> u.User);
+            
+            return await _userManager.FindByIdAsync(clients.FirstOrDefault(c => c.Id == id && c.WasDeleted == false).User.Id);
+        }
+
 
 
 

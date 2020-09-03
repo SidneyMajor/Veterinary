@@ -18,8 +18,9 @@
         <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
         <link rel="stylesheet" href="~/css/magnific-popup.css">
 
+        <link href="~/lib/bootstrap-4.5.2-dist/css/bootstrap.min.css" rel="stylesheet" />
 
-        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap-4.5.2-dist/css/bootstrap.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/jquery.timepicker.css">
 
         <link rel="stylesheet" href="~/css/flaticon.css">
@@ -81,6 +82,7 @@
                         <li class="nav-item"><a asp-area="" asp-controller="Specialties" asp-action="Index" class="nav-link">Specialties</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Doctors" asp-action="ListDoctor" class="nav-link">Doctors</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="ListAnimal" class="nav-link">Animals</a></li>
 
                     }
                     else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
@@ -111,34 +113,80 @@
     @RenderBody()
 
 
-    <environment include="Development">
-        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-        <script src="~/js/jquery.min.js"></script>
-        <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
-        <script src="~/js/popper.min.js"></script>
-        <script src="~/js/bootstrap.min.js"></script>
-        <script src="~/js/jquery.easing.1.3.js"></script>
-        <script src="~/js/jquery.waypoints.min.js"></script>
-        <script src="~/js/jquery.stellar.min.js"></script>
-        <script src="~/js/jquery.animateNumber.min.js"></script>
-        <script src="~/js/bootstrap-datepicker.js"></script>
-        <script src="~/js/jquery.timepicker.min.js"></script>
-        <script src="~/js/owl.carousel.min.js"></script>
-        <script src="~/js/jquery.magnific-popup.min.js"></script>
-        <script src="~/js/scrollax.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-        <script src="~/js/google-map.js"></script>
-        <script src="~/js/main.js"></script>
-        <!-- Syncfusion Essential JS 2 Scripts -->
-        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <!-- Data Table -->
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#MyTable').DataTable();
-            });
-        </script>
-    </environment>
+<environment include="Development">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.easing.1.3.js"></script>
+    <script src="~/js/jquery.waypoints.min.js"></script>
+    <script src="~/js/jquery.stellar.min.js"></script>
+    <script src="~/js/jquery.animateNumber.min.js"></script>
+    <script src="~/js/bootstrap-datepicker.js"></script>
+    <script src="~/js/jquery.timepicker.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="~/js/google-map.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.js.map"></script>
+    <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <!-- Data Table -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+    </script>
+    <!-- SweetAlert -->
+    <script src=" https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
+
+    @*jquery.unobtrusive-ajax
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>*@
+
+    <script type="text/javascript">
+        var validFilesTypes = ["bmp", "png", "jpg", "jpeg"];
+
+        var file = document.getElementById("image");
+        var isValidFile = false;
+        file.onchange = function () {
+            var path = file.value;
+            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+
+            for (var i = 0; i < validFilesTypes.length; i++) {
+                if (ext == validFilesTypes[i]) {
+                    isValidFile = true;
+                    break;
+                }
+                else {
+                    isValidFile = false;
+                }
+            }
+
+            if (!isValidFile) {
+
+                swal("System warning", "Invalid File. Please upload a File with" +
+                    " extension:\n" + validFilesTypes.join(", "), "warning");
+                file.value = "";
+            }
+            else {
+                var result = document.getElementById("imgpreview");
+                result.src = URL.createObjectURL(event.target.files[0]);
+            }
+        }
+
+    </script>
+
+</environment>
 
     @RenderSection("Scripts", required: false)
     <ejs-scripts></ejs-scripts>

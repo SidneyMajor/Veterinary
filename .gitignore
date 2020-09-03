@@ -354,3 +354,13 @@ MigrationBackup/
 /Veterinary/Models/SetPasswordViewModel.cs
 /Veterinary/Data/Entities/Appointment.cs
 *.cs
+/Veterinary/wwwroot/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js
+/Veterinary/wwwroot/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js
+/Veterinary/wwwroot/images/Clients/c2ea4184-3f56-4dc8-9259-cfffba16d517.jpg
+/Veterinary/wwwroot/images/Clients/8842ad67-5d5c-4d31-bac0-5ff8393ff92c.jpg
+/Veterinary/wwwroot/images/Clients/4e9aea11-d155-499e-b19a-6ac1fa5cd7b9.jpg
+/Veterinary/wwwroot/images/Clients/4e1adb3f-1c5f-4316-a4fe-5f90e3d3c24d.jpg
+/Veterinary/wwwroot/images/Clients/44950dc2-5f3d-4ccd-962a-6e60f305a194.jpg
+/Veterinary/wwwroot/images/Clients/42e73a10-3fb8-40b1-9733-2d8e630669bb.jpg
+/Veterinary/wwwroot/images/Clients/102a0209-e074-404a-9cc7-4d676e58234c.jpg
+/Veterinary/libman.json

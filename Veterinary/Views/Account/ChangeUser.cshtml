@@ -6,7 +6,7 @@
 <div class="container">
     <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>Update User</a>
+        <a style="font-size: 40px"><i class="fa fa-user mr-2" style="color:green"></i>User Profile</a>
 
     </div>
     <div class="row justify-content-center">
@@ -17,9 +17,10 @@
                 <div class="row no-gutters">
 
                     <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4" >
+                        <div class="contact-wrap w-100 p-md-5 p-4">
 
-                            <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
+                            <form asp-action="ChangeUser" method="post"  name="contactForm" class="contactForm"
+                                  enctype="multipart/form-data"  >
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
@@ -89,7 +90,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" enabled="false" >
+                                                <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" enabled="false">
                                                     <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                                 </ejs-dropdownlist>
                                                 <span asp-validation-for="SpecialtyID" class="text-danger"></span>
@@ -140,7 +141,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Change User" class="btn btn-outline-success" />
+                                            <input type="submit" value="Change User" class="btn btn-success" />
                                             <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Home</a>
                                             <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-outline-primary">Change Password</a>
                                             <div class="submitting"></div>
@@ -148,7 +149,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="text-success">@ViewBag.UserMessage</div>
+                                   
 
                                 </div>
                             </form>
@@ -159,13 +160,14 @@
                     <div class="col-md-5 d-flex align-items-stretch">
                         @if (!string.IsNullOrEmpty(Model.ImageUrl))
                         {
-                            @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="img" style=" background-image: url( @Url.Content(Model.ImageUrl) );" >
+                            <div class="col-md-12 d-flex align-items-center">
+                                <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
                             </div>
                         }
                         else
                         {
-                            <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);" >
+                            <div class="col-md-12 d-flex align-items-center">
+                                <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
                             </div>
                         }
 
@@ -176,44 +178,92 @@
     </div>
 </div>
 
-@section Scripts{
+@*@section Scripts{
     <script type="text/javascript">
-        var validFilesTypes = ["bmp", "gif", "png", "jpg", "jpeg"];
-        //function ValidateFile() {
+        var validFilesTypes = ["bmp","png", "jpg", "jpeg"];
+
         var file = document.getElementById("image");
         var isValidFile = false;
         file.onchange = function () {
             var path = file.value;
             var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
-            alert(ext);
 
             for (var i = 0; i < validFilesTypes.length; i++) {
                 if (ext == validFilesTypes[i]) {
                     isValidFile = true;
                     break;
                 }
+                else {
+                    isValidFile = false;
+                }
             }
-            alert(isValidFile);
+
             if (!isValidFile) {
 
-                alert("Invalid File. Please upload a File with" +
-                    " extension:\n" + validFilesTypes.join(", "));
+                swal("System warning", "Invalid File. Please upload a File with" +
+                    " extension:\n" + validFilesTypes.join(", "), "warning");
                 file.value = "";
             }
-            //return isValidFile;
-        }
-
-
-        // }
-    </script>
-    <script type="text/javascript">
-        function onRenderCell(args) {
-            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
-                //sets isDisabled to true to disable the date.
-                args.isDisabled = true;
+            else {
+                var result = document.getElementById("imgpreview");
+                alert(result);
+                result.src = URL.createObjectURL(event.target.files[0]);
             }
+
+        }
+
+        
+        
+        //function completed(data) {
+        //    //$.validator.unobtrusive.parse($form);
+           
+        //        swal("Success", "User updated!", "success");
+          
+        //};
+
+        //function error(data) {
+        //    swal("Error", "User updated!", "error");
+        //};
+
+
+        $(document).ready(function () {
+
+            $("#submitForm").submit(function (e) {
+                e.preventDefault();
+
+                //var fileInput = $('#image').value[0];
+                //var file = fileInput.files[0];
+                ////fdata.append("ImageFile", file);
+                var valdata = $("#submitForm").serialize();
+                //valdata.append("ImageFile", file)
+                alert(valdata);
+
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("ChangeUser")',
+                    data: valdata,
+                    dataType: 'json',
+                    success: function (response) {
+
+                        swal("Success", "User updated!", "success");
+                    },
+                    error: function (data) {
+                        swal("Error", "The user couldn't be updated!", "error");
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+
+        var previewimg = function (event) {
+            var result = document.getElementById("imgpreview");            
+            result.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
 
-   
-}
+
+}*@
