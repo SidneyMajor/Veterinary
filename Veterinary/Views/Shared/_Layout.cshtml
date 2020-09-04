@@ -146,6 +146,7 @@
             $('#MyTable').DataTable();
         });
     </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- SweetAlert -->
     <script src=" https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
 
@@ -154,36 +155,8 @@
         <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>*@
 
     <script type="text/javascript">
-        var validFilesTypes = ["bmp", "png", "jpg", "jpeg"];
-
-        var file = document.getElementById("image");
-        var isValidFile = false;
-        file.onchange = function () {
-            var path = file.value;
-            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
-
-            for (var i = 0; i < validFilesTypes.length; i++) {
-                if (ext == validFilesTypes[i]) {
-                    isValidFile = true;
-                    break;
-                }
-                else {
-                    isValidFile = false;
-                }
-            }
-
-            if (!isValidFile) {
-
-                swal("System warning", "Invalid File. Please upload a File with" +
-                    " extension:\n" + validFilesTypes.join(", "), "warning");
-                file.value = "";
-            }
-            else {
-                var result = document.getElementById("imgpreview");
-                result.src = URL.createObjectURL(event.target.files[0]);
-            }
-        }
-
+        imageClick();
+        validFiles();        
     </script>
 
 </environment>

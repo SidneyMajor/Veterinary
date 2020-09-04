@@ -19,8 +19,8 @@
                     <div class="col-md-7">
                         <div class="contact-wrap w-100 p-md-5 p-4">
 
-                            <form asp-action="ChangeUser" method="post"  name="contactForm" class="contactForm"
-                                  enctype="multipart/form-data"  >
+                            <form asp-action="ChangeUser" method="post" name="contactForm" class="contactForm"
+                                  enctype="multipart/form-data" id="form">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
@@ -28,14 +28,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="FirstName" id="firstname" type="text" placeholder="First Name" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="FirstName" id="FirstName" type="text" placeholder="First Name" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="FirstName" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="LastName" id="lastname" type="text" placeholder="Last Name" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="LastName" id="LastName" type="text" placeholder="Last Name" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="LastName" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nacionality" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Nationality" id="Nationality" placeholder="Nacionality" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="Nationality" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -52,29 +52,29 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <h3>Gender</h3>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M"></ejs-radiobutton>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="Gender" label="Male" value="M"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="Gender1" label="Female" value="F"></ejs-radiobutton>
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Address" id="Address" placeholder="Address" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="Address" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code (0000-000)" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="ZipCode" id="ZipCode" placeholder="Zip Code (0000-000)" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="ZipCode" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="TaxNumber" id="TaxNumber" placeholder="Tax Number" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="TaxNumber" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                     {
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <ejs-textbox ejs-for="SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Auto"></ejs-textbox>
+                                                <ejs-textbox ejs-for="SSNumber" id="SSNumber" placeholder="Social Security Number" type="text" floatLabelType="Auto"></ejs-textbox>
                                                 <span asp-validation-for="SSNumber" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -110,7 +110,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Document" id="Document" placeholder="Nº Document" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="Document" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -119,19 +119,19 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="SelectDate" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="visibility:hidden">
                                         <div class="form-group">
                                             <label>Select a Image</label>
                                             <input asp-for="ImageFile" type="file" id="image" accept="image/*" />
@@ -141,7 +141,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" value="Change User" class="btn btn-success" />
+                                            <input type="submit"  value="Change User" class="btn btn-success" id="submit" />
                                             <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Home</a>
                                             <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-outline-primary">Change Password</a>
                                             <div class="submitting"></div>
@@ -149,7 +149,7 @@
                                         </div>
                                     </div>
 
-                                   
+
 
                                 </div>
                             </form>
@@ -158,112 +158,138 @@
                     </div>
 
                     <div class="col-md-5 d-flex align-items-stretch">
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
+
+                        <div class="card m-4">
+                            <div class="card-header bg-light">
+                                Profile picture
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
+                            <div class="card-body bg-light ">
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                {
+                                    <div class="al">
+
+                                    </div>
+                                    <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" style="max-height:100%; max-width:100%; border-radius:10px; margin:auto; cursor:pointer" />
+                                }
+                                else
+                                {
+                                    <img src="../images/img.jpg" id="imgpreview" alt="image" style="max-height:100%; max-width:100%; border-radius:10px; margin:auto; cursor:pointer" />
+                                }
                             </div>
-                        }
+                        </div>
 
                     </div>
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@*@section Scripts{
-    <script type="text/javascript">
-        var validFilesTypes = ["bmp","png", "jpg", "jpeg"];
+<script type="text/javascript">
 
-        var file = document.getElementById("image");
-        var isValidFile = false;
-        file.onchange = function () {
-            var path = file.value;
-            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+    function updateUser() {
 
-            for (var i = 0; i < validFilesTypes.length; i++) {
-                if (ext == validFilesTypes[i]) {
-                    isValidFile = true;
-                    break;
-                }
-                else {
-                    isValidFile = false;
-                }
-            }
+        var formData = new FormData();
 
-            if (!isValidFile) {
+        var fileInput = $('#image')[0].files[0];
+        var gender = "";
+        if (document.getElementById("Gender").checked == true) {
+            gender = $('#Gender').val();
+        }
+        else if (document.getElementById("Gender1").checked == true) {
 
-                swal("System warning", "Invalid File. Please upload a File with" +
-                    " extension:\n" + validFilesTypes.join(", "), "warning");
-                file.value = "";
-            }
-            else {
-                var result = document.getElementById("imgpreview");
-                alert(result);
-                result.src = URL.createObjectURL(event.target.files[0]);
-            }
+            gender = $('#Gender1').val();
+        }
+
+        var documentType = document.getElementById('DocumentTypeID').ej2_instances[0];
+        alert(documentType.value);
+
+        var specialty = "";
+        if (document.getElementById('SpecialtyID').ej2_instances[0]!=null) {
+
+            specialty = document.getElementById('SpecialtyID').ej2_instances[0];
+            alert(specialty.value);
+        }
+        else {
+            specialty = 1;
+        }
+
+        formData.append("FirstName", $('#FirstName').val());
+        formData.append("LastName", $('#LastName').val());
+        formData.append("Nationality", $('#Nationality').val());
+        formData.append("Gender", gender);
+        formData.append("Address", $('#Address').val());
+        formData.append("ZipCode", $('#ZipCode').val());
+        formData.append("TaxNumber", $('#TaxNumber').val());
+        formData.append("SSNumber", $('#SSNumber').val());
+        formData.append("SpecialtyID", specialty.value);
+        formData.append("DocumentTypeID", documentType.value);
+        formData.append("Document", $('#Document').val());
+        formData.append("PhoneNumber", $('#PhoneNumber').val());
+        formData.append("SelectDate", $('#SelectDate').val());
+        if (document.getElementById("image").files[0]!= null) {
+            formData.append("ImageFile", $('#image')[0].files[0]);
 
         }
 
-        
-        
-        //function completed(data) {
-        //    //$.validator.unobtrusive.parse($form);
-           
-        //        swal("Success", "User updated!", "success");
-          
-        //};
-
-        //function error(data) {
-        //    swal("Error", "User updated!", "error");
-        //};
 
 
-        $(document).ready(function () {
+        $.ajax({
+            type: "post",
+            method:"post",
+            url: '@Url.Action("ChangeUser","Account")',
+            data: formData,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (formData) {
+                alert("success");
+            },
+            error: function (formData) {
+                alert("error");
+            }
 
-            $("#submitForm").submit(function (e) {
-                e.preventDefault();
-
-                //var fileInput = $('#image').value[0];
-                //var file = fileInput.files[0];
-                ////fdata.append("ImageFile", file);
-                var valdata = $("#submitForm").serialize();
-                //valdata.append("ImageFile", file)
-                alert(valdata);
-
-                $.ajax({
-                    type: 'post',
-                    url: '@Url.Action("ChangeUser")',
-                    data: valdata,
-                    dataType: 'json',
-                    success: function (response) {
-
-                        swal("Success", "User updated!", "success");
-                    },
-                    error: function (data) {
-                        swal("Error", "The user couldn't be updated!", "error");
-
-                    }
-                });
-            });
         });
-    </script>
-
-    <script type="text/javascript">
+      }
 
 
-        var previewimg = function (event) {
-            var result = document.getElementById("imgpreview");            
-            result.src = URL.createObjectURL(event.target.files[0]);
+
+    @*function updateUser () {
+        alert("teste");
+
+        var input = document.getElementById('image');
+        var formData = new FormData();
+        if (input!=null) {
+            var files = input.files;
+            alert("teste");
+            for (var i = 0; i != files.length; i++) {
+                formData.append("ImageFile", files[i].Value);
+            }
+            alert("teste 3");
         }
-    </script>
+        alert($("#form").serialize());
+        var Form = document.getElementById('form');
+        var childs = Form.serialize();
+        for (i = 0; i < childs.length; i++) {
+            alert("", childs[i].value);
+            var Value = childs[i].getAttribute('id').ej2_instances[0];
+            formData.append(Value, childs[i].ej2_instances[0].value)
 
+        }
+        alert("teste 2");
+        //formData.append($("#form").serialize())
+        $.ajax({
+           url: "@Url.Action("ChangeUser")",
+           data: formData,
+            type: "post",
+            dataType:"json",
+           success: function (response) {
+              alert("sucesso");
+           }
 
-}*@
+        });
+     };*@
+
+</script>

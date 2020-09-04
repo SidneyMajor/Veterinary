@@ -236,7 +236,8 @@ namespace Veterinary.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
+        public async Task<JsonResult> ChangeUser(ChangeUserViewModel model)
+        
         {
 
             if (this.ModelState.IsValid)
@@ -258,7 +259,7 @@ namespace Veterinary.Controllers
                         else
                         {
                             this.ModelState.AddModelError(string.Empty, "Invalid File. Please upload a File with extension (bmp, gif, png, jpg, jpeg)");
-                            return this.View(model);
+                            return Json(model);
                         }
 
                     }
@@ -299,7 +300,7 @@ namespace Veterinary.Controllers
             }
           
             model.Documents = _documentTypeRepository.GetAll();            
-            return this.View(model);
+            return Json(model);
 
         }
 

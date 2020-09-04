@@ -1,101 +1,49 @@
 ﻿@model IEnumerable<Veterinary.Data.Entities.Animal>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WasDeleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Breed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Weight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Size)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Species)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Breed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Species.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="AnimalDetails" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+@{
+
+    List<object> commands = new List<object>();
+
+    commands.Add(new { type = "Details", buttonOption = new { content = "", iconCss = "fa fa-list", cssClass = "e-flat" } });
+
 }
-    </tbody>
-</table>
+<ejs-grid id="Grid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
+    <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+    <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="Name" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+        <e-grid-column field="Breed" headerText="Breed" width="100" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Gender" headerText="Gender" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Color" headerText="Color" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Weight" headerText="Weight" format="N2" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Size" headerText="Size" format="N2" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Species.Description" headerText="Species" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column headerText="Manage Records" width="100" commands="commands" ></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<script type="text/javascript">
+    function commandClick(args) { // display row data
+        @*//alert(args.rowData.Id);
+        $.ajax({
+
+            url: "@Url.Action("AnimalDetails","Admin")",
+            data: { id: args.rowData.Id },
+            type: "get",
+            dataType: "json",
+            success: function (response) {
+                //alert(JSON.stringify(response));
+                alert(response.animal.id);
+                location.href
+            }
+
+        })*@
+
+        window.location.href = "/Admin/AnimalDetails?id=" + args.rowData.Id;
+
+    }
+
+</script>
+
