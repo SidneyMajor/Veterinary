@@ -63,10 +63,19 @@
                                         </div>
                                     </div>
 
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code (0000-000)" type="text" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="City" id="City" placeholder="City" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <span asp-validation-for="City" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -138,9 +147,8 @@
 
 
                                     <div class="col-md-12">
-
+                                        <labels>Select a Image </labels>
                                         <div class="form-group">
-                                            <label>Select a Image </label>
                                             <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>

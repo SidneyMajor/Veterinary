@@ -196,6 +196,8 @@ namespace Veterinary.Helpers
                 DoctorID=model.DoctorID,
                 SpecialtyID=model.SpecialtyID,
                 Status = "N/Checked",
+                StartTime=DateTime.Now,
+                EndTime=DateTime.Now.AddMinutes(30),
                
             };
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Veterinary.Data.Entities
 
         public bool WasDeleted { get; set; }
 
+        //Apagar estas props... e fazer a migração
         [Required]
         [DataType(DataType.Date)]
         public DateTime AppointmentDate { get; set; }
@@ -35,6 +37,8 @@ namespace Veterinary.Data.Entities
         [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
 
+        [NotMapped]
+        public string Subject { get; set; }
 
         public string Remarks { get; set; }
 

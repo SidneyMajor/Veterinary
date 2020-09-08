@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -24,13 +25,16 @@ namespace Veterinary.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
+        private readonly IAppointmentRepsitory _appointmentRepsitory;
+        private readonly DataContext contex;
 
         public AdminController(IDocumentTypeRepository documentTypeRepository,
             IUserHelper userHelper, IClientRepository clientRepository,
             //IImageHelper imageHelper, IConverterHelper converterHelper,
             /*IMailHelper mailHelper,*/ ISpecialtyRepository specialtyRepository,
             IDoctorRepository doctorRepository, IAnimalRepository animalRepository,
-            ISpeciesRepository speciesRepository)
+            ISpeciesRepository speciesRepository, IAppointmentRepsitory appointmentRepsitory,
+            DataContext contex)
         {
             _documentTypeRepository = documentTypeRepository;
             _clientRepository = clientRepository;
@@ -42,6 +46,8 @@ namespace Veterinary.Controllers
             _doctorRepository = doctorRepository;
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
+            _appointmentRepsitory = appointmentRepsitory;
+            this.contex = contex;
         }
 
 
@@ -159,6 +165,20 @@ namespace Veterinary.Controllers
                 Animal = model
             };
             return View(viewmodel);
+        }
+
+
+        public IActionResult AdminAppointment()
+        {
+            IEnumerable<Appointment> appointments = new List<Appointment>();
+            appointments =  this.contex.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
+            foreach (var item in appointments)
+            {
+                item.Subject = item.Animal.Name;
+            }
+            ViewBag.appointments = appointments.ToList();
+
+            return View();
         }
     }
 }

@@ -206,7 +206,7 @@ namespace Veterinary.Controllers
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-           
+            //ViewBag.success = "";
             if (await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
                 var doctor = await _doctorRepository.GetDoctorByUserEmailAsync(this.User.Identity.Name);
@@ -236,10 +236,8 @@ namespace Veterinary.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChangeUser(ChangeUserViewModel model)
-        
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)        
         {
-
             if (this.ModelState.IsValid)
             {
 
@@ -259,7 +257,7 @@ namespace Veterinary.Controllers
                         else
                         {
                             this.ModelState.AddModelError(string.Empty, "Invalid File. Please upload a File with extension (bmp, gif, png, jpg, jpeg)");
-                            return Json(model);
+                            this.View(model);
                         }
 
                     }
@@ -281,7 +279,7 @@ namespace Veterinary.Controllers
                         await _doctorRepository.UpdateAsync(doctor);
                     }
 
-                   
+                   // ViewBag.success = "Success";
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -300,7 +298,7 @@ namespace Veterinary.Controllers
             }
           
             model.Documents = _documentTypeRepository.GetAll();            
-            return Json(model);
+            return this.View(model);
 
         }
 

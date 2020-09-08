@@ -1,0 +1,52 @@
+﻿
+
+<div class="col-lg-9 control-section">
+    <div class="schedule-wrapper">
+        <ejs-schedule id="schedule" height="650px" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="eventClick" currentView="WorkWeek" showQuickInfo="false">
+            <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
+            <e-schedule-eventsettings dataSource="@ViewBag.appointments">
+
+            </e-schedule-eventsettings>
+        </ejs-schedule>
+    </div>
+</div>
+
+
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >
+    Launch demo modal
+</button>*@
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="datetime" id="test" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function eventClick(event) {
+
+        var date = document.getElementById("test");
+        date.value = event.startTime;
+        $("#myModal").modal();
+        console.log(event);
+    }
+
+
+</script>
