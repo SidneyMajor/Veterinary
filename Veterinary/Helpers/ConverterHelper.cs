@@ -185,20 +185,21 @@ namespace Veterinary.Helpers
             };
         }
 
-        public Appointment ToAppointment(NewAppointmentViewModel model, bool isNew)
+        public Appointment ToAppointment(AppointmentViewModel model, bool isNew)
         {
             return new Appointment
             {
+                //Todo: get value to subject 
                 Id = isNew ? 0 : model.Id,
-                AppointmentDate = model.SelectDate.Value,
-                AppointmentTime = model.SelectTime.Value,
+                //AppointmentDate = model.SelectDate.Value,
+                //AppointmentTime = model.SelectTime.Value,
+                //Subject=model.Animal.Name,
                 AnimalID=model.AnimalID,
                 DoctorID=model.DoctorID,
                 SpecialtyID=model.SpecialtyID,
-                Status = "N/Checked",
-                StartTime=DateTime.Now,
-                EndTime=DateTime.Now.AddMinutes(30),
-               
+                Status = "Pending",
+                StartTime=model.StartTime,
+                EndTime=model.EndTime,
             };
         }
         //public RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType)

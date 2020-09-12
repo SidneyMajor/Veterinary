@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"] - Veterinary</title>
+
+
+    <environment include="Development">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="~/css/animate.css">
+
+        <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="~/css/magnific-popup.css">
+
+        <link href="~/lib/bootstrap-4.5.2-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+        <link href="~/lib/bootstrap-4.5.2-dist/css/bootstrap.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/jquery.timepicker.css">
+
+        <link rel="stylesheet" href="~/css/flaticon.css">
+        <link rel="stylesheet" href="~/css/style.css">
+
+        <!-- Syncfusion Essential JS 2 Styles -->
+        <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+        <!-- Data Table -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+
+
+    </environment>
+
+
+
+</head>
+
+<body>
+
+ 
+
+
+    <partial name="_CookieConsentPartial" />
+
+
+
+
+    @RenderBody()
+
+    <environment include="Development">
+        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+        @*<script src="~/js/popper.min.js"></script>*@
+        @*<script src="~/js/bootstrap.min.js"></script>*@
+        <script src="~/js/jquery.easing.1.3.js"></script>
+        <script src="~/js/jquery.waypoints.min.js"></script>
+        <script src="~/js/jquery.stellar.min.js"></script>
+        <script src="~/js/jquery.animateNumber.min.js"></script>
+        <script src="~/js/bootstrap-datepicker.js"></script>
+        <script src="~/js/jquery.timepicker.min.js"></script>
+        <script src="~/js/owl.carousel.min.js"></script>
+        <script src="~/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/js/scrollax.min.js"></script>
+
+        <script src="~/js/main.js"></script>
+        <script src="~/js/site.js"></script>
+        <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.js.map"></script>
+        <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.min.js"></script>
+        <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.bundle.js"></script>
+        <script src="~/lib/bootstrap-4.5.2-dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Syncfusion Essential JS 2 Scripts -->
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
+        @*<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="//cdn.syncfusion.com/js/assets/external/jsrender.min.js"></script>
+            <script src="//cdn.syncfusion.com/17.4.0.46/js/web/ej.web.all.js"></script>
+            <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+        <!-- Data Table -->
+        <script src=" https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+        </script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- SweetAlert -->
+        <script src=" https://unpkg.com/sweetalert/dist/sweetalert.min.js "></script>
+
+        <!--jquery.unobtrusive-ajax-->
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+
+
+    </environment>
+
+
+    @RenderSection("Scripts", required: false)
+    <ejs-scripts></ejs-scripts>
+
+</body>
+</html>
+

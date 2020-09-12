@@ -21,13 +21,13 @@ namespace Veterinary.Data.Entities
         public bool WasDeleted { get; set; }
 
         //Apagar estas props... e fazer a migração
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime AppointmentDate { get; set; }
+        //[Required]
+        //[DataType(DataType.Date)]
+        //public DateTime AppointmentDate { get; set; }
 
-        [Required]
-        [DataType(DataType.Time)]
-        public DateTime AppointmentTime { get; set; }
+        //[Required]
+        //[DataType(DataType.Time)]
+        //public DateTime AppointmentTime { get; set; }
 
         [Required]
         [DataType(DataType.Time)]
@@ -35,10 +35,8 @@ namespace Veterinary.Data.Entities
 
         [Required]
         [DataType(DataType.Time)]
-        public DateTime EndTime { get; set; }
-
-        [NotMapped]
-        public string Subject { get; set; }
+        public DateTime EndTime { get; set; }        
+      
 
         public string Remarks { get; set; }
 
@@ -65,5 +63,8 @@ namespace Veterinary.Data.Entities
 
 
         public Doctor Doctor { get; set; }
+
+        [NotMapped]
+        public string Subject { get; set; }
     }
 }

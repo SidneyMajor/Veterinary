@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data;
@@ -19,12 +20,14 @@ namespace Veterinary.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IUserHelper _userHelper;
         private readonly DataContext _context;
+        private readonly ICombosHelper _combosHelper;
         private readonly ISpecialtyRepository _specialtyRepository;
 
         public AppointmentsController(IAppointmentRepsitory appointmentRepsitory,
             IAnimalRepository animalRepository,
             IDoctorRepository doctorRepository, IConverterHelper converterHelper,
-            IUserHelper userHelper, ISpecialtyRepository specialtyRepository, DataContext context)
+            IUserHelper userHelper, ISpecialtyRepository specialtyRepository, DataContext context,
+             ICombosHelper combosHelper)
         {
             _appointmentRepsitory = appointmentRepsitory;
             _animalRepository = animalRepository;
@@ -32,6 +35,7 @@ namespace Veterinary.Controllers
             _converterHelper = converterHelper;
             _userHelper = userHelper;
             _context = context;
+           _combosHelper = combosHelper;
             _specialtyRepository = specialtyRepository;
         }
 
@@ -58,21 +62,20 @@ namespace Veterinary.Controllers
             return View(appointment);
         }
 
-
-
+        //Todo: Appointment Status:Pending, Accepted, Canceled, Declined
         // GET: Appointments/Create
-        public async Task<IActionResult> CreateAppointment()
+        public async Task<IActionResult> Create(DateTime startTime, DateTime endTime)
         {
-            var model = new NewAppointmentViewModel
+            var model = new AppointmentViewModel
             {
-                Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name),
-                Specialties = await _specialtyRepository.GetAll().ToListAsync(),
-                Doctors = await _doctorRepository.GetAll().ToListAsync(),
+                Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name)),
+                Specialties = _combosHelper.GetComboSpecialties(),
+                Doctors = _combosHelper.GetComboDoctors(0),
+                StartTime = startTime,
+                EndTime = endTime,
             };
-            ViewBag.Enabled = false;
-            return View(model);
+            return PartialView("_viewPartial", model);
         }
-
 
 
 
@@ -80,8 +83,8 @@ namespace Veterinary.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAppointment(NewAppointmentViewModel model)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AppointmentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -95,16 +98,20 @@ namespace Veterinary.Controllers
                 if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
                 {
                     await _appointmentRepsitory.CreateAsync(appointment);
-                    return RedirectToAction(nameof(Index));
+                    //ViewBag.appointments = appointments.ToList();
+                    return Json(new { isValid = true, message = "To add appointment" });
+                }
+                else
+                {
+                    return Json(new { isValid = false, message = "The appointment you have chosen is no longer available. Please choose another time." });
                 }
 
-                ModelState.AddModelError(string.Empty, "The appointment you have chosen is no longer available. Please choose another time.");
             }
-            model.Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name);
-            model.Doctors = await _doctorRepository.GetAll().ToListAsync();
-            model.Specialties = await _specialtyRepository.GetAll().ToListAsync();
-            ViewBag.Enabled = true;
-            return View(model);
+            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
+            model.Specialties = _combosHelper.GetComboSpecialties();
+            model.Doctors = _combosHelper.GetComboDoctors(0);
+
+            return PartialView("_viewPartial", model);
         }
 
 
@@ -197,6 +204,13 @@ namespace Veterinary.Controllers
         private bool AppointmentExists(int id)
         {
             return _context.Appointments.Any(e => e.Id == id);
+        }
+
+
+        public JsonResult GetDoctors(int specialtyId)
+        {
+            var doctors = _doctorRepository.GetDoctorsSpecialtyId(specialtyId);
+            return this.Json(doctors.OrderBy(c => c.FirstName));
         }
     }
 }

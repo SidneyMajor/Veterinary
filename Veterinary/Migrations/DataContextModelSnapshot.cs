@@ -135,7 +135,8 @@ namespace Veterinary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Breed");
+                    b.Property<string>("Breed")
+                        .IsRequired();
 
                     b.Property<string>("Color");
 
@@ -147,7 +148,9 @@ namespace Veterinary.Migrations
 
                     b.Property<string>("ImageUrl");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Remarks");
 
@@ -179,10 +182,6 @@ namespace Veterinary.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AnimalID");
-
-                    b.Property<DateTime>("AppointmentDate");
-
-                    b.Property<DateTime>("AppointmentTime");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -240,20 +239,24 @@ namespace Veterinary.Migrations
                     b.Property<int>("DocumentTypeID");
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(30);
 
                     b.Property<string>("Gender");
 
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(30);
 
                     b.Property<string>("Nationality");
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<string>("TaxNumber");
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasMaxLength(9);
 
                     b.Property<DateTime>("UpdatedDate");
 
@@ -261,7 +264,8 @@ namespace Veterinary.Migrations
 
                     b.Property<bool>("WasDeleted");
 
-                    b.Property<string>("ZipCode");
+                    b.Property<string>("ZipCode")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -295,14 +299,16 @@ namespace Veterinary.Migrations
                     b.Property<int>("DocumentTypeID");
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(30);
 
                     b.Property<string>("Gender");
 
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(30);
 
                     b.Property<string>("Nationality");
 
@@ -312,7 +318,9 @@ namespace Veterinary.Migrations
 
                     b.Property<int>("SpecialtyID");
 
-                    b.Property<string>("TaxNumber");
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasMaxLength(9);
 
                     b.Property<DateTime>("UpdatedDate");
 
@@ -320,7 +328,8 @@ namespace Veterinary.Migrations
 
                     b.Property<bool>("WasDeleted");
 
-                    b.Property<string>("ZipCode");
+                    b.Property<string>("ZipCode")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

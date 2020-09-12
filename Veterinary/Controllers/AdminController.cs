@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Veterinary.Data;
 using Veterinary.Data.Entities;
@@ -19,35 +20,37 @@ namespace Veterinary.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IClientRepository _clientRepository;
         //private readonly IImageHelper _imageHelper;
-        //private readonly IConverterHelper _converterHelper;
+        private readonly IConverterHelper _converterHelper;
         //private readonly IMailHelper _mailHelper;
         private readonly ISpecialtyRepository _specialtyRepository;
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
         private readonly IAppointmentRepsitory _appointmentRepsitory;
-        private readonly DataContext contex;
+        private readonly DataContext context;
+        private readonly ICombosHelper _combosHelper;
 
         public AdminController(IDocumentTypeRepository documentTypeRepository,
-            IUserHelper userHelper, IClientRepository clientRepository,
-            //IImageHelper imageHelper, IConverterHelper converterHelper,
+            IUserHelper userHelper, IClientRepository clientRepository
+           /*IImageHelper imageHelper*/, IConverterHelper converterHelper,
             /*IMailHelper mailHelper,*/ ISpecialtyRepository specialtyRepository,
             IDoctorRepository doctorRepository, IAnimalRepository animalRepository,
             ISpeciesRepository speciesRepository, IAppointmentRepsitory appointmentRepsitory,
-            DataContext contex)
+            DataContext context, ICombosHelper combosHelper)
         {
             _documentTypeRepository = documentTypeRepository;
             _clientRepository = clientRepository;
             _userHelper = userHelper;
             //_imageHelper = imageHelper;
-            //_converterHelper = converterHelper;
+            _converterHelper = converterHelper;
             //_mailHelper = mailHelper;
             _specialtyRepository = specialtyRepository;
             _doctorRepository = doctorRepository;
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
             _appointmentRepsitory = appointmentRepsitory;
-            this.contex = contex;
+            this.context = context;
+           _combosHelper = combosHelper;
         }
 
 
@@ -154,7 +157,7 @@ namespace Veterinary.Controllers
 
             var client = await _clientRepository.GetClientByUserEmailAsync(model.User.Email);
 
-            if (client==null)
+            if (client == null)
             {
                 return NotFound();
             }
@@ -171,14 +174,98 @@ namespace Veterinary.Controllers
         public IActionResult AdminAppointment()
         {
             IEnumerable<Appointment> appointments = new List<Appointment>();
-            appointments =  this.contex.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
-            foreach (var item in appointments)
-            {
-                item.Subject = item.Animal.Name;
-            }
-            ViewBag.appointments = appointments.ToList();
+            appointments = this.context.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
+           
 
-            return View();
+            var model = new AppointmentViewModel();
+            ViewBag.appointments = appointments.ToList();
+            //ViewBag.Enabled = true;
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> AddAppointment( DateTime startTime, DateTime endTime)
+        {
+
+            var model = new AppointmentViewModel
+            {
+                Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name)),
+                Specialties = _combosHelper.GetComboSpecialties(),
+                Doctors = _combosHelper.GetComboDoctors(0),
+                StartTime = startTime,
+                EndTime = endTime,
+            };
+
+            return PartialView("_AppointmentAllPartial", model);
+        }
+
+
+        public  JsonResult GetDoctors(int specialtyId)
+        {
+            var doctors = _doctorRepository.GetDoctorsSpecialtyId(specialtyId);
+            return this.Json(doctors.OrderBy(c => c.FirstName));
+        }
+
+        //public IEnumerable<SelectListItem> GetComboProducts()
+        //{
+        //    var list = this.context.Animals.Select(p => new SelectListItem
+        //    {
+        //        Text = p.Name,
+        //        Value = p.Id.ToString()
+        //    }).ToList();
+
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "(Select an Animal...)",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+        //}
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddAppointment(AppointmentViewModel model)
+        {
+            //IEnumerable<Appointment> appointments = new List<Appointment>();
+            //appointments = this.context.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
+            //foreach (var item in appointments)
+            //{
+            //    item.Subject = item.Animal.Name;
+            //}
+
+            if (ModelState.IsValid)
+            {
+                //Todo: Fazer as validaçoes necessarias antes de criar uma consulta
+                Appointment appointment = _converterHelper.ToAppointment(model, true);
+                appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+                appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+                appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+                //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+                if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
+                {
+                    await _appointmentRepsitory.CreateAsync(appointment);
+                    //ViewBag.appointments = appointments.ToList();
+                    return Json(new { isValid = true, message="To add appointment"});
+                }
+                else
+                {
+                    return Json(new { isValid = false, message = "The appointment you have chosen is no longer available. Please choose another time."});
+                }
+
+               
+            }
+
+            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
+            model.Specialties = _combosHelper.GetComboSpecialties();
+            model.Doctors = _combosHelper.GetComboDoctors(0);
+
+
+            return PartialView("_AppointmentAllPartial", model);
+
+
         }
     }
 }

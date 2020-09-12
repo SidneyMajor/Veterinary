@@ -149,14 +149,14 @@
                                     <div class="col-md-12">
                                         <labels>Select a Image </labels>
                                         <div class="form-group">
-                                            <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
+                                            <input asp-for="ImageFile" accept="image/*" type="file" id="image"  onchange="validFiles()" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" onclick="ValidateFile()" value="Register" class="btn btn-outline-success" />
+                                            <input type="submit" value="Register" class="btn btn-outline-success"  />
                                             <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back </a>
                                             <div class="submitting"></div>
                                         </div>
@@ -170,8 +170,8 @@
                     </div>
 
                     <div class="col-md-5 d-flex align-items-stretch">
-                         <div class="col-md-12 d-flex align-items-center">
-                            <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
+                        <div class="col-md-12 d-flex align-items-center">
+                            <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" onclick="imageClick()"/>
                         </div>
                     </div>
                 </div>
@@ -186,42 +186,45 @@
     </p>
 </div>
 
+
+
+
 @*@section Scripts{
-    
-    <script type="text/javascript">
-        var validFilesTypes = ["bmp","png", "jpg", "jpeg"];
-        //function ValidateFile() {
-        var file = document.getElementById("image");
-        var isValidFile = false;
-        file.onchange = function () {
-            var path = file.value;
-            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
-            //alert(ext);
 
-            for (var i = 0; i < validFilesTypes.length; i++) {
-                if (ext == validFilesTypes[i]) {
-                    isValidFile = true;
-                    break;
+        <script type="text/javascript">
+            var validFilesTypes = ["bmp","png", "jpg", "jpeg"];
+            //function ValidateFile() {
+            var file = document.getElementById("image");
+            var isValidFile = false;
+            file.onchange = function () {
+                var path = file.value;
+                var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+                //alert(ext);
+
+                for (var i = 0; i < validFilesTypes.length; i++) {
+                    if (ext == validFilesTypes[i]) {
+                        isValidFile = true;
+                        break;
+                    }
+                    else {
+                        isValidFile = false;
+                    }
                 }
-                else {
-                    isValidFile = false;
+               // alert(isValidFile);
+                if (!isValidFile) {
+
+                    swal("System warning","Invalid File. Please upload a File with" +
+                        " extension:\n" + validFilesTypes.join(", "), "warning");
+                    file.value = "";
                 }
+                //return isValidFile;
             }
-           // alert(isValidFile);
-            if (!isValidFile) {
-
-                swal("System warning","Invalid File. Please upload a File with" +
-                    " extension:\n" + validFilesTypes.join(", "), "warning");
-                file.value = "";
-            }
-            //return isValidFile;
-        }
 
 
-        // }
-    </script>
-   
+            // }
+        </script>
 
 
-}*@
+
+    }*@
 

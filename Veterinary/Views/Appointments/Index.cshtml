@@ -21,12 +21,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.WasDeleted)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppointmentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppointmentTime)
-            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.AppointmentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppointmentTime)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.StartTime)
             </th>
@@ -49,47 +49,162 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WasDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Animal.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Doctor.FullName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WasDeleted)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.AppointmentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppointmentTime)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Animal.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doctor.FullName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+<div class="schedule-wrapper">
+    <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
+                  currentView="WorkWeek" showQuickInfo="false">
+        <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
+        <e-schedule-eventsettings dataSource="Model">
+
+        </e-schedule-eventsettings>
+    </ejs-schedule>
+
+</div>
+
+<div id="PlaceHolder"></div>
+
+<script type="text/javascript">
+
+
+
+    function cellClick(event) {
+        //The toISOString() method returns a string in simplified extended ISO format (ISO 8601),expected output: 2011-10-05T14:48:00.000Z
+        console.log(event.startTime.toISOString());
+        console.log(typeof event.startTime);
+        console.log(event.endTime.toISOString());
+        console.log(typeof event.endTime);
+
+        var url = '@Url.Action("Create", "Appointments")';
+        var formData = new FormData();
+
+        formData.append("startTime", event.startTime.toISOString());
+        formData.append("endTime", event.endTime.toISOString());
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { startTime: event.startTime.toISOString(), endTime: event.endTime.toISOString() },
+                success: function (res) {
+                    var PlaceHolder = $("#PlaceHolder");
+                    console.log(res);
+                    PlaceHolder.html(res);
+                    PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                        $(document).off('focusin.modal')
+                    });
+                    PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Add Appointment');
+                    PlaceHolder.find('.modal').modal('show');
+                }
+            })
+
+
+    }
+
+    function change() {
+        console.log($("#SpecialtyID").val());
+            $("#DoctorID").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDoctors","Appointments")',
+                dataType: 'json',
+                data: { specialtyId: $("#SpecialtyID").val() },
+                success: function (doctors) {
+                    console.log(doctors);
+                    debugger;
+                    $("#DoctorID").append('<option value="0">(Select a Veterinary...)</option>');
+                    $.each(doctors, function (i, doctor) {
+                        $("#DoctorID").append('<option value="'
+                            + doctor.id + '">'
+                            + doctor.fullName + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve doctor.' + ex);
+                }
+            })
+            return false;
+
+    }
+
+    function addAppointment() {
+        alert("create");
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "Appointments")',
+            data: $("#form").serialize(),
+            success: function (res) {
+                if (res.isValid) {
+                    $('#myModal').modal('hide');
+                    swal("Seccess", res.message, "success");
+                    //reload the page
+                    window.location = window.location.pathname;
+                }
+                else {
+                    $('#myModal').modal('hide');
+                    swal("Error", res.message, "warning");
+
+                }
+            },
+            error: function (ex) {
+                swal('Failed to create appointment.' + ex.serialize());
+            }
+
+
+        })
+    }
+
+</script>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
