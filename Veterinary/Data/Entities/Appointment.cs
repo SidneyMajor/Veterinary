@@ -65,6 +65,19 @@ namespace Veterinary.Data.Entities
         public Doctor Doctor { get; set; }
 
         [NotMapped]
-        public string Subject { get; set; }
+        public string Subject { 
+            get 
+            {
+                if (Animal==null)
+                {
+                    return $"Unknown -{ this.Status}";
+                }
+                else
+                {
+                    return $"{this.Animal.Name} - {this.Status}";
+                }
+            
+            } 
+        }
     }
 }

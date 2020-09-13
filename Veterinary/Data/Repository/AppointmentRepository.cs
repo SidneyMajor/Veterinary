@@ -43,11 +43,11 @@ namespace Veterinary.Data.Repository
 
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
-                return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor)
-                    .ThenInclude(a => a.User).OrderByDescending(a => a.StartTime);
+                return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
+                    .Include(a => a.User).OrderByDescending(a => a.StartTime);
             }
-
-            return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor)
+           
+            return  _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
                 .Where(a => a.User == user && a.WasDeleted == false)
                 .OrderByDescending(a => a.StartTime);
         }

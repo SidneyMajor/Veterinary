@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,7 +36,7 @@ namespace Veterinary.Controllers
             _converterHelper = converterHelper;
             _userHelper = userHelper;
             _context = context;
-           _combosHelper = combosHelper;
+            _combosHelper = combosHelper;
             _specialtyRepository = specialtyRepository;
         }
 
@@ -46,7 +47,7 @@ namespace Veterinary.Controllers
         }
 
         // GET: Appointments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> ConfirmSchedule(int? id, string status)
         {
             if (id == null)
             {
@@ -59,11 +60,29 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            return View(appointment);
+            try
+            {
+                appointment.Status = status;
+                await _appointmentRepsitory.UpdateAsync(appointment);
+                return Json(new { result = status });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _appointmentRepsitory.ExistAsync(appointment.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
         }
 
-        //Todo: Appointment Status:Pending, Accepted, Canceled, Declined
+        //Todo: Appointment Status:Pending, Accepted, Canceled
         // GET: Appointments/Create
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create(DateTime startTime, DateTime endTime)
         {
             var model = new AppointmentViewModel
@@ -74,7 +93,7 @@ namespace Veterinary.Controllers
                 StartTime = startTime,
                 EndTime = endTime,
             };
-            return PartialView("_viewPartial", model);
+            return PartialView("_viewCreatePartial", model);
         }
 
 
@@ -83,13 +102,18 @@ namespace Veterinary.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AppointmentViewModel model)
         {
             if (ModelState.IsValid)
             {
                 //Todo: Fazer as validaçoes necessarias antes de criar uma consulta
                 Appointment appointment = _converterHelper.ToAppointment(model, true);
+                //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                //if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+                //{
+                //    user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
+                //}
                 appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                 appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
@@ -99,19 +123,19 @@ namespace Veterinary.Controllers
                 {
                     await _appointmentRepsitory.CreateAsync(appointment);
                     //ViewBag.appointments = appointments.ToList();
-                    return Json(new { isValid = true, message = "To add appointment" });
+                    return Json(new { isValid = "success", message = "To add appointment" });
                 }
                 else
                 {
-                    return Json(new { isValid = false, message = "The appointment you have chosen is no longer available. Please choose another time." });
+                    return Json(new { isValid = "failed", message = "The appointment you have chosen is no longer available. Please choose another time." });
                 }
 
             }
             model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
             model.Specialties = _combosHelper.GetComboSpecialties();
-            model.Doctors = _combosHelper.GetComboDoctors(0);
+            model.Doctors = _combosHelper.GetComboDoctors(model.SpecialtyID);
 
-            return PartialView("_viewPartial", model);
+            return PartialView("_viewCreatePartial", model);
         }
 
 
@@ -123,14 +147,20 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var appointment = await _context.Appointments.FindAsync(id);
+            Appointment appointment = await _appointmentRepsitory.GetByIdAsync(id.Value);
             if (appointment == null)
             {
                 return NotFound();
             }
-            ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id", appointment.AnimalID);
-            ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address", appointment.DoctorID);
-            return View(appointment);
+
+            var model = _converterHelper.ToAppointmentViewModel(appointment);
+            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
+            model.Specialties = _combosHelper.GetComboSpecialties();
+            model.Doctors = _combosHelper.GetComboDoctors(appointment.SpecialtyID);
+
+            //ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id", appointment.AnimalID);
+            //ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address", appointment.DoctorID);
+            return PartialView("_viewEditPartial", model);
         }
 
         // POST: Appointments/Edit/5
@@ -138,9 +168,9 @@ namespace Veterinary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Appointment appointment)
+        public async Task<IActionResult> Edit(int id, AppointmentViewModel model)
         {
-            if (id != appointment.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -149,12 +179,33 @@ namespace Veterinary.Controllers
             {
                 try
                 {
-                    _context.Update(appointment);
-                    await _context.SaveChangesAsync();
+                    Appointment appointment = _converterHelper.ToAppointment(model, false);
+                    //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    //if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+                    //{
+                    //    user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
+                    //}
+                    appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+                    appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+                    appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+                    //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+                    if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
+                    {
+                        await _appointmentRepsitory.UpdateAsync(appointment);
+                        //ViewBag.appointments = appointments.ToList();
+                        return Json(new { isValid = "success", message = "To add appointment" });
+                    }
+                    else
+                    {
+                        return Json(new { isValid = "failed", message = "The appointment schedule you have chosen is not available. Please choose another hour or date!" });
+                    }
+                    //_context.Update(appointment);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppointmentExists(appointment.Id))
+                    if (!await _appointmentRepsitory.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -163,11 +214,14 @@ namespace Veterinary.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
-            ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id", appointment.AnimalID);
-            ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address", appointment.DoctorID);
-            return View(appointment);
+           
+            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
+            model.Specialties = _combosHelper.GetComboSpecialties();
+            model.Doctors = _combosHelper.GetComboDoctors(model.SpecialtyID);
+
+            return PartialView("_viewEditPartial", model);
         }
 
         // GET: Appointments/Delete/5

@@ -2,111 +2,90 @@
 
 @{
     ViewData["Title"] = "Index";
+
 }
 
-<h2>Index</h2>
+@{
 
-<p>
-    <a asp-action="CreateAppointment">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WasDeleted)
-            </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.AppointmentDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AppointmentTime)
-                </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Animal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Doctor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UpdatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WasDeleted)
-                </td>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.AppointmentDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AppointmentTime)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Animal.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Doctor.FullName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    List<object> commands = new List<object>();
+
+    commands.Add(new { type = "Confirm", buttonOption = new { content = "", iconCss = "fas fa-clock text-warning", cssClass = "e-flat" } });
+
+}
+<div class="card badge-success">
+    <div class="card-header badge-success">
+        <h2 class="mb-0">
+            <a class="text-lg-center text-white"><i class="fa fa-calendar-alt text-white"></i> Appointments</a>
+        </h2>
+    </div>
 
 
+    <div class="card-body badge-light">
+        <div class="accordion" id="accordionExample">
+            <div class="card badge-info">
+                <div class="card-header badge-info" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-info btn-block text-left text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Appointment Schedule.
+                        </button>
+                    </h2>
+                </div>
 
-<div class="schedule-wrapper">
-    <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
-                  currentView="WorkWeek" showQuickInfo="false">
-        <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
-        <e-schedule-eventsettings dataSource="Model">
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body badge-info">
 
-        </e-schedule-eventsettings>
-    </ejs-schedule>
+                        <div class="schedule-wrapper">
+                            <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
+                                          currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
+                                <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
+                                <e-schedule-eventsettings dataSource="Model">
+
+                                </e-schedule-eventsettings>
+                            </ejs-schedule>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card badge-warning">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-warning btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Schedule Pending
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+
+                        <ejs-grid id="Grid" dataSource="@Model.Where(s=> s.Status=="Pending")" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
+                            <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                            <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                            <e-grid-columns>
+                                <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
+                                <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
+                                <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify"></e-grid-column>
+                                <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
+                                <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
+                                <e-grid-column field="Doctor.FullName" headerText="Doctor" width="50" textAlign="Justify"></e-grid-column>
+                                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+                                {
+                                    <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+                                }
+
+                            </e-grid-columns>
+                        </ejs-grid>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 
 </div>
+
 
 <div id="PlaceHolder"></div>
 
@@ -122,10 +101,10 @@
         console.log(typeof event.endTime);
 
         var url = '@Url.Action("Create", "Appointments")';
-        var formData = new FormData();
+       // var formData = new FormData();
 
-        formData.append("startTime", event.startTime.toISOString());
-        formData.append("endTime", event.endTime.toISOString());
+        //formData.append("startTime", event.startTime.toISOString());
+        //formData.append("endTime", event.endTime.toISOString());
 
         $.ajax({
             type: 'GET',
@@ -141,10 +120,36 @@
                     PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Add Appointment');
                     PlaceHolder.find('.modal').modal('show');
                 }
-            })
+        })
 
 
     }
+
+
+
+    function popupOpen(args) {
+        console.log(args);
+        args.cancel = true;
+        alert(args.data.Id);
+         var url = '@Url.Action("Edit", "Appointments")';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { id: args.data.Id},
+            success: function (res) {
+                var PlaceHolder = $("#PlaceHolder");
+                console.log(res);
+                PlaceHolder.html(res);
+                PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                    $(document).off('focusin.modal')
+                });
+                PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Edit Appointment');
+                PlaceHolder.find('.modal').modal('show');
+            }
+        })
+       // args.cancel = true;
+    }
+
 
     function change() {
         console.log($("#SpecialtyID").val());
@@ -173,29 +178,122 @@
     }
 
     function addAppointment() {
-        alert("create");
+        //alert("create");
         $.ajax({
             type: 'POST',
+            //headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             url: '@Url.Action("Create", "Appointments")',
             data: $("#form").serialize(),
             success: function (res) {
-                if (res.isValid) {
+                debugger;
+                if (res.isValid ==="success") {
                     $('#myModal').modal('hide');
-                    swal("Seccess", res.message, "success");
+                    //window.location.reload();
+                    //swal("Success", res.message, "success");
+                    //var appointmants = $('#schedule', res.appointmants)
+                    //$('#schedule').replaceWith(appointmants);
                     //reload the page
-                    window.location = window.location.pathname;
+                    window.location.reload();
                 }
-                else {
+                else if (res.isValid ==="failed")  {
                     $('#myModal').modal('hide');
                     swal("Error", res.message, "warning");
-
+                }
+                else {
+                    var PlaceHolder = $("#PlaceHolder");
+                    //PlaceHolder.html(res);
+                    var newBody = $('.modal-body', res);
+                    PlaceHolder.find('.modal-body').replaceWith(newBody);
+                    //PlaceHolder.find('.modal').modal('show');
                 }
             },
             error: function (ex) {
-                swal('Failed to create appointment.' + ex.serialize());
+                console.log(ex);
+                swal(ex.statusText,'Failed to create appointment.',"error");
             }
 
 
+        })
+    }
+
+
+     function editAppointment() {
+        //alert("create");
+        $.ajax({
+            type: 'POST',
+            //headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+            url: '@Url.Action("Edit", "Appointments")',
+            data: $("#form").serialize(),
+            success: function (res) {
+                debugger;
+                if (res.isValid ==="success") {
+                    $('#myModal').modal('hide');
+                    //window.location.reload();
+                    //swal("Success", res.message, "success");
+                    //var appointmants = $('#schedule', res.appointmants)
+                    //$('#schedule').replaceWith(appointmants);
+                    //reload the page
+                    window.location.reload();
+                }
+                else if (res.isValid === "failed") {
+
+                    swal("Error", res.message, "warning");
+                }
+                else {
+                    var PlaceHolder = $("#PlaceHolder");
+                    //PlaceHolder.html(res);
+                    var newBody = $('.modal-body', res);
+                    PlaceHolder.find('.modal-body').replaceWith(newBody);
+                    //PlaceHolder.find('.modal').modal('show');
+                }
+            },
+            error: function (ex) {
+                console.log(ex);
+                swal(ex.statusText,'Failed to create appointment.',"error");
+            }
+
+
+        })
+     }
+
+    function commandClick(args) {
+
+        Swal.fire({
+            title: 'Confirm schedule?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm',
+            denyButtonText: 'Denied',
+        }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+            var res = "";
+            if (result.isConfirmed) {
+                res = "Accepted";
+
+
+            } else if (result.isDenied) {
+                res = "Canceled";
+               
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ConfirmSchedule", "Appointments")',
+                data: { id: args.rowData.Id, status: res },
+                success: function (res) {
+                    if (res.result ==="Accepted") {
+                        Swal.fire('Success!', 'Schedule Confirmed', 'success')
+                    }
+                    else {
+                        Swal.fire('Denied', 'Schedule Denied', 'warning')
+                    }
+                    window.location.reload();
+                },
+                error: function (ex) {
+                    Swal.fire('Failed to confirm schedule.' + ex);
+                }
+            })
+           
         })
     }
 

@@ -139,7 +139,12 @@ namespace Veterinary.Helpers
             return await _userManager.FindByIdAsync(clients.FirstOrDefault(c => c.Id == id && c.WasDeleted == false).User.Id);
         }
 
+        public async Task<User> GetUserByAnimalIdAsync(int id)
+        {
+            var animals = _context.Animals.Include(u => u.User);
 
+            return await _userManager.FindByIdAsync(animals.FirstOrDefault(c => c.Id == id && c.WasDeleted == false).User.Id);
+        }
 
 
         //public async Task<IdentityResult> UpdateUserAsync(User user)

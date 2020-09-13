@@ -202,6 +202,20 @@ namespace Veterinary.Helpers
                 EndTime=model.EndTime,
             };
         }
+
+        public AppointmentViewModel ToAppointmentViewModel(Appointment model)
+        {
+            return new AppointmentViewModel
+            {
+                AnimalID = model.AnimalID,
+                DoctorID = model.DoctorID,
+                SpecialtyID = model.SpecialtyID,
+                Status = model.Status,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+            };
+        }
+
         //public RegisterNewUserViewModel ToRegisterNewUserViewModel(Client model, DocumentType documentType)
         //{
         //    return new RegisterNewUserViewModel

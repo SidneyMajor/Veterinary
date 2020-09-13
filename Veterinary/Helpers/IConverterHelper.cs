@@ -31,5 +31,7 @@ namespace Veterinary.Helpers
 
 
         Appointment ToAppointment(AppointmentViewModel model, bool isNew);
+
+        AppointmentViewModel ToAppointmentViewModel(Appointment model);
     }
 }
