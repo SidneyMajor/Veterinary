@@ -7,20 +7,23 @@
 
 
 <div class="container">
-    <div class="justify-content-start">
-
-        <a style="font-size: 40px"><i class="fa fa-user-md mr-2" style="color:green"></i>Register</a>
-
+    <div class="card-header bg-info text-white">
+        <a style="font-size: 40px"><i class="fa fa-user-md mr-2 text-white-50"></i>Register</a>
     </div>
     <div class="row justify-content-center">
 
         <div class="col-md-12">
+            <div class="card-header bg-info text-white">
+                Profile Information
+            </div>
             <div class="wrapper">
 
                 <div class="row no-gutters">
 
-                    <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4" >
+                    <div class="col-md-8">
+
+
+                        <div class="badge-light w-100 p-md-5 p-4">
 
                             <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -48,10 +51,14 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <h3>Gender</h3>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="M" value="M"></ejs-radiobutton>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="F" value="F"></ejs-radiobutton>
+                                        <div class="form-group pt-4 ">
+                                            <label class="text-lg-center text-info">
+                                                Gender:
+
+                                            </label>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F"></ejs-radiobutton>
+
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -136,23 +143,23 @@
                                     </div>
 
                                     @*<div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                            <div class="form-group">
+                                                <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto"></ejs-textbox>
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto"></ejs-textbox>
-                                            <span asp-validation-for="Confirm" class="text-danger"></span>
-                                        </div>
-                                    </div>*@
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto"></ejs-textbox>
+                                                <span asp-validation-for="Confirm" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
 
 
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="display:none">
 
                                         <div class="form-group">
                                             <label>Select a Image </label>
@@ -163,8 +170,8 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" onclick="ValidateFile()" value="Register" class="btn btn-outline-success" />
-                                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Back </a>
+                                            <input type="submit" value="Register" class="btn btn-success" />
+                                            <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-secondary">Back </a>
                                             <div class="submitting"></div>
                                         </div>
                                     </div>
@@ -176,10 +183,19 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-stretch">
-                        <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                    <div class="col-md-4 d-block align-items-lg-stretch">
+
+                        <div class="card ml-5 mt-5  p-5 border-info">
+                            <div class="card-header text-lg-center badge-info ">
+                                Porfile picture
+                            </div>
+                            <div class="card-body text-lg-center">
+                                <img src="/images/img.jpg" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                            </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>

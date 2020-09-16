@@ -1,7 +1,6 @@
 ﻿@model Veterinary.Models.AppointmentViewModel
-
 <!--Modal-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,59 +12,79 @@
             <div class="modal-body">
                 <form id="form">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="Id" type="hidden" id="modelId"/>
+                    <input asp-for="EndTime" type="hidden" />
                     <!--Using AntiForgeryToken with Jquery Ajax Request-->
                     @Html.AntiForgeryToken()
-                <div class="row">                    
+                <div class="row">
 
-                    <div class="input-group col-md-12 m-1">                        
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-dog"></i></span>
+                    <div class="col-md-12 m-1">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-dog"></i></span>
+                            </div>
+                            <select asp-for="AnimalID" asp-items="Model.Animals" class="form-control" aria-describedby="inputGroup-sizing-default"></select>
                         </div>
-                        <select asp-for="AnimalID" asp-items="Model.Animals" class="form-control" aria-describedby="inputGroup-sizing-default"></select>
                         <span asp-validation-for="AnimalID" class="text-danger"></span>
                     </div>
-                  
-                    <div class="input-group col-md-12 m-1 ">
-                       
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-hourglass-start"></i></span>
+
+
+                    <div class="col-md-12 m-1">
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-hourglass-start"></i></span>
+                            </div>
+                            <input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" onchange="timechanges(this)" id="myStarttime" />
                         </div>
-                        <input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" />
                         <span asp-validation-for="StartTime" class="text-danger"></span>
                     </div>
-                    
-                    <div class="input-group col-md-12 m-1">                      
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-hourglass-end"></i></span>
-                        </div>
-                        <input asp-for="EndTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" />
-                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                    </div>
 
-                    <div class="input-group col-md-12 m-1">
-                       
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-hospital-user"></i></span>
+
+                    @*<div class="col-md-12 m-1">
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-hourglass-start"></i></span>
+                            </div>
+                            <input asp-for="EndTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" id="myEndtime" />
                         </div>
-                        <select asp-for="SpecialtyID" asp-items="Model.Specialties" class="form-control" onchange="change()"></select>
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>*@
+
+                  
+                    <div class="col-md-12 m-1">
+                        <div class="input-group ">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-hospital-user"></i></span>
+                            </div>
+                            <select asp-for="SpecialtyID" asp-items="Model.Specialties" class="form-control" onchange="SpecialtyChange()"></select>
+                        </div>
                         <span asp-validation-for="SpecialtyID" class="text-danger"></span>
                     </div>
 
-                    <div class="input-group col-md-12 m-1">
-                        
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-user-md"></i></span>
+                    <div class="col-md-12 m-1">
+                        <div class="input-group ">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user-md"></i></span>
+                            </div>
+                            <select asp-for="DoctorID" asp-items="Model.Doctors" class="form-control"></select>
                         </div>
-                        <select asp-for="DoctorID" asp-items="Model.Doctors" class="form-control"></select>
                         <span asp-validation-for="DoctorID" class="text-danger"></span>
                     </div>
 
                 </div>
 
-                    <div class="form-group p-2">
-                        <input type="button" value="Save" class="btn btn-success btn-block" onclick="editAppointment()" />
-                    </div>
+                <div class="form-group p-2 btn-group-lg">
+                    <input type="button" value="Save" class="btn btn-success btn-block" onclick="editAppointment()" />
+                    @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")) && Model.Status != "Accepted")
+                    {
+                        <input type="button" value="Delete" class="btn btn-danger btn-block" onclick="deleteAppointment(this)"/>
+                    }
+
+                </div>
                 </form>
 
 

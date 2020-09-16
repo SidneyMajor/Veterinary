@@ -2,64 +2,67 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function validFiles() {
+
+// Validate images.
+
+var file = document.getElementById("image");
+
+file.onchange = function () {
     var validFilesTypes = ["bmp", "png", "jpg", "jpeg"];
-
-    var file = document.getElementById("image");
     var isValidFile = false;
-    file.onchange = function () {
-        var path = file.value;
-        var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+    debugger;
+    var path = file.value;
 
-        for (var i = 0; i < validFilesTypes.length; i++) {
-            if (ext == validFilesTypes[i]) {
-                isValidFile = true;
-                break;
-            }
-            else {
-                isValidFile = false;
-            }
-        }
-
-        if (!isValidFile) {
-
-            swal("System warning", "Invalid File. Please upload a File with" +
-                " extension:\n" + validFilesTypes.join(", "), "warning");
-            file.value = "";
+    var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+    for (var i = 0; i < validFilesTypes.length; i++) {
+        if (ext == validFilesTypes[i]) {
+            isValidFile = true;
+            break;
         }
         else {
-            var result = document.getElementById("imgpreview");
-            result.src = URL.createObjectURL(event.target.files[0]);
+            isValidFile = false;
         }
     }
-}
 
-function imageClick() {
-    image = document.getElementById("imgpreview");
-    image.onclick = function () {
-        $("#image").click();
+    if (!isValidFile) {
+
+        swal.fire("System warning", "Invalid File. Please upload a File with" +
+            " extension:\n" + validFilesTypes.join(", "), "warning");
+        file.value = "";
+    }
+    else {
+        var result = document.getElementById("imgpreview");
+        result.src = URL.createObjectURL(event.target.files[0]);
     }
 }
 
-function specialtychange() {
-    // disable the doctor DropDownList
-    var doctor = document.getElementById('doctorid').ej2_instances[0];
-    var specialty = document.getElementById('specialtyid').ej2_instances[0];
-    doctor.enabled = true;
-    //frame the query based on selected value in specialty DropDownList.
-    var tempQuery = new ej.data.Query().where('SpecialtyID', 'equal', specialty.value);
-    // set the framed query based on selected value in specialty DropDownList.
-    doctor.query = tempQuery;
-    // set null value to doctor DropDownList text property
-    doctor.text = null;
-    //  bind the property changes to doctor DropDownList
-    doctor.dataBind();
+// images click.
+var image = document.getElementById("imgpreview");
+
+image.onclick = function () {
+    $("#image").click();
 }
+
+
+//function specialtychange() {
+//    // disable the doctor DropDownList
+//    var doctor = document.getElementById('doctorid').ej2_instances[0];
+//    var specialty = document.getElementById('specialtyid').ej2_instances[0];
+//    doctor.enabled = true;
+//    //frame the query based on selected value in specialty DropDownList.
+//    var tempQuery = new ej.data.Query().where('SpecialtyID', 'equal', specialty.value);
+//    // set the framed query based on selected value in specialty DropDownList.
+//    doctor.query = tempQuery;
+//    // set null value to doctor DropDownList text property
+//    doctor.text = null;
+//    //  bind the property changes to doctor DropDownList
+//    doctor.dataBind();
+//}
 
 //ajaxSubmit = form => {
 //    alert("teste4");
 //    try {
-       
+
 //        $.ajax({
 //            type: 'POST',
 //            url=form.action,
@@ -67,7 +70,7 @@ function specialtychange() {
 //            dataType: 'JSON',
 //            processData: false,
 //            contentType: false,
-           
+
 //        success: function (res) {
 //            alert("teste3");
 //            if (res.isValid) {

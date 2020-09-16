@@ -9,7 +9,7 @@ using Veterinary.Data.Entities;
 
 namespace Veterinary.Helpers
 {
-    public class CombosHelper : ICombosHelper
+    public class CombosHelper : ICombosHelper, IDisposable
     {
         private readonly DataContext _context;
 
@@ -68,5 +68,12 @@ namespace Veterinary.Helpers
 
             return list;
         }
+
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
     }
 }

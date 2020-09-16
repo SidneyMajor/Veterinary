@@ -14,6 +14,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IDocumentTypeRepository _documentTypeRepository;
@@ -63,7 +64,7 @@ namespace Veterinary.Controllers
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
-        [Authorize(Roles = "Admin")]
+       
         public async Task<IActionResult> ListClient()
         {
             var userAdmin = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);

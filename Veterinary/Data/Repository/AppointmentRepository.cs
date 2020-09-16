@@ -23,7 +23,7 @@ namespace Veterinary.Data.Repository
 
         public async Task<bool> CheckAppointmentAsync(Appointment model)
         {
-            if (model.StartTime < DateTime.Now )
+            if (model.StartTime < DateTime.Now || model.StartTime.Hour>=18 )
             {
                 return true;
             }
@@ -44,7 +44,7 @@ namespace Veterinary.Data.Repository
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
-                    .Include(a => a.User).OrderByDescending(a => a.StartTime);
+                    .Include(a => a.User).Where(a => a.WasDeleted == false).OrderByDescending(a => a.StartTime);
             }
            
             return  _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)

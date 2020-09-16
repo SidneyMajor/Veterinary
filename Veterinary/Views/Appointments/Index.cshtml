@@ -36,7 +36,7 @@
 
                         <div class="schedule-wrapper">
                             <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
-                                          currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
+                                          eventClick="eventClick" currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
                                 <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
                                 <e-schedule-eventsettings dataSource="Model">
 
@@ -47,37 +47,39 @@
                     </div>
                 </div>
             </div>
-            <div class="card badge-warning">
-                <div class="card-header" id="headingTwo">
-                    <h2 class="mb-0">
-                        <button class="btn btn-warning btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Schedule Pending
-                        </button>
-                    </h2>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                    <div class="card-body">
 
-                        <ejs-grid id="Grid" dataSource="@Model.Where(s=> s.Status=="Pending")" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
-                            <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
-                            <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
-                            <e-grid-columns>
-                                <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
-                                <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
-                                <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify"></e-grid-column>
-                                <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
-                                <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
-                                <e-grid-column field="Doctor.FullName" headerText="Doctor" width="50" textAlign="Justify"></e-grid-column>
-                                @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
-                                {
+            @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")))
+            {
+                <div class="card badge-warning">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-warning btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Schedule Pending
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+
+                            <ejs-grid id="Grid" dataSource="@Model.Where(s=> s.Status=="Pending")" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
+                                <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                                <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                <e-grid-columns>
+                                    <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
+                                    <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
+                                    <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify"></e-grid-column>
+                                    <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
+                                    <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
+                                    <e-grid-column field="Doctor.FullName" headerText="Doctor" width="50" textAlign="Justify"></e-grid-column>
                                     <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
-                                }
 
-                            </e-grid-columns>
-                        </ejs-grid>
+                                </e-grid-columns>
+                            </ejs-grid>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+
 
         </div>
 
@@ -89,26 +91,22 @@
 
 <div id="PlaceHolder"></div>
 
-<script type="text/javascript">
 
+@section Scripts {
 
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
 
-    function cellClick(event) {
+        function cellClick(event) {
         //The toISOString() method returns a string in simplified extended ISO format (ISO 8601),expected output: 2011-10-05T14:48:00.000Z
-        console.log(event.startTime.toISOString());
-        console.log(typeof event.startTime);
-        console.log(event.endTime.toISOString());
-        console.log(typeof event.endTime);
-
-        var url = '@Url.Action("Create", "Appointments")';
-       // var formData = new FormData();
-
-        //formData.append("startTime", event.startTime.toISOString());
-        //formData.append("endTime", event.endTime.toISOString());
+        //console.log(event.startTime.toISOString());
+        //console.log(typeof event.startTime);
+        //console.log(event.endTime.toISOString());
+        //console.log(typeof event.endTime);
 
         $.ajax({
             type: 'GET',
-            url: url,
+            url: '@Url.Action("Create", "Appointments")',
             data: { startTime: event.startTime.toISOString(), endTime: event.endTime.toISOString() },
                 success: function (res) {
                     var PlaceHolder = $("#PlaceHolder");
@@ -121,20 +119,13 @@
                     PlaceHolder.find('.modal').modal('show');
                 }
         })
-
-
     }
 
-
-
-    function popupOpen(args) {
-        console.log(args);
+        function popupOpen(args) {
         args.cancel = true;
-        alert(args.data.Id);
-         var url = '@Url.Action("Edit", "Appointments")';
-        $.ajax({
+        @*$.ajax({
             type: 'GET',
-            url: url,
+            url: '@Url.Action("Edit", "Appointments")',
             data: { id: args.data.Id},
             success: function (res) {
                 var PlaceHolder = $("#PlaceHolder");
@@ -146,58 +137,48 @@
                 PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Edit Appointment');
                 PlaceHolder.find('.modal').modal('show');
             }
-        })
-       // args.cancel = true;
+        })*@
     }
 
+        function SpecialtyChange() {
 
-    function change() {
-        console.log($("#SpecialtyID").val());
-            $("#DoctorID").empty();
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("GetDoctors","Appointments")',
-                dataType: 'json',
-                data: { specialtyId: $("#SpecialtyID").val() },
-                success: function (doctors) {
-                    console.log(doctors);
-                    debugger;
-                    $("#DoctorID").append('<option value="0">(Select a Veterinary...)</option>');
-                    $.each(doctors, function (i, doctor) {
-                        $("#DoctorID").append('<option value="'
+        $("#DoctorID").empty();
+        $.ajax({
+           type: 'POST',
+           url: '@Url.Action("GetDoctors","Appointments")',
+           dataType: 'json',
+           data: { specialtyId: $("#SpecialtyID").val() },
+           success: function (doctors) {
+              debugger;
+              $("#DoctorID").append('<option value="0">(Select a Veterinary...)</option>');
+              $.each(doctors, function (i, doctor) {
+                 $("#DoctorID").append('<option value="'
                             + doctor.id + '">'
                             + doctor.fullName + '</option>');
-                    });
-                },
-                error: function (ex) {
-                    alert('Failed to retrieve doctor.' + ex);
-                }
-            })
-            return false;
-
+              });
+           },
+           error: function (ex) {
+                swal.fire('Failed to retrieve doctor.' + ex);
+           }
+        })
+        return false;
     }
 
-    function addAppointment() {
-        //alert("create");
+        function addAppointment() {
+
         $.ajax({
             type: 'POST',
-            //headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             url: '@Url.Action("Create", "Appointments")',
             data: $("#form").serialize(),
             success: function (res) {
                 debugger;
                 if (res.isValid ==="success") {
                     $('#myModal').modal('hide');
-                    //window.location.reload();
-                    //swal("Success", res.message, "success");
-                    //var appointmants = $('#schedule', res.appointmants)
-                    //$('#schedule').replaceWith(appointmants);
-                    //reload the page
                     window.location.reload();
                 }
                 else if (res.isValid ==="failed")  {
                     $('#myModal').modal('hide');
-                    swal("Error", res.message, "warning");
+                    swal.fire("Error", res.message, "warning");
                 }
                 else {
                     var PlaceHolder = $("#PlaceHolder");
@@ -209,35 +190,28 @@
             },
             error: function (ex) {
                 console.log(ex);
-                swal(ex.statusText,'Failed to create appointment.',"error");
+                swal.fire(ex.statusText, 'Failed to create appointment.', "error");
             }
 
 
         })
     }
 
+        function editAppointment() {
 
-     function editAppointment() {
-        //alert("create");
         $.ajax({
             type: 'POST',
-            //headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             url: '@Url.Action("Edit", "Appointments")',
             data: $("#form").serialize(),
             success: function (res) {
                 debugger;
                 if (res.isValid ==="success") {
                     $('#myModal').modal('hide');
-                    //window.location.reload();
-                    //swal("Success", res.message, "success");
-                    //var appointmants = $('#schedule', res.appointmants)
-                    //$('#schedule').replaceWith(appointmants);
-                    //reload the page
                     window.location.reload();
                 }
                 else if (res.isValid === "failed") {
 
-                    swal("Error", res.message, "warning");
+                    swal.fire("Error", res.message, "warning");
                 }
                 else {
                     var PlaceHolder = $("#PlaceHolder");
@@ -249,14 +223,12 @@
             },
             error: function (ex) {
                 console.log(ex);
-                swal(ex.statusText,'Failed to create appointment.',"error");
+                swal.fire(ex.statusText, 'Failed to create appointment.', "error");
             }
-
-
         })
      }
 
-    function commandClick(args) {
+        function commandClick(args) {
 
         Swal.fire({
             title: 'Confirm schedule?',
@@ -265,15 +237,12 @@
             confirmButtonText: 'Confirm',
             denyButtonText: 'Denied',
         }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
+        /* Read more about isConfirmed, isDenied */
             var res = "";
             if (result.isConfirmed) {
                 res = "Accepted";
-
-
             } else if (result.isDenied) {
                 res = "Canceled";
-               
             }
 
             $.ajax({
@@ -293,16 +262,73 @@
                     Swal.fire('Failed to confirm schedule.' + ex);
                 }
             })
-           
+
         })
     }
 
-</script>
 
+        function deleteAppointment(args) {
 
-@section Scripts {
+            Swal.fire({
+                title: 'Are you sure you want to delete this?',
+                showDenyButton: true,
+                showCancelButton: true,
+                showConfirmButton:false,
+                //confirmButtonText: 'Confirm',
+                denyButtonText: 'Confirm',
+            }).then((result) => {
+                debugger;
+                var id = document.getElementById("modelId").value;
+               
+                if (result.isDenied) {
 
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Delete", "Appointments")',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.result === "success") {
+                                Swal.fire('Success!', 'To Delete Schedule', 'success')
+                                $('#myModal').modal('hide');
+                            }
+                            else {
+                                Swal.fire('Failed', 'Failed to delete schedule', 'warning')
+                            }
+                            //window.location.reload();
+                        },
+                        error: function (ex) {
+                            Swal.fire('Failed to delete schedule.' + ex);
+                        }
+                    })
+                }
+
+            })
+        }
+
+        function eventClick(args) {
+
+        console.log(args.event);
+        debugger
+
+         $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Edit", "Appointments")',
+             data: { id: args.event.Id},
+            success: function (res) {
+                var PlaceHolder = $("#PlaceHolder");
+                console.log(res);
+                PlaceHolder.html(res);
+                PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                    $(document).off('focusin.modal')
+                });
+                PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Edit Appointment');
+                PlaceHolder.find('.modal').modal('show');
+            }
+        })
+    }
+
+    </script>
+
 }
 
 

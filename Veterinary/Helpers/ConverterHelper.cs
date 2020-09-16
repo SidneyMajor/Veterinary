@@ -199,7 +199,7 @@ namespace Veterinary.Helpers
                 SpecialtyID=model.SpecialtyID,
                 Status = "Pending",
                 StartTime=model.StartTime,
-                EndTime=model.EndTime,
+                EndTime=model.StartTime.AddMinutes(30),
             };
         }
 

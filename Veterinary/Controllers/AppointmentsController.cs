@@ -224,12 +224,13 @@ namespace Veterinary.Controllers
             return PartialView("_viewEditPartial", model);
         }
 
-        // GET: Appointments/Delete/5
+        // post: Appointments/Delete/5
+        [HttpPost]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Json(new { result = "error" });
             }
 
             var appointment = await _context.Appointments
@@ -238,27 +239,38 @@ namespace Veterinary.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (appointment == null)
             {
-                return NotFound();
+                return Json(new { result = "error" });
             }
-
-            return View(appointment);
+            try
+            {
+                await _appointmentRepsitory.DeleteAsync(appointment);
+                return Json(new { result = "success" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _appointmentRepsitory.ExistAsync(id.Value))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
-        // POST: Appointments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            _context.Appointments.Remove(appointment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Appointments/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var appointment = await _context.Appointments.FindAsync(id);
+        //    _context.Appointments.Remove(appointment);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private bool AppointmentExists(int id)
-        {
-            return _context.Appointments.Any(e => e.Id == id);
-        }
+      
 
 
         public JsonResult GetDoctors(int specialtyId)

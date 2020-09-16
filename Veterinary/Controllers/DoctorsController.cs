@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -35,9 +36,11 @@ namespace Veterinary.Controllers
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult ListDoctor()
         {
-            return View(_doctorRepository.GetAll().ToList());
+            return View(_doctorRepository.GetAll().Include(d=>d.User).ToList());
         }
 
         [Authorize(Roles = "Admin")]

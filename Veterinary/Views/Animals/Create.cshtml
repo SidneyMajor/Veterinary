@@ -5,10 +5,11 @@
 }
 
 <div class="container">
-    <div class="justify-content-start">
-
-        <a style="font-size: 40px"><i class="fa fa-dog mr-2" style="color:green"></i>Register your animal</a>
-
+    <br /><br />
+    <div class="text-lg-center">
+        <div class="card-header bg-info">
+            <a class="text-white" style="font-size: 1.5rem"><i class="fa fa-dog mr-2 text-white-50 "></i>Register your animal</a>
+        </div>
     </div>
     <div class="row justify-content-center">
 
@@ -18,7 +19,8 @@
                 <div class="row no-gutters">
 
                     <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4" >
+
+                        <div class="contact-wrap w-100 p-md-5 p-4">
 
                             <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -88,16 +90,14 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" ></ejs-textbox>
+                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
                                             <span asp-validation-for="Remarks" class="text-danger"></span>
                                         </div>
                                     </div>
 
 
-                                    <div class="col-md-12">
-
+                                    <div class="col-md-12" style="visibility:hidden">
                                         <div class="form-group">
-                                            <label>Select a Image </label>
                                             <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
                                             <span asp-validation-for="ImageFile" class="text-danger"></span>
                                         </div>
@@ -105,8 +105,8 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="submit" onclick="ValidateFile()" value="Create" class="btn btn-outline-success" />
-                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-outline-secondary">Back </a>
+                                            <input type="submit" value="Create" class="btn btn-info" />
+                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary">Back </a>
                                             <div class="submitting"></div>
                                         </div>
                                     </div>
@@ -118,10 +118,19 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-stretch">
-                        <div class="info-wrap w-100 p-5 img" style="background-image: url(../images/img.jpg);">
+                    <div class="col-md-5 d-block align-items-lg-stretch">
+
+                        <div class="card ">
+                            <div class="card-header text-lg-center badge-warning">
+                                Animal picture
+                            </div>
+                            <div class="card-body bg-light text-lg-center">
+                                <img src="/images/img.jpg" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                            </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
@@ -129,45 +138,9 @@
 </div>
 
 
-@section Scripts{
-    <script type="text/javascript">
-        var validFilesTypes = ["bmp", "gif", "png", "jpg", "jpeg"];
-        //function ValidateFile() {
-        var file = document.getElementById("image");
-        var isValidFile = false;
-        file.onchange = function () {
-            var path = file.value;
-            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
-            alert(ext);
+@section Scripts {
 
-            for (var i = 0; i < validFilesTypes.length; i++) {
-                if (ext == validFilesTypes[i]) {
-                    isValidFile = true;
-                    break;
-                }
-            }
-            alert(isValidFile);
-            if (!isValidFile) {
-
-                alert("Invalid File. Please upload a File with" +
-                    " extension:\n" + validFilesTypes.join(", "));
-                file.value = "";
-            }
-            //return isValidFile;
-        }
-
-
-        // }
-    </script>
-    <script type="text/javascript">
-        function onRenderCell(args) {
-            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
-                //sets isDisabled to true to disable the date.
-                args.isDisabled = true;
-            }
-        }
-    </script>
-
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 }
 

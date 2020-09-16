@@ -25,24 +25,8 @@
 </ejs-grid>
 
 <script type="text/javascript">
-    function commandClick(args) { // display row data
-        @*//alert(args.rowData.Id);
-        $.ajax({
-
-            url: "@Url.Action("AnimalDetails","Admin")",
-            data: { id: args.rowData.Id },
-            type: "get",
-            dataType: "json",
-            success: function (response) {
-                //alert(JSON.stringify(response));
-                alert(response.animal.id);
-                location.href
-            }
-
-        })*@
-
+    function commandClick(args) {
         window.location.href = "/Admin/AnimalDetails?id=" + args.rowData.Id;
-
     }
 
 </script>
