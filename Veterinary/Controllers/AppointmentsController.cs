@@ -64,7 +64,8 @@ namespace Veterinary.Controllers
             {
                 appointment.Status = status;
                 await _appointmentRepsitory.UpdateAsync(appointment);
-                return Json(new { result = status });
+                var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
+                return Json(new { result = status , appointments= Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -123,7 +124,8 @@ namespace Veterinary.Controllers
                 {
                     await _appointmentRepsitory.CreateAsync(appointment);
                     //ViewBag.appointments = appointments.ToList();
-                    return Json(new { isValid = "success", message = "To add appointment" });
+                    var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
+                    return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
                 }
                 else
                 {
@@ -194,7 +196,8 @@ namespace Veterinary.Controllers
                     {
                         await _appointmentRepsitory.UpdateAsync(appointment);
                         //ViewBag.appointments = appointments.ToList();
-                        return Json(new { isValid = "success", message = "To add appointment" });
+                        var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
+                        return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
                     }
                     else
                     {
@@ -244,7 +247,8 @@ namespace Veterinary.Controllers
             try
             {
                 await _appointmentRepsitory.DeleteAsync(appointment);
-                return Json(new { result = "success" });
+                var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
+                return Json(new { result = "success", appointments =  Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
             }
             catch (DbUpdateConcurrencyException)
             {

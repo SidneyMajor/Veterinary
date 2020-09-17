@@ -35,7 +35,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-hourglass-start"></i></span>
                             </div>
-                            <input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" onchange="timechanges(this)" id="myStarttime" />
+                            <input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" id="myStarttime" />
                         </div>
                         <span asp-validation-for="StartTime" class="text-danger"></span>
                     </div>
@@ -81,7 +81,7 @@
                     <input type="button" value="Save" class="btn btn-success btn-block" onclick="editAppointment()" />
                     @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")) && Model.Status != "Accepted")
                     {
-                        <input type="button" value="Delete" class="btn btn-danger btn-block" onclick="deleteAppointment(this)"/>
+                        <input type="button" value="Delete" class="btn btn-danger btn-block" onclick="deleteAppointment()"/>
                     }
 
                 </div>

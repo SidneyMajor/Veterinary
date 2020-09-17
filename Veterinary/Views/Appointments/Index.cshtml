@@ -36,9 +36,9 @@
 
                         <div class="schedule-wrapper">
                             <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
-                                          eventClick="eventClick" currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
-                                <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
-                                <e-schedule-eventsettings dataSource="Model">
+                                      eventRendered="onEventRendered"   eventClick="eventClick" currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
+                                <e-schedule-timescale interval="30" slotCount="1" ></e-schedule-timescale>
+                                <e-schedule-eventsettings dataSource="Model" >
 
                                 </e-schedule-eventsettings>
                             </ejs-schedule>
@@ -166,67 +166,73 @@
 
         function addAppointment() {
 
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("Create", "Appointments")',
-            data: $("#form").serialize(),
-            success: function (res) {
-                debugger;
-                if (res.isValid ==="success") {
-                    $('#myModal').modal('hide');
-                    window.location.reload();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create", "Appointments")',
+                data: $("#form").serialize(),
+                success: function (res) {
+                    debugger;
+                    if (res.isValid ==="success") {
+                        $('#myModal').modal('hide');
+                        var schObj = document.getElementById("schedule").ej2_instances[0];
+                        schObj.eventSettings.dataSource = JSON.parse(res.appointments);
+                        schObj.dataBind();
+                    }
+                    else if (res.isValid ==="failed")  {
+                        $('#myModal').modal('hide');
+                        swal.fire("Error", res.message, "warning");
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        //PlaceHolder.html(res);
+                        var newBody = $('.modal-body', res);
+                        PlaceHolder.find('.modal-body').replaceWith(newBody);
+                        //PlaceHolder.find('.modal').modal('show');
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    swal.fire(ex.statusText, 'Failed to create appointment.', "error");
                 }
-                else if (res.isValid ==="failed")  {
-                    $('#myModal').modal('hide');
-                    swal.fire("Error", res.message, "warning");
-                }
-                else {
-                    var PlaceHolder = $("#PlaceHolder");
-                    //PlaceHolder.html(res);
-                    var newBody = $('.modal-body', res);
-                    PlaceHolder.find('.modal-body').replaceWith(newBody);
-                    //PlaceHolder.find('.modal').modal('show');
-                }
-            },
-            error: function (ex) {
-                console.log(ex);
-                swal.fire(ex.statusText, 'Failed to create appointment.', "error");
-            }
 
 
-        })
-    }
+            })
+        }
 
         function editAppointment() {
 
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("Edit", "Appointments")',
-            data: $("#form").serialize(),
-            success: function (res) {
-                debugger;
-                if (res.isValid ==="success") {
-                    $('#myModal').modal('hide');
-                    window.location.reload();
-                }
-                else if (res.isValid === "failed") {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Edit", "Appointments")',
+                data: $("#form").serialize(),
+                dataType:"json",
+                success: function (res) {
+                    //debugger;
+                    if (res.isValid ==="success") {
+                        $('#myModal').modal('hide');
+                        swal.fire("Success", res.message, "success");
+                        var schObj = document.getElementById("schedule").ej2_instances[0];                       
+                        schObj.eventSettings.dataSource = JSON.parse(res.appointments);
+                        schObj.dataBind();
+                    }
+                    else if (res.isValid === "failed") {
 
-                    swal.fire("Error", res.message, "warning");
+                        swal.fire("Error", res.message, "warning");
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        //PlaceHolder.html(res);
+                        var newBody = $('.modal-body', res);
+                        PlaceHolder.find('.modal-body').replaceWith(newBody);
+                        //PlaceHolder.find('.modal').modal('show');
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    swal.fire(ex.statusText, 'Failed to create appointment.', "error");
                 }
-                else {
-                    var PlaceHolder = $("#PlaceHolder");
-                    //PlaceHolder.html(res);
-                    var newBody = $('.modal-body', res);
-                    PlaceHolder.find('.modal-body').replaceWith(newBody);
-                    //PlaceHolder.find('.modal').modal('show');
-                }
-            },
-            error: function (ex) {
-                console.log(ex);
-                swal.fire(ex.statusText, 'Failed to create appointment.', "error");
-            }
-        })
-     }
+            })
+        }
 
         function commandClick(args) {
 
@@ -256,7 +262,13 @@
                     else {
                         Swal.fire('Denied', 'Schedule Denied', 'warning')
                     }
-                    window.location.reload();
+                   
+                    var GridObj = document.getElementById("Grid").ej2_instances[0];
+                    var schObj = document.getElementById("schedule").ej2_instances[0];
+                    schObj.eventSettings.dataSource = JSON.parse(res.appointments);
+                    schObj.dataBind();
+                   
+                    //GridObj.eventSettings.dataSource = res.appointments
                 },
                 error: function (ex) {
                     Swal.fire('Failed to confirm schedule.' + ex);
@@ -267,7 +279,7 @@
     }
 
 
-        function deleteAppointment(args) {
+        function deleteAppointment() {
 
             Swal.fire({
                 title: 'Are you sure you want to delete this?',
@@ -290,6 +302,9 @@
                             if (res.result === "success") {
                                 Swal.fire('Success!', 'To Delete Schedule', 'success')
                                 $('#myModal').modal('hide');
+                                var schObj = document.getElementById("schedule").ej2_instances[0];
+                                schObj.eventSettings.dataSource = JSON.parse(res.appointments);
+                                schObj.dataBind();
                             }
                             else {
                                 Swal.fire('Failed', 'Failed to delete schedule', 'warning')
@@ -307,7 +322,7 @@
 
         function eventClick(args) {
 
-        console.log(args.event);
+ 
         debugger
 
          $.ajax({
@@ -325,7 +340,20 @@
                 PlaceHolder.find('.modal').modal('show');
             }
         })
-    }
+        }
+
+        function onEventRendered(args) {           
+           
+            if (args.data.Status === "Accepted") {
+                args.element.style["backgroundColor"]="green";
+            }
+            if (args.data.Status === "Pending") {
+                args.element.style["backgroundColor"] = "orange";
+            }
+            if (args.data.Status === "Canceled") {
+                args.element.style["backgroundColor"] = "red";
+            }
+        }
 
     </script>
 
