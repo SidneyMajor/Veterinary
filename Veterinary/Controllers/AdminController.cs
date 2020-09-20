@@ -84,20 +84,27 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var model = await _clientRepository.GetByIdAsync(id.Value);
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            model.DocumentType = documentType;
-            if (model == null)
+            var client = await _clientRepository.GetByIdAsync(id.Value);
+            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
+            client.DocumentType = documentType;
+            if (client == null)
             {
                 return NotFound();
             }
+            var user = await _userHelper.GetUserByClientIdAsync(client.Id);
+            var animals = await _animalRepository.GetAllAnimalAsync(user.Email);
 
+            var model = new AdminClientDetailsViewModel
+            {
+                GetClient = client,
+                GetAnimals = animals,
+            };
             return View(model);
         }
 
 
         // GET: Cliente/Delete/5
-        public async Task<IActionResult> DeleteCliente(int? id)
+        public async Task<IActionResult> DeleteClient(int? id)
         {
             if (id == null)
             {
@@ -116,7 +123,7 @@ namespace Veterinary.Controllers
         }
 
         // POST: Species/Delete/5
-        [HttpPost, ActionName("DeleteCliente")]
+        [HttpPost, ActionName("DeleteClient")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -128,15 +135,9 @@ namespace Veterinary.Controllers
         }
 
 
-        public async Task<IActionResult> GetAnimalByClientId(int id)
-        {
-            var user = await _userHelper.GetUserByClientIdAsync(id);
-
-            return View(await _animalRepository.GetAllAnimalAsync(user.Email));
-        }
-
+        
         public async Task<IActionResult> ListAnimal()
-        {
+        {            
             return View(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
         }
 
@@ -172,101 +173,13 @@ namespace Veterinary.Controllers
         }
 
 
-        public IActionResult AdminAppointment()
-        {
-            IEnumerable<Appointment> appointments = new List<Appointment>();
-            appointments = this.context.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
-           
-
-            var model = new AppointmentViewModel();
-            ViewBag.appointments = appointments.ToList();
-            //ViewBag.Enabled = true;
-            return View(model);
-        }
-
-
-        public async Task<IActionResult> AddAppointment( DateTime startTime, DateTime endTime)
-        {
-
-            var model = new AppointmentViewModel
-            {
-                Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name)),
-                Specialties = _combosHelper.GetComboSpecialties(),
-                Doctors = _combosHelper.GetComboDoctors(0),
-                StartTime = startTime,
-                EndTime = endTime,
-            };
-
-            return PartialView("_AppointmentAllPartial", model);
-        }
-
-
-        public  JsonResult GetDoctors(int specialtyId)
+        public JsonResult GetDoctors(int specialtyId)
         {
             var doctors = _doctorRepository.GetDoctorsSpecialtyId(specialtyId);
             return this.Json(doctors.OrderBy(c => c.FirstName));
         }
 
-        //public IEnumerable<SelectListItem> GetComboProducts()
-        //{
-        //    var list = this.context.Animals.Select(p => new SelectListItem
-        //    {
-        //        Text = p.Name,
-        //        Value = p.Id.ToString()
-        //    }).ToList();
 
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "(Select an Animal...)",
-        //        Value = "0"
-        //    });
-
-        //    return list;
-        //}
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> AddAppointment(AppointmentViewModel model)
-        {
-            //IEnumerable<Appointment> appointments = new List<Appointment>();
-            //appointments = this.context.Appointments.Include(a => a.Animal).Include(a => a.Doctor);
-            //foreach (var item in appointments)
-            //{
-            //    item.Subject = item.Animal.Name;
-            //}
-
-            if (ModelState.IsValid)
-            {
-                //Todo: Fazer as validaçoes necessarias antes de criar uma consulta
-                Appointment appointment = _converterHelper.ToAppointment(model, true);
-                appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
-                appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
-                appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
-                //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
-                if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
-                {
-                    await _appointmentRepsitory.CreateAsync(appointment);
-                    //ViewBag.appointments = appointments.ToList();
-                    return Json(new { isValid = true, message="To add appointment"});
-                }
-                else
-                {
-                    return Json(new { isValid = false, message = "The appointment you have chosen is no longer available. Please choose another time."});
-                }
-
-               
-            }
-
-            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
-            model.Specialties = _combosHelper.GetComboSpecialties();
-            model.Doctors = _combosHelper.GetComboDoctors(0);
-
-
-            return PartialView("_AppointmentAllPartial", model);
-
-
-        }
+       
     }
 }

@@ -47,6 +47,7 @@ namespace Veterinary.Controllers
         }
 
         // GET: Appointments/Details/5
+        [HttpPost]
         public async Task<IActionResult> ConfirmSchedule(int? id, string status)
         {
             if (id == null)
@@ -65,7 +66,8 @@ namespace Veterinary.Controllers
                 appointment.Status = status;
                 await _appointmentRepsitory.UpdateAsync(appointment);
                 var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                return Json(new { result = status , appointments= Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
+                return Json(new { result = status , appointments= Newtonsoft.Json.JsonConvert.SerializeObject(upappointments), 
+                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a=>a.Status.Equals("Pending"))) });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -125,7 +127,8 @@ namespace Veterinary.Controllers
                     await _appointmentRepsitory.CreateAsync(appointment);
                     //ViewBag.appointments = appointments.ToList();
                     var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                    return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
+                    return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments),
+                        pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending")))});
                 }
                 else
                 {
@@ -153,6 +156,11 @@ namespace Veterinary.Controllers
             if (appointment == null)
             {
                 return NotFound();
+            }
+
+            if (appointment.Status=="Accepted" && this.User.IsInRole("Customer"))
+            {
+                return Json(null);
             }
 
             var model = _converterHelper.ToAppointmentViewModel(appointment);
@@ -248,7 +256,8 @@ namespace Veterinary.Controllers
             {
                 await _appointmentRepsitory.DeleteAsync(appointment);
                 var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                return Json(new { result = "success", appointments =  Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
+                return Json(new { result = "success", appointments =  Newtonsoft.Json.JsonConvert.SerializeObject(upappointments), 
+                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending"))) });
             }
             catch (DbUpdateConcurrencyException)
             {

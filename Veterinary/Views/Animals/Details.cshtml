@@ -10,7 +10,7 @@
         <br /><br />
         <div class="text-lg-center">
             <div class="card-header bg-info">
-                <a class="text-white" style="font-size: 1.5rem"><i class="fa fa-list mr-2 text-white-50 "></i>@Model.Name Details</a>
+                <a class="text-white" style="font-size: 1.5rem"><i class="fa  fa-dog mr-2 text-white-50 "></i>@Model.Name Details</a>
             </div>
         </div>
 
@@ -21,10 +21,10 @@
 
                     <div class="row no-gutters">
 
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <div class="contact-wrap w-100 p-md-5 p-4">
 
-                                <form method="get" id="contactForm" name="contactForm" class="contactForm">
+                                <form asp-action="Details" method="get" id="contactForm" name="contactForm" class="contactForm">
 
                                     <div class="row">
                                         <div class="col-md-12">
@@ -40,11 +40,17 @@
                                         </div>
 
 
+
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <h3>Gender</h3>
+                                            <div class="form-group pt-4 ">
+                                                <label class="text-lg-center text-info">
+                                                    Gender:
+
+                                                </label>
                                                 <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
                                                 <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
                                             </div>
                                         </div>
 
@@ -90,9 +96,9 @@
 
 
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                                                <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary">Back </a>
+                                            <div class="form-group text-lg-center">
+                                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning w-25">Edit</a>
+                                                <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary w-25"><i class="fa fa-arrow-alt-circle-left"></i>Back </a>
                                             </div>
                                         </div>
 
@@ -103,13 +109,13 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5 d-block align-items-lg-stretch">
+                        <div class="col-md-4 d-block align-items-lg-stretch">
 
-                            <div class="card ml-1 border-0">
-                                <div class="card-header text-lg-center badge-warning">
+                            <div class="card ml-5 mt-5  p-5 border-info">
+                                <div class="card-header text-lg-center badge-info">
                                     Animal picture
                                 </div>
-                                <div class="card-body bg-light text-lg-center">
+                                <div class="card-body text-lg-center">
                                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
                                     {
                                         <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />

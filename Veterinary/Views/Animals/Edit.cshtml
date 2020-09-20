@@ -19,10 +19,10 @@
 
                 <div class="row no-gutters">
 
-                    <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4">
+                    <div class="col-md-8">
+                        <div class="badge-light w-100 p-md-5 p-4">
 
-                            <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
+                            <form asp-action="Edit" method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
@@ -30,52 +30,56 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
                                             <span asp-validation-for="Name" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
                                             <span asp-validation-for="Breed" class="text-danger"></span>
                                         </div>
                                     </div>
 
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <h3>Gender</h3>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M"></ejs-radiobutton>
-                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F"></ejs-radiobutton>
+                                        <div class="form-group pt-2 ">
+                                            <label class="text-lg-center text-info">
+                                                Gender:
+
+                                            </label>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M" cssClass="e-outline"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F" cssClass="e-outline"></ejs-radiobutton>
+
                                             <span asp-validation-for="Gender" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now" floatLabelType="Auto"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now" floatLabelType="Auto" cssClass="e-outline"></ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Color" id="color" placeholder="Color" type="text" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Color" id="color" placeholder="Color" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
                                             <span asp-validation-for="Color" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-numerictextbox ejs-for="Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto"></ejs-numerictextbox>
+                                            <ejs-numerictextbox ejs-for="Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto" cssClass="e-outline"></ejs-numerictextbox>
                                             <span asp-validation-for="Weight" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-numerictextbox ejs-for="Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto"></ejs-numerictextbox>
+                                            <ejs-numerictextbox ejs-for="Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto" cssClass="e-outline"></ejs-numerictextbox>
                                             <span asp-validation-for="Size" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -83,7 +87,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="SpeciesID" ejs-for="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto">
+                                            <ejs-dropdownlist id="SpeciesID" ejs-for="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto" cssClass="e-outline">
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="SpeciesID" class="text-danger"></span>
@@ -93,13 +97,13 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto"></ejs-textbox>
+                                            <ejs-textbox ejs-for="Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
                                             <span asp-validation-for="Remarks" class="text-danger"></span>
                                         </div>
                                     </div>
 
 
-                                    <div class="col-md-12" style="visibility:hidden">
+                                    <div class="col-md-12" style="display:none">
                                         <div class="form-group">
                                             <label>Select a Image </label>
                                             <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
@@ -108,9 +112,9 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input type="submit" value="Change" class="btn btn-warning" />
-                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary">Back</a>
+                                        <div class="form-group text-lg-center">
+                                            <input type="submit" value="Change" class="btn btn-warning w-25" />
+                                            <a asp-action="Index" asp-controller="Animals" class="btn btn-secondary w-25"><i class="fa fa-arrow-alt-circle-left"></i>Back</a>
                                         </div>
                                     </div>
 
@@ -120,13 +124,13 @@
 
                         </div>
                     </div>
-                    <div class="col-md-5 d-block align-items-lg-stretch">
+                    <div class="col-md-4 d-block align-items-lg-stretch">
 
-                        <div class="card ml-1 border-0">
-                            <div class="card-header text-lg-center badge-warning">
+                        <div class="card ml-5 mt-5  p-5 border-info">
+                            <div class="card-header text-lg-center badge-info">
                                 Animal picture
                             </div>
-                            <div class="card-body bg-light text-lg-center">
+                            <div class="card-body text-lg-center">
                                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                                 {
                                     <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />

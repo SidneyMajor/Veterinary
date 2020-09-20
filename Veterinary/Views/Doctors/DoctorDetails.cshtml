@@ -6,32 +6,42 @@
 }
 
 
+
+
+
+
 <div class="container">
-    <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>Doctor Details</a>
-
+    <div class="card-header bg-info text-white">
+        <a style="font-size: 30px"><i class="fa fa-user-md mr-2 text-white-50"></i>Doctor Details</a>
     </div>
+
     <div class="row justify-content-center">
 
         <div class="col-md-12">
+            <div class="card-header bg-primary text-white">
+                Profile Information
+            </div>
             <div class="wrapper">
 
                 <div class="row no-gutters">
 
                     <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4" >
+                        <div class="badge-light w-100 p-md-5 p-4">
 
-                            <form method="get" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
+                            <form asp-action="DoctorDetails" id="contactForm" name="contactForm" class="contactForm">
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
+
                                 <div class="row">
                                     <partial name="_DoctorParcial" />
 
+
+
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-outline-primary">Back to List</a>
-                                            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Doctors" class="btn btn-danger">Delete</a>
+                                            <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-secondary btn-block"><i class="fa fa-arrow-alt-circle-left"></i> Back to List</a>
+                                            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Doctors" class="btn btn-danger btn-block"><i class="fa fa-trash text-white"> Delete</i></a>
                                         </div>
                                     </div>
 
@@ -41,18 +51,23 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-stretch">
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            @*<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width: 300px; height: 300px; max-width:100%;height:auto;" />*@
-                            <div class="info-wrap w-100 p-5 img" style=" background-image: url( @Url.Content(Model.ImageUrl) );">
+                    <div class="col-md-4 d-block align-items-lg-stretch">
+
+                        <div class="card ml-5 mt-5  p-5 border-info">
+                            <div class="card-header text-lg-center badge-info ">
+                                Porfile picture
                             </div>
-                        }
-                        else
-                        {
-                            <div class="info-wrap w-100 p-5 img" style="  background-image: url(@Url.Content("~/images/img.jpg") );">
+                            <div class="card-body text-lg-center">
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                {
+                                    <img src="@Url.Content(Model.ImageUrl)" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
+                                else
+                                {
+                                    <img src="/images/img.jpg" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
                             </div>
-                        }
+                        </div>
 
                     </div>
                 </div>
@@ -60,4 +75,5 @@
         </div>
     </div>
 </div>
+
 

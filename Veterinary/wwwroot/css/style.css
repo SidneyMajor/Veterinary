@@ -17,8 +17,7 @@
   --cyan: #17a2b8;
   --white: #fff;
   --gray: #6c757d;
-  --gray-dark: #343a40;
-  --primary: #007bff;
+  --gray-dark: #343a40;  
   --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;
@@ -42,7 +41,7 @@
 
 html {
   font-family: sans-serif;
-  line-height: 1.15;
+ 
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
@@ -54,7 +53,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+ 
   color: #212529;
   text-align: left;
   background-color: #fff; }
@@ -8037,7 +8036,9 @@ h1, h2, h3, h4, h5,
   background: -o-linear-gradient(45deg, #207dff 0%, #00bd55 100%);
   background: -ms-linear-gradient(45deg, #207dff 0%, #00bd55 100%);
   background: linear-gradient(45deg, #207dff 0%, #00bd55 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#207dff', endColorstr='#00bd55', GradientType=1 ); }
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#207dff', endColorstr='#00bd55', GradientType=1 );
+  padding-top:0;
+}
   .wrap .phone {
     z-index: 1; }
     .wrap .phone span {
@@ -9482,7 +9483,9 @@ textarea.form-control {
       border: 1px solid transparent; }
 
 .wrapper {
-  width: 100%; }
+  width: 100%; 
+  
+}
 
 .contact-wrap {
   background-color: whitesmoke; }

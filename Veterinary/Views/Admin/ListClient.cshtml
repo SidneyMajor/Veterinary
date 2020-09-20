@@ -4,88 +4,112 @@
     ViewData["Title"] = "ListClient";
 }
 
-<h2>ListClient</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.TaxNumber)
-            </th>
+@{
 
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Gender)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ZipCode)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateOfBirth)
-                </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Nationality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User.Email)
-            </th>
+    List<object> commands = new List<object>();
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
+    commands.Add(new { type = "Details", buttonOption = new { content = "", iconCss = "fa fa-list text-info", cssClass = "e-flat" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete text-danger", cssClass = "e-flat" } });
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.TaxNumber)
-                </td>
 
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ZipCode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateOfBirth)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nationality)
-                </td>
+}
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Email)
-                </td>
 
-                <td>                    
-                    <a asp-action="ClientDetails" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa fa-list"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
+
+<div class="card-header badge-info">
+    <h2 class="mb-0">
+        <a class="text-lg-center text-white"><i class="fa fa-user-friends text-white"></i> Clients</a>
+    </h2>
+
+    <div class="card-body badge-light">
+        <ejs-grid id="Grid" dataSource="Model" allowPaging="true" allowSorting="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick" enableVirtualization="false">
+            <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+            <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column headerText=" " template="#template" width="30">
+                </e-grid-column>
+
+                <e-grid-column field="FullName" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+                <e-grid-column field="TaxNumber" headerText="Tax Number" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Nationality" headerText="Nationality" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="User.Email" headerText="Email" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function commandClick(args) {
+
+            if (args.commandColumn.type === "Delete") {
+
+                window.location.href = "/Admin/DeleteClient?id=" + args.rowData.Id;
+            }
+            else if (args.commandColumn.type === "Details") {
+
+                window.location.href = "/Admin/ClientDetails?id=" + args.rowData.Id;
+            }
         }
-    </tbody>
-</table>
 
+    </script>
+
+    <style>
+        .image img {
+            max-height: 30px;
+            max-width: 30px;
+            border-radius: 50px;
+            box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+
+    <script id="template" type="text/x-jsrender">
+
+        <div class="image">
+            <img src="${ImagePath}" />
+        </div>
+
+    </script>
+
+
+
+    @*<script type="text/javascript">
+
+            function queryCellInfo(args) {
+                console.log(args);
+                //if (args.column.field === 'FullName') {
+                //    if (args.data.Gender === 'M') {
+                //        args.cell.querySelector('.e-userimg').classList.add("sf-icon-Male");
+                //    } else {
+                //        args.cell.querySelector('.e-userimg').classList.add("sf-icon-FeMale");
+                //    }
+                //}
+                //if (args.column.field === "ImagePath") {
+                //    debugger
+                //    var img = args.data.ImageUrl;
+                //    console.log(img);
+                //    var imgpath = document.getElementById('teste');
+                //    console.log(imgpath);
+                //    imgpath.src = img.replace('~/', '');
+                //    console.log(imgpath);
+                //}
+                //if (args.column.field === 'Status') {
+                //    if (args.cell.textContent === "Active") {
+                //        args.cell.querySelector(".statustxt").classList.add("e-activecolor");
+                //        args.cell.querySelector(".statustemp").classList.add("e-activecolor");
+                //    }
+                //    if (args.cell.textContent === "Inactive") {
+                //        args.cell.querySelector(".statustxt").classList.add("e-inactivecolor");
+                //        args.cell.querySelector(".statustemp").classList.add("e-inactivecolor");
+                //    }
+                //}
+
+            }
+
+        </script>*@
+}

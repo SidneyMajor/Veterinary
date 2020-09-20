@@ -79,7 +79,7 @@
 
                 <div class="form-group p-2 btn-group-lg">
                     <input type="button" value="Save" class="btn btn-success btn-block" onclick="editAppointment()" />
-                    @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")) && Model.Status != "Accepted")
+                    @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")))
                     {
                         <input type="button" value="Delete" class="btn btn-danger btn-block" onclick="deleteAppointment()"/>
                     }

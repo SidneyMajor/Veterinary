@@ -5,24 +5,36 @@
 
     List<object> commands = new List<object>();
 
-    commands.Add(new { type = "Details", buttonOption = new { content = "", iconCss = "fa fa-list", cssClass = "e-flat" } });
+    commands.Add(new { type = "Details", buttonOption = new { content = "", iconCss = "fa fa-list text-info", cssClass = "e-flat" } });
+
 
 }
-<ejs-grid id="Grid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
-    <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
-    <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
-    <e-grid-columns>
-        <e-grid-column field="Name" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
-        <e-grid-column field="Breed" headerText="Breed" width="100" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Gender" headerText="Gender" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Color" headerText="Color" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Weight" headerText="Weight" format="N2" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Size" headerText="Size" format="N2" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Species.Description" headerText="Species" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column headerText="Manage Records" width="100" commands="commands" ></e-grid-column>
-    </e-grid-columns>
-</ejs-grid>
+
+<div class="card-header badge-info">
+    <h2 class="mb-0">
+        <a class="text-lg-center text-white"><i class="fa fa-dog text-white"></i> Animals</a>
+    </h2>
+
+    <div class="card-body badge-light">
+        <ejs-grid id="Grid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
+            <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+            <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+            <e-grid-columns>
+                <e-grid-column field="Name" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+                <e-grid-column field="Breed" headerText="Breed" width="100" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Gender" headerText="Gender" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Color" headerText="Color" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Weight" headerText="Weight" format="N2" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Size" headerText="Size" format="N2" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="Species.Description" headerText="Species" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+                <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+</div>
+
+
 
 <script type="text/javascript">
     function commandClick(args) {

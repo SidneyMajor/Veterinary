@@ -29,7 +29,7 @@ namespace Veterinary.Data.Repository
             }
 
             return await _context.Appointments.AnyAsync(a => a.StartTime.Equals(model.StartTime) &&
-            a.EndTime.Equals(model.EndTime) &&  a.DoctorID.Equals(model.DoctorID));
+            a.EndTime.Equals(model.EndTime) &&  a.DoctorID.Equals(model.DoctorID) && (a.Status.Equals("Accepted") || a.Status.Equals("Pending")));
         }
 
         public async Task<IQueryable<Appointment>> GetAllAppointmentlAsync(string username)
@@ -45,6 +45,14 @@ namespace Veterinary.Data.Repository
             {
                 return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
                     .Include(a => a.User).Where(a => a.WasDeleted == false).OrderByDescending(a => a.StartTime);
+            }
+
+            if (await _userHelper.IsUserInRoleAsync(user, "Doctor"))
+            {
+                var doctor = _context.Doctors.FirstOrDefaultAsync(d=> d.User==user);
+
+                return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
+                   .Include(a => a.User).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor)).OrderByDescending(a => a.StartTime);
             }
            
             return  _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)

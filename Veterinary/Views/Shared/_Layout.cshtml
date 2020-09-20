@@ -25,7 +25,7 @@
 
         <link rel="stylesheet" href="~/css/flaticon.css">
         <link rel="stylesheet" href="~/css/style.css">
-
+        <link href="~/css/site.css" rel="stylesheet" />
         <!-- Syncfusion Essential JS 2 Styles -->
         <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
         <!-- Data Table -->
@@ -39,33 +39,30 @@
 </head>
 
 <body>
+    <div class="card-header badge-primary wrap">
+       
+            <div class="container">
+                <div class="row ">
 
-    <div class="wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 d-flex align-items-sm-start">
-                    <p class="mb-0 phone pl-md-2">
-                        <a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span> +00 1234 567</a>
-                        <a href="#"><span class="fa fa-paper-plane mr-1"></span> youremail@email.com</a>
-                    </p>
-                </div>
-                <div class="col-md-6 d-lg-flex justify-content-end">
-                    @if (this.User.Identity.IsAuthenticated)
-                    {
-                        <a asp-area="" asp-controller="Account" asp-action="ChangeUser" style="color:white">@this.User.Identity.Name</a>
-                        <a asp-area="" asp-controller="Account" asp-action="Logout" style="color:white; padding-left:40px">Logout</a>
-                    }
-                    else
-                    {
-                        <a asp-area="" asp-controller="Account" asp-action="Login" style="color:white">Login</a>
-                    }
-                </div>
+                    <div class="col-md-12 d-lg-flex justify-content-end ">
+                        @if (this.User.Identity.IsAuthenticated)
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="ChangeUser" style="color:white">@this.User.Identity.Name</a>
+                            <a asp-area="" asp-controller="Account" asp-action="Logout" style="color:white; padding-left:40px">Logout</a>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login" style="color:white">Login</a>
+                        }
+                    </div>
 
+                </div>
             </div>
-        </div>
+       
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-        <div class="container">
+    
+    <nav class="navbar navbar-expand-lg  ftco_navbar  ftco-navbar-light " id="ftco-navbar">
+        <div class="container ">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="flaticon-pawprint-1 mr-2"></span>Veterinary</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
@@ -83,7 +80,6 @@
                         <li class="nav-item"><a asp-area="" asp-controller="Doctors" asp-action="ListDoctor" class="nav-link">Doctors</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="ListAnimal" class="nav-link">Animals</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="AdminAppointment" class="nav-link">SyncApp</a></li>
 
                     }
                     else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))

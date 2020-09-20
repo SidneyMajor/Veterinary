@@ -1,4 +1,4 @@
-﻿@model Veterinary.Data.Entities.Client
+﻿@model Veterinary.Models.AdminClientDetailsViewModel
 
 @{
     ViewData["Title"] = "Client Details";
@@ -6,59 +6,267 @@
 
 
 <div class="container">
-    <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>User Details</a>
-
+    <div class="card-header bg-info text-white">
+        <a style="font-size: 30px"><i class="fa fa-user-circle mr-2 text-white-50"></i>Client Details</a>
     </div>
+
     <div class="row justify-content-center">
 
         <div class="col-md-12">
+            <div class="card-header bg-primary text-white ">
+                Profile Information
+            </div>
             <div class="wrapper">
 
                 <div class="row no-gutters">
 
-                    <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4">
+                    <div class="col-md-8">
+                        <div class="badge-light w-100 p-md-5 p-4">
 
-                            <form method="get" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
-                                <input type="hidden" asp-for="Id" />
-                                <input type="hidden" asp-for="ImageUrl" />
+                            <form asp-action="Delete" id="contactForm" name="contactForm" class="contactForm">
+                                <input type="hidden" asp-for="GetClient.Id" />
+                                <input type="hidden" asp-for="GetClient.ImageUrl" />
+
                                 <div class="row">
-                                    <partial name="_ClientParcial" />
+                                    <button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#collapseClient" aria-expanded="false" aria-controls="collapseOne">
+                                        Client Information
+                                    </button>
 
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <a asp-action="ListClient" asp-controller="Admin" class="btn btn-outline-primary">Back to List</a>
-                                            <a asp-action="DeleteCliente" asp-route-id="@Model.Id" asp-controller="Admin" class="btn btn-danger">Delete</a>
-                                            <a asp-action="GetAnimalByClientId" asp-route-id="@Model.Id" asp-controller="Admin" class="btn btn-danger">Animal</a>
+                                    <div class="collapse" id="collapseClient">
+                                        <div class="card card-body badge-light ">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.Nationality" id="nationality" placeholder="Nationality" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group pt-4 ">
+                                                        <label class="text-lg-center text-info">
+                                                            Gender:
+
+                                                        </label>
+                                                        <ejs-radiobutton ejs-for="GetClient.Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
+                                                        <ejs-radiobutton ejs-for="GetClient.Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.City" id="city" placeholder="City" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox id="DocumentType" ejs-for="GetClient.DocumentType.Description" placeholder="Document" type="text" floatLabelType="Always" enabled="false">
+                                                        </ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="GetClient.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="datepicker">
+                                                        <ejs-datepicker ejs-for="GetClient.DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Always" enabled="false"> </ejs-datepicker>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
+                                </div>
 
+
+
+                                <div class="row">
+                                    <button class="btn btn-warning btn-block mt-2" type="button" data-toggle="collapse" data-target="#collapseAnimal" aria-expanded="false" aria-controls="collapseTwo">
+                                        Animal Information
+                                    </button>
+
+                                    <div class="collapse" id="collapseAnimal">
+                                        <div class="card card-body">
+
+                                            <ejs-grid id="Grid" dataSource="Model.GetAnimals" allowPaging="true" rowTemplate="#rowtemplate">
+                                                <e-grid-pagesettings pageCount="3"></e-grid-pagesettings>
+                                                <e-grid-columns>
+                                                    <e-grid-column headerText="Image" textAlign="Center" width="150"></e-grid-column>
+                                                    <e-grid-column headerText="Animal Details" textAlign="Left" field="Id"></e-grid-column>
+                                                </e-grid-columns>
+                                            </ejs-grid>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mt-5">
+                                        <div class="form-group">
+                                            <a asp-action="ListClient" asp-controller="Admin" class="btn btn-secondary"><i class="fa fa-arrow-alt-circle-left"></i>Back </a>
+                                            <a asp-action="DeleteCliente" asp-route-id="@Model.GetClient.Id" asp-controller="Admin" class="btn btn-danger"><i class="fa fa-trash"></i>Delete</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
 
                         </div>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-stretch">
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="@Url.Content(Model.ImageUrl)" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
+                    <div class="col-md-4 d-block align-items-lg-stretch">
+
+                        <div class="card ml-5 mt-0 p-2 border-info">
+                            <div class="card-header text-lg-center badge-info ">
+                                Porfile picture
                             </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
+                            <div class="card-body text-lg-center p-2">
+                                @if (!string.IsNullOrEmpty(Model.GetClient.ImageUrl))
+                                {
+                                    <img src="@Url.Content(Model.GetClient.ImageUrl)" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
+                                else
+                                {
+                                    <img src="/images/img.jpg" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
                             </div>
-                        }
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
+
+<style type="text/css" class="cssStyles">
+    .photo img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .photo,
+    .details {
+        border-color: #e0e0e0;
+        border-style: solid;
+    }
+
+    .photo {
+        border-width: 1px 0px 0px 0px;
+        text-align: center;
+    }
+
+    .details {
+        border-width: 1px 0px 0px 0px;
+        padding-left: 18px;
+    }
+
+    .e-bigger .details {
+        padding-left: 25px;
+    }
+
+    .e-device .details {
+        padding-left: 8px;
+    }
+
+    .details > table {
+        width: 100%;
+    }
+
+    .CardHeader {
+        font-weight: 600;
+    }
+
+    td {
+        padding: 2px 2px 3px 4px;
+    }
+</style>
+
+<script id="rowtemplate" type="text/x-template">
+    <tr>
+        <td class="photo">
+            <img src="${ImagePath}" />
+        </td>
+        <td class="details">
+            <table class="CardTable" cellpadding="3" cellspacing="2">
+                <colgroup>
+                    <col width="50%">
+                    <col width="50%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td class="CardHeader">Name </td>
+                        <td>${Name} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">Breed</td>
+                        <td>${Breed} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Gender
+                        </td>
+
+                        <td>
+                            ${Gender}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Birth Date
+                        </td>
+                        <td>
+                            ${DateOfBirth.toLocaleDateString()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Species
+                        </td>
+                        <td>
+                            ${Species.Description}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</script>
 

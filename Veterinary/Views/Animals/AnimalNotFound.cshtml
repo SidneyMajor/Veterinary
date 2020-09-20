@@ -3,4 +3,14 @@
     ViewData["Title"] = "Animal not Found";
 }
 
-<h1>Animal not found!</h1>
+
+<div id="notfound">
+    <div class="notfound">
+        <div class="notfound-404">
+            <h1>Oops!</h1>
+        </div>
+        <h2><i class="fa fa-dog" style="font-size:30px"></i>Animal not found!</h2>
+        <p>The Animal you are looking for might have been removed had its name changed or is temporarily unavailable.</p>
+        <a asp-action="Index" asp-controller="Animals">Back To List</a>
+    </div>
+</div>

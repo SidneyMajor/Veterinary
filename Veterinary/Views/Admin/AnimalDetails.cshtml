@@ -5,12 +5,16 @@
 }
 
 
+
 <div class="container">
-    <div class="justify-content-start">
 
-        <a style="font-size: 40px"><i class="fa fa-list mr-2" style="color:green"></i>@Model.Animal.Name Details </a>
-
+    <br /><br />
+    <div class="text-lg-center">
+        <div class="card-header bg-info">
+            <a class="text-white" style="font-size: 1.5rem"><i class="fa  fa-dog mr-2 text-white-50 "></i>@Model.Animal.Name Details</a>
+        </div>
     </div>
+
     <div class="row justify-content-center">
 
         <div class="col-md-12">
@@ -18,10 +22,10 @@
 
                 <div class="row no-gutters">
 
-                    <div class="col-md-7">
-                        <div class="contact-wrap w-100 p-md-5 p-4">
+                    <div class="col-md-8">
+                        <div class="badge-light w-100 p-md-5 p-4">
 
-                            <form method="get" id="contactForm" name="contactForm" class="contactForm">
+                            <form asp-action="Details" method="get" id="contactForm" name="contactForm" class="contactForm">
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -38,10 +42,15 @@
 
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <h3>Gender</h3>
+                                        <div class="form-group pt-4 ">
+                                            <label class="text-lg-center text-info">
+                                                Gender:
+
+                                            </label>
                                             <ejs-radiobutton ejs-for="Animal.Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
                                             <ejs-radiobutton ejs-for="Animal.Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+
+                                            <span asp-validation-for="Animal.Gender" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -84,41 +93,43 @@
                                             <ejs-textbox ejs-for="Animal.Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" enabled="false"></ejs-textbox>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalOwner">
                                                 <i class="fa fa-user-circle"></i>
                                                 Owner Details
                                             </button>
                                             <a asp-action="ListAnimal" asp-controller="Admin" class="btn btn-secondary">Back </a>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </form>
 
                         </div>
                     </div>
 
-                    <div class="col-md-5 d-flex align-items-stretch">
-                        @if (!string.IsNullOrEmpty(Model.Animal.ImageUrl))
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="@Url.Content(Model.Animal.ImageUrl)" id="imgpreview" alt="image" class="info-wrap p-5 w-100 img-circle" />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-12 d-flex align-items-center">
-                                <img src="../../images/img.jpg" id="imgpreview" alt="image" class="info-wrap p-5 w-75 img-circle" />
-                            </div>
-                        }
+                    <div class="col-md-4 d-block align-items-lg-stretch">
 
+                        <div class="card ml-5 mt-5  p-5 border-info">
+                            <div class="card-header text-lg-center badge-info">
+                                Animal picture
+                            </div>
+                            <div class="card-body text-lg-center">
+                                @if (!string.IsNullOrEmpty(Model.Animal.ImageUrl))
+                                {
+                                    <img src="@Url.Content(Model.Animal.ImageUrl)" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
+                                else
+                                {
+                                    <img src="/images/img.jpg" id="imgpreview" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                }
+                            </div>
+                        </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
@@ -128,7 +139,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="ModalOwner" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,30 +149,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                
-                <div class="row">
+
+                <div class="row text-dark">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
@@ -169,20 +180,20 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Animal.User.Email" id="useremail" placeholder="Email Address" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
+                            <ejs-textbox ejs-for="Animal.User.Email" id="useremail" placeholder="Email Address" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
                         </div>
                     </div>
 
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

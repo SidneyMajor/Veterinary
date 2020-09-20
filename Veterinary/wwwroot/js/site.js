@@ -9,6 +9,9 @@ var file = document.getElementById("image");
 
 file.onchange = function () {
     var validFilesTypes = ["bmp", "png", "jpg", "jpeg"];
+
+    var result = document.getElementById("imgpreview");
+
     var isValidFile = false;
     debugger;
     var path = file.value;
@@ -29,9 +32,10 @@ file.onchange = function () {
         swal.fire("System warning", "Invalid File. Please upload a File with" +
             " extension:\n" + validFilesTypes.join(", "), "warning");
         file.value = "";
+        result.src ="../images/img.jpg";
     }
     else {
-        var result = document.getElementById("imgpreview");
+        
         result.src = URL.createObjectURL(event.target.files[0]);
     }
 }
