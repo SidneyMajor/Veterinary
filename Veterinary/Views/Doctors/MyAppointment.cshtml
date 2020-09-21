@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Veterinary.Data.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "MyAppointment";
+}
+
+@{
+
+    List<object> commands = new List<object>();
+
+    commands.Add(new { type = "Start", buttonOption = new { content = "", iconCss = "fas fa-clock text-success", cssClass = "e-flat" } });
+
+}
+
+<h2>MyAppointment</h2>
+
+<ejs-grid id="GridAll" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
+    <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+    <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
+        <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify" template="#statusTemplate"></e-grid-column>
+        <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
+        <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+
+    </e-grid-columns>
+</ejs-grid>
+
+
+<script type="text/x-jsrender" id="statusTemplate">
+    <div id="status" class="statustemp">
+        <span class="statustxt">${Status}</span>
+    </div>
+</script>
+
+<script type="text/javascript">
+    function queryCellInfo(args) {
+
+        if (args.column.field === 'Status') {
+
+            if (args.cell.textContent === "Accepted") {
+                args.cell.querySelector(".statustxt").classList.add("e-activecolor");
+                args.cell.querySelector(".statustemp").classList.add("e-activecolor");
+            }
+        }
+
+    }
+
+    function commandClick(args) {
+
+          
+    }
+
+</script>

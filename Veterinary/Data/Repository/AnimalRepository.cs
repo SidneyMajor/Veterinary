@@ -28,7 +28,7 @@ namespace Veterinary.Data.Repository
                 return null;
             }
 
-            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+            if (await _userHelper.IsUserInRoleAsync(user, "Admin") || await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
                 return _context.Animals   
                     .Include(a => a.User)

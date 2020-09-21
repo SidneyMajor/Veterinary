@@ -107,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-            }
+             }
 
 
         </div>
@@ -376,7 +376,7 @@
         function eventClick(args) {
 
             debugger
-            if (args.event.Status !== "Canceled") {
+            if (args.event.Status !== "Canceled" || args.event.Status !== "Concluded") {
                  $.ajax({
                     type: 'GET',
                     url: '@Url.Action("Edit", "Appointments")',
@@ -409,16 +409,17 @@
                 args.element.style["backgroundColor"] = "orange";
             }
             if (args.data.Status === "Canceled") {
-                args.element.style["backgroundColor"] = "red";
+                args.element.style["backgroundColor"] = "#e1737d";
+                args.element.style["color"] = "white";
             }
 
             if (args.data.Status === "Concluded") {
-                args.element.style["backgroundColor"] ="Violet";
+                args.element.style["backgroundColor"] ="#54df3b";
             }
 
 
             if (args.data.Status === "No-show") {
-                args.element.style["backgroundColor"] = "#404040";
+                args.element.style["backgroundColor"] = "#777b7d";
             }
 
 

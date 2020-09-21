@@ -43,6 +43,7 @@ namespace Veterinary.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
+            var teste = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
             return View(await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name));
         }
 
@@ -158,7 +159,7 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            if (appointment.Status=="Accepted" && this.User.IsInRole("Customer"))
+            if ((appointment.Status=="Accepted" || appointment.Status == "No-show") && this.User.IsInRole("Customer"))
             {
                 return Json(null);
             }
@@ -190,12 +191,13 @@ namespace Veterinary.Controllers
                 try
                 {
                     Appointment appointment = _converterHelper.ToAppointment(model, false);
-                    //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                    //if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
-                    //{
-                    //    user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
-                    //}
-                    appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+                    {
+                        user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
+                    }
+                    //Todo: Solicitar ao prof se essa é a melhor forma de fazer isso. ou se tenho mesmo que alterar o user e colocar o que alterou a consulta.
+                    appointment.User = user;
                     appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                     appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
                     appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);

@@ -23,10 +23,11 @@ namespace Veterinary.Controllers
         private readonly IDocumentTypeRepository _documentTypeRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IMailHelper _mailHelper;
+        private readonly IAppointmentRepsitory _appointmentRepsitory;
 
         public DoctorsController(IDoctorRepository doctorRepository, ISpecialtyRepository specialtyRepository,
             IUserHelper userHelper, IImageHelper imageHelper, IDocumentTypeRepository documentTypeRepository,
-            IConverterHelper converterHelper, IMailHelper mailHelper)
+            IConverterHelper converterHelper, IMailHelper mailHelper, IAppointmentRepsitory appointmentRepsitory)
         {
             _doctorRepository = doctorRepository;
             _specialtyRepository = specialtyRepository;
@@ -35,6 +36,7 @@ namespace Veterinary.Controllers
             _documentTypeRepository = documentTypeRepository;
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
+            _appointmentRepsitory = appointmentRepsitory;
         }
 
         [Authorize(Roles = "Admin")]
@@ -111,7 +113,7 @@ namespace Veterinary.Controllers
 
 
                     var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-                    var tokenLink = this.Url.Action("ConfirmDoctorEmail", "Doctors", new
+                    var tokenLink = this.Url.Action("ConfirmDoctorEmail", "Account", new
                     {
                         userid = user.Id,
                         token = myToken,
@@ -133,66 +135,7 @@ namespace Veterinary.Controllers
             model.Specialties = _specialtyRepository.GetAll().ToList();
             return this.View(model);
         }
-
-
-        //Todo: melhorar essa view
-        public async Task<IActionResult> ConfirmDoctorEmail(string userid, string token)
-        {
-            if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(token))
-            {
-                return NotFound();
-            }
-            var user = await _userHelper.GetUserByIdAsync(userid);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var result = await _userHelper.ConfirmEmailAsync(user, token);
-
-            if (!result.Succeeded)
-            {
-                return NotFound();
-            }
-
-            var model = new SetPasswordViewModel { UserId = userid };
-            return View(model);
-
-
-        }
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> ConfirmDoctorEmail(SetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userHelper.GetUserByIdAsync(model.UserId);
-
-                if (user != null)
-                {
-                    var result = await _userHelper.AddPasswordAsync(user, model.NewPassword);
-
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Login", "Account");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "User not found");
-                }
-            }
-
-            return View(model);
-
-        }
-
+      
 
 
         // GET: doctor/Details  
@@ -250,6 +193,13 @@ namespace Veterinary.Controllers
             model.DocumentType = documentType;
             await _doctorRepository.DeleteAsync(model);
             return RedirectToAction(nameof(ListDoctor));
+        }
+
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> MyAppointment()
+        {
+
+            return View(await _appointmentRepsitory.DoctorAppointmentsAsync(this.User.Identity.Name));
         }
 
 

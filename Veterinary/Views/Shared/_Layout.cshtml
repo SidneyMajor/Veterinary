@@ -71,6 +71,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
                     <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+                    <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                     {
                         <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="ListClient" class="nav-link">Clients</a></li>
@@ -78,24 +79,29 @@
                         <li class="nav-item"><a asp-area="" asp-controller="Species" asp-action="Index" class="nav-link">Species</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Specialties" asp-action="Index" class="nav-link">Specialties</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Doctors" asp-action="ListDoctor" class="nav-link">Doctors</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>
+                        @*<li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>*@
                         <li class="nav-item"><a asp-area="" asp-controller="Admin" asp-action="ListAnimal" class="nav-link">Animals</a></li>
 
                     }
-                    else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
+
+                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Doctor"))
+                    {
+                        <li class="nav-item"><a asp-area="" asp-controller="Doctors" asp-action="MyAppointment" class="nav-link">My Appointments</a></li>
+                    }
+
+                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
                     {
                         <li class="nav-item"><a asp-area="" asp-controller="Animals" asp-action="Index" class="nav-link">Animals</a></li>
+
+                    }
+
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
                         <li class="nav-item"><a asp-area="" asp-controller="Appointments" asp-action="Index" class="nav-link">Appointments</a></li>
                     }
 
 
-                    @*<li class="nav-item"><a href="vet.html" class="nav-link">Veterinarian</a></li>
-                        <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-                        <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
-                        <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-                        <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>*@
-                    <li class="nav-item "><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
-                    @*<li class="nav-item "><a asp-area="" asp-controller="Clientes" asp-action="Index" class="nav-link">Clients</a></li>*@
+
                 </ul>
             </div>
         </div>
@@ -157,8 +163,8 @@
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
 
     <!--moment js-->
-    <script src="~/lib/moment.js/moment.js"></script>
-    <script src="~/lib/moment.js/moment-with-locales.js"></script>
+    @*<script src="~/lib/moment.js/moment.js"></script>
+    <script src="~/lib/moment.js/moment-with-locales.js"></script>*@
 </environment>
 
 

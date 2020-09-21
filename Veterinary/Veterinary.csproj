@@ -8,15 +8,19 @@
     <Compile Remove="wwwroot\js\dist\**" />
     <Compile Remove="wwwroot\js\src\**" />
     <Compile Remove="wwwroot\lib\css\**" />
+    <Compile Remove="wwwroot\lib\moment.js\**" />
     <Content Remove="wwwroot\js\dist\**" />
     <Content Remove="wwwroot\js\src\**" />
     <Content Remove="wwwroot\lib\css\**" />
+    <Content Remove="wwwroot\lib\moment.js\**" />
     <EmbeddedResource Remove="wwwroot\js\dist\**" />
     <EmbeddedResource Remove="wwwroot\js\src\**" />
     <EmbeddedResource Remove="wwwroot\lib\css\**" />
+    <EmbeddedResource Remove="wwwroot\lib\moment.js\**" />
     <None Remove="wwwroot\js\dist\**" />
     <None Remove="wwwroot\js\src\**" />
     <None Remove="wwwroot\lib\css\**" />
+    <None Remove="wwwroot\lib\moment.js\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,8 +40,19 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="18.2.0.55" />
   </ItemGroup>

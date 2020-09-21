@@ -66,10 +66,10 @@ namespace Veterinary.Data.Repository
 
             if (await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
-                var doctor = _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
+                var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
 
                 return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
-                   .Include(a => a.User).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor)).OrderByDescending(a => a.StartTime);
+                   .Include(a => a.User).Include(a=> a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor)).OrderByDescending(a => a.StartTime);
             }
 
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
@@ -95,6 +95,16 @@ namespace Veterinary.Data.Repository
             }
 
             return await _context.Appointments.FirstOrDefaultAsync(a => a.User == user && a.Id == id && a.WasDeleted == false);
+        }
+
+
+        public async Task<IQueryable<Appointment>> DoctorAppointmentsAsync(string username)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(username);
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
+
+            return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
+               .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime==DateTime.Today && a.Status=="Accepted").OrderByDescending(a => a.StartTime);
         }
     }
 }
