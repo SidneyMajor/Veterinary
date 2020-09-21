@@ -86,6 +86,7 @@ body {
 .e-bigger .e-grid .statustxt {
     position: relative;
     top: -2px;
+    width:auto;
 }
 
 td.e-rowcell .statustxt.e-activecolor {
@@ -115,13 +116,13 @@ td.e-rowcell .statustxt.e-pending {
 
 
 td.e-rowcell .statustxt.e-no-show {
-    color: lightgray;
+    color: #404040;
     position: relative;
     top: 1px;
 }
 
 .statustemp.e-no-show {
-    background-color: #f8f8f8;
+    background-color: lightgray;
 }
 
 
@@ -150,7 +151,7 @@ td.e-rowcell .statustxt.e-no-show {
 }
 
 .statustxt.e-no-show {
-    color: lightgray;
+    color: #404040;
 }
 
 .statustxt.e-activecolor {

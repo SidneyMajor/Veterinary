@@ -35,7 +35,7 @@
                     <div class="card-body badge-info">
 
                         <div class="schedule-wrapper">
-                            <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Today" endHour="18:00" startHour="08:00" cellClick="cellClick"
+                            <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Now" endHour="18:00" startHour="08:00" cellClick="cellClick"
                                           eventRendered="onEventRendered" eventClick="eventClick" currentView="WorkWeek" showQuickInfo="false" popupOpen="popupOpen">
                                 <e-schedule-timescale interval="30" slotCount="1"></e-schedule-timescale>
                                 <e-schedule-eventsettings dataSource="Model">
@@ -67,7 +67,7 @@
                                 <e-grid-columns>
                                     <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
                                     <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
-                                    <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify"    template="#statusTemplate"></e-grid-column>
+                                    <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify" template="#statusTemplate"></e-grid-column>
                                     <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
                                     <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
                                     <e-grid-column field="Doctor.FullName" headerText="Doctor" width="50" textAlign="Justify"></e-grid-column>
@@ -237,7 +237,7 @@
 
                         $('#myModal').modal('hide');
                         swal.fire("Success", res.message, "success");
-                       
+
                         var GridObjAll = document.getElementById("GridAll").ej2_instances[0];
                         var schObj = document.getElementById("schedule").ej2_instances[0];
 
@@ -376,7 +376,7 @@
         function eventClick(args) {
 
             debugger
-            if (args.event.Status !=="Canceled") {
+            if (args.event.Status !== "Canceled") {
                  $.ajax({
                     type: 'GET',
                     url: '@Url.Action("Edit", "Appointments")',
@@ -401,7 +401,7 @@
         }
 
         function onEventRendered(args) {
-            
+
             if (args.data.Status === "Accepted") {
                 args.element.style["backgroundColor"]="green";
             }
@@ -417,8 +417,8 @@
             }
 
 
-            if (args.data.Status.includes("no-show")) {
-                args.element.style["backgroundColor"] = "LightGray";
+            if (args.data.Status === "No-show") {
+                args.element.style["backgroundColor"] = "#404040";
             }
 
 
@@ -426,12 +426,6 @@
 
 
         function queryCellInfo(args) {
-            //console.log(args);
-
-            //const string = "Canceled due to no-show";
-            //const substring = "no-show";
-
-            //console.log(string.includes(substring));
 
             if (args.column.field === 'Status') {
 
@@ -456,12 +450,12 @@
                     args.cell.querySelector(".statustemp").classList.add("e-concluded");
                 }
 
-                if (args.cell.textContent.includes("no-show")) {
+                if (args.cell.textContent==="No-show") {
                     args.cell.querySelector(".statustxt").classList.add("e-no-show");
                     args.cell.querySelector(".statustemp").classList.add("e-no-show");
                 }
             }
-            
+
         }
 
     </script>
