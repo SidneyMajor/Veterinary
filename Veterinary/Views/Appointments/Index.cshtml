@@ -198,10 +198,10 @@
                         GridObjPending.dataSource = JSON.parse(res.pendingAppointment);
                         GridObjAll.dataSource = JSON.parse(res.appointments);
 
-                        schObj.dataBind();
-                        schObj.refresh();
+                        
                         GridObjPending.refresh();
                         GridObjAll.refresh();
+                        schObj.dataBind();
                     }
                     else if (res.isValid ==="failed")  {
                         $('#myModal').modal('hide');
@@ -307,7 +307,6 @@
                             GridObjAll.dataSource = JSON.parse(res.appointments);
 
                             schObj.dataBind();
-                            schObj.refresh();
                             GridObjPending.refresh();
                             GridObjAll.refresh();
                         },
@@ -376,7 +375,7 @@
         function eventClick(args) {
 
             debugger
-            if (args.event.Status !== "Canceled" || args.event.Status !== "Concluded") {
+            if (args.event.Status !== "Canceled" && args.event.Status !== "Concluded") {
                  $.ajax({
                     type: 'GET',
                     url: '@Url.Action("Edit", "Appointments")',

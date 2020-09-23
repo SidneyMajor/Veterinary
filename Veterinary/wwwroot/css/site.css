@@ -103,7 +103,7 @@ td.e-rowcell .statustxt.e-inactivecolor {
 
 
 td.e-rowcell .statustxt.e-concluded {
-    color: Violet;
+    color: green;
     position: relative;
     top: 1px;
 }
@@ -139,7 +139,7 @@ td.e-rowcell .statustxt.e-no-show {
 }
 
 .statustemp.e-concluded {
-    background-color: #eeddff;
+    background-color: #54df3b;
 }
 
 .statustxt.e-pending {
@@ -147,7 +147,7 @@ td.e-rowcell .statustxt.e-no-show {
 }
 
 .statustxt.e-concluded {
-    color: violet;
+    color: forestgreen;
 }
 
 .statustxt.e-no-show {

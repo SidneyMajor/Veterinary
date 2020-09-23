@@ -26,7 +26,7 @@ namespace Veterinary.Data.Repository
             await _context.Appointments.ForEachAsync( a =>
             {
 
-                if (a.StartTime < DateTime.Now && a.Status=="Accepted")
+                if (a.StartTime.Date < DateTime.Now.Date && a.Status=="Accepted")
                 {
                     a.Status = "No-show";
                 }
@@ -104,7 +104,7 @@ namespace Veterinary.Data.Repository
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
 
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
-               .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime==DateTime.Today && a.Status=="Accepted").OrderByDescending(a => a.StartTime);
+               .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime.Date==DateTime.Today.Date && a.Status=="Accepted").OrderByDescending(a => a.StartTime);
         }
     }
 }

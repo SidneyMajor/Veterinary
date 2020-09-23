@@ -13,7 +13,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
-    
+
     public class DoctorsController : Controller
     {
         private readonly IDoctorRepository _doctorRepository;
@@ -24,10 +24,15 @@ namespace Veterinary.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IMailHelper _mailHelper;
         private readonly IAppointmentRepsitory _appointmentRepsitory;
+        private readonly ICombosHelper _combosHelper;
+        private readonly IAnimalRepository _animalRepository;
+        private readonly IClientRepository _clientRepository;
+        private readonly ISpeciesRepository _speciesRepository;
 
         public DoctorsController(IDoctorRepository doctorRepository, ISpecialtyRepository specialtyRepository,
             IUserHelper userHelper, IImageHelper imageHelper, IDocumentTypeRepository documentTypeRepository,
-            IConverterHelper converterHelper, IMailHelper mailHelper, IAppointmentRepsitory appointmentRepsitory)
+            IConverterHelper converterHelper, IMailHelper mailHelper, IAppointmentRepsitory appointmentRepsitory, 
+            ICombosHelper combosHelper, IAnimalRepository animalRepository, IClientRepository clientRepository, ISpeciesRepository speciesRepository)
         {
             _doctorRepository = doctorRepository;
             _specialtyRepository = specialtyRepository;
@@ -37,12 +42,16 @@ namespace Veterinary.Controllers
             _converterHelper = converterHelper;
             _mailHelper = mailHelper;
             _appointmentRepsitory = appointmentRepsitory;
+            _combosHelper = combosHelper;
+            _animalRepository = animalRepository;
+            _clientRepository = clientRepository;
+           _speciesRepository = speciesRepository;
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult ListDoctor()
         {
-            return View(_doctorRepository.GetAll().Include(d=>d.User).ToList());
+            return View(_doctorRepository.GetAll().Include(d => d.User).ToList());
         }
 
         [Authorize(Roles = "Admin")]
@@ -58,7 +67,7 @@ namespace Veterinary.Controllers
         }
 
 
-        
+
         [HttpPost]
         public async Task<IActionResult> RegisterDoctor(RegisterNewDoctorViewModel model)
         {
@@ -135,7 +144,7 @@ namespace Veterinary.Controllers
             model.Specialties = _specialtyRepository.GetAll().ToList();
             return this.View(model);
         }
-      
+
 
 
         // GET: doctor/Details  
@@ -198,10 +207,76 @@ namespace Veterinary.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> MyAppointment()
         {
-
             return View(await _appointmentRepsitory.DoctorAppointmentsAsync(this.User.Identity.Name));
         }
 
+
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> StartAppointment(int? id, string username)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Appointment appointment = await _appointmentRepsitory.GetByIdAsync(id.Value);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            var model = _converterHelper.ToDoctorAppointmentViewModel(appointment);
+            model.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+            model.Animal.Species = await _speciesRepository.GetByIdAsync(model.Animal.SpeciesID);
+            model.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+            model.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+            model.GetClient= await _clientRepository.GetClientByUserEmailAsync(username);
+            model.GetClient.User = await _userHelper.GetUserByEmailAsync(username);
+            return PartialView("_startAppointmentPartial", model);
+        }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpPost]
+        public async Task<IActionResult> StartAppointment(int id, DoctorAppointmentViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+            Appointment appointment = _converterHelper.ToAppointment(model);
+            var user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
+
+            appointment.User = user;
+            appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+            appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+            appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+
+            try
+            {
+               
+                await _appointmentRepsitory.UpdateAsync(appointment);
+                var myupappointments = await _appointmentRepsitory.DoctorAppointmentsAsync(this.User.Identity.Name);
+                return Json(new { myappointments = Newtonsoft.Json.JsonConvert.SerializeObject(myupappointments) });
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _appointmentRepsitory.ExistAsync(model.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            //model = _converterHelper.ToDoctorAppointmentViewModel(appointment);
+            //model.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+            //model.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+            //model.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+
+            //return PartialView("_startAppointmentPartial", model);
+        }
 
     }
 }

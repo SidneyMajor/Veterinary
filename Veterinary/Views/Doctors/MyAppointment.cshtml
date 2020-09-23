@@ -8,29 +8,88 @@
 
     List<object> commands = new List<object>();
 
-    commands.Add(new { type = "Start", buttonOption = new { content = "", iconCss = "fas fa-clock text-success", cssClass = "e-flat" } });
+    commands.Add(new { type = "Start", buttonOption = new { content = "Start", iconCss = "fas fa-stethoscope text-success", cssClass = "e-flat" } });
 
 }
+<div class="card badge-success">
+    <div class="card-header badge-success">
+        <h2 class="mb-0">
+            <a class="text-lg-center text-white"><i class="fa fa-calendar-alt text-white"></i>  My Appointment</a>
+        </h2>
+    </div>
 
-<h2>MyAppointment</h2>
 
-<ejs-grid id="GridAll" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
-    <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
-    <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
-    <e-grid-columns>
-        <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
-        <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Status" headerText="Status" width="50" textAlign="Justify" template="#statusTemplate"></e-grid-column>
-        <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
-        <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+    <div class="card-body badge-light">
+        <div class="accordion" id="accordionAppointment">
+            <div class="card badge-info">
+                <div class="card-header badge-info" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-info btn-block text-left text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Today's Schedule.
+                        </button>
+                    </h2>
+                </div>
 
-    </e-grid-columns>
-</ejs-grid>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionAppointment">
+                    <div class="card-body badge-info">
+
+                        <div class="e-grid">
+
+                            <ejs-grid id="MyGrid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
+                                <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+                                <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                <e-grid-columns>
+                                    <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Center" width="50"></e-grid-column>
+                                    <e-grid-column field="EndTime" headerText="End Time" width="50" format="yyyy-MM-dd hh:mm" textAlign="Center"></e-grid-column>
+                                    <e-grid-column field="Status" headerText="Status" width="75" textAlign="Center" template="#statusTemplate"></e-grid-column>
+                                    <e-grid-column field="Animal.Name" headerText="Animal" width="100" textAlign="Center"></e-grid-column>
+                                    <e-grid-column field="Specialty.Description" headerText="Specialty" width="100" textAlign="Center"></e-grid-column>
+                                    <e-grid-column headerText="Manage Records" width="50" commands="commands" textAlign="Center"></e-grid-column>
+
+                                </e-grid-columns>
+                            </ejs-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card badge-secondary">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-secondary btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
+                            Finsh Appointment
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionAppointment">
+                    <div class="card-body">
+                        <div id="updatePartialview">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</div>
+<h2></h2>
+
+
+
 
 
 <script type="text/x-jsrender" id="statusTemplate">
-    <div id="status" class="statustemp">
+    <div id="status" class="statustemp ">
         <span class="statustxt">${Status}</span>
     </div>
 </script>
@@ -49,8 +108,55 @@
     }
 
     function commandClick(args) {
+        console.log(args);
+         $.ajax({
+             type: 'GET',
+             url: '@Url.Action("StartAppointment", "Doctors")',
+             data: { id: args.rowData.Id, username:args.rowData.User.Email },
+             success: function (res) {
+                 debugger;
+                 console.log(res);                 
+                 $('#collapseTwo').collapse('show');
+                 $("#updatePartialview").html(res);
+             },
+             error: function (res) {
+                 console.log(res);
+             }
+         })
+    }
 
-          
+    function finishAppointment() {
+        debugger;
+        var remark = document.getElementById('remark').ej2_instances[0];
+
+        if (remark.value === "" || remark.value === null) {
+
+            swal.fire("Please, Remarks is required.");
+
+            return false;
+        }
+        else {
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("StartAppointment", "Doctors")',
+                data: $('#formdoctor').serialize(),
+                success: function (res) {
+                    var GridObj = document.getElementById("MyGrid").ej2_instances[0];
+
+                    GridObj.dataSource = JSON.parse(res.myappointments);
+                    GridObj.refresh();
+                    $('#collapseOne').collapse('show');
+                    $("#updatePartialview").html('');
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            })
+        }
+
+        return false;
+
     }
 
 </script>

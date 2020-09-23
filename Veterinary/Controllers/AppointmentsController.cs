@@ -43,7 +43,6 @@ namespace Veterinary.Controllers
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            var teste = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
             return View(await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name));
         }
 
