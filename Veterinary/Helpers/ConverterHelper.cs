@@ -197,7 +197,7 @@ namespace Veterinary.Helpers
                 AnimalID=model.AnimalID,
                 DoctorID=model.DoctorID,
                 SpecialtyID=model.SpecialtyID,
-                Status = "Pending",
+                Status = isNew? "Pending":"Accepted",
                 StartTime=model.StartTime,
                 EndTime=model.StartTime.AddMinutes(30),
             };

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,24 +21,26 @@ namespace Veterinary.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IUserHelper _userHelper;
-        private readonly DataContext _context;
         private readonly ICombosHelper _combosHelper;
+        private readonly IClientRepository _clientRepository;
         private readonly ISpecialtyRepository _specialtyRepository;
+        private readonly IMailHelper _mailHelper;
 
         public AppointmentsController(IAppointmentRepsitory appointmentRepsitory,
             IAnimalRepository animalRepository,
             IDoctorRepository doctorRepository, IConverterHelper converterHelper,
-            IUserHelper userHelper, ISpecialtyRepository specialtyRepository, DataContext context,
-             ICombosHelper combosHelper)
+            IUserHelper userHelper, ISpecialtyRepository specialtyRepository, IMailHelper mailHelper,
+             ICombosHelper combosHelper, IClientRepository clientRepository)
         {
             _appointmentRepsitory = appointmentRepsitory;
             _animalRepository = animalRepository;
             _doctorRepository = doctorRepository;
             _converterHelper = converterHelper;
             _userHelper = userHelper;
-            _context = context;
             _combosHelper = combosHelper;
+            _clientRepository = clientRepository;
             _specialtyRepository = specialtyRepository;
+            _mailHelper = mailHelper;
         }
 
         // GET: Appointments
@@ -64,10 +67,22 @@ namespace Veterinary.Controllers
             try
             {
                 appointment.Status = status;
+                appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+                appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
                 await _appointmentRepsitory.UpdateAsync(appointment);
+                var user = await _userHelper.GetUserByAnimalIdAsync(appointment.AnimalID);
+                var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
+
+                _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{ client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{ appointment.Animal.Name}</b>  " +
+                       $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was <b>{status}</b>.<br/><br/> With regards.");
+
                 var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                return Json(new { result = status , appointments= Newtonsoft.Json.JsonConvert.SerializeObject(upappointments), 
-                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a=>a.Status.Equals("Pending"))) });
+                return Json(new
+                {
+                    result = status,
+                    appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments),
+                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending")))
+                });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -80,7 +95,7 @@ namespace Veterinary.Controllers
                     throw;
                 }
             }
-            
+
         }
 
         //Todo: Appointment Status:Pending, Accepted, Canceled
@@ -112,23 +127,27 @@ namespace Veterinary.Controllers
             {
                 //Todo: Fazer as validaçoes necessarias antes de criar uma consulta
                 Appointment appointment = _converterHelper.ToAppointment(model, true);
-                //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                //if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
-                //{
-                //    user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
-                //}
+
                 appointment.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                 appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
                 appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
-                //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+
                 if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
                 {
                     await _appointmentRepsitory.CreateAsync(appointment);
-                    //ViewBag.appointments = appointments.ToList();
+                    var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
+                    _mailHelper.SendMail(this.User.Identity.Name, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                        $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was successful. You will soon receive confirmation.<br/><br/> With regards.");
+
                     var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                    return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments),
-                        pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending")))});
+                    return Json(new
+                    {
+                        isValid = "success",
+                        message = "To add appointment",
+                        appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments),
+                        pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending")))
+                    });
                 }
                 else
                 {
@@ -145,6 +164,7 @@ namespace Veterinary.Controllers
 
 
         // GET: Appointments/Edit/5
+        [Authorize(Roles = "Admin, Doctor")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,7 +178,7 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            if ((appointment.Status=="Accepted" || appointment.Status == "No-show") && this.User.IsInRole("Customer"))
+            if ((appointment.Status == "Accepted" || appointment.Status == "No-show") && this.User.IsInRole("Customer"))
             {
                 return Json(null);
             }
@@ -168,8 +188,6 @@ namespace Veterinary.Controllers
             model.Specialties = _combosHelper.GetComboSpecialties();
             model.Doctors = _combosHelper.GetComboDoctors(appointment.SpecialtyID);
 
-            //ViewData["AnimalID"] = new SelectList(_context.Animals, "Id", "Id", appointment.AnimalID);
-            //ViewData["DoctorID"] = new SelectList(_context.Doctors, "Id", "Address", appointment.DoctorID);
             return PartialView("_viewEditPartial", model);
         }
 
@@ -190,12 +208,9 @@ namespace Veterinary.Controllers
                 try
                 {
                     Appointment appointment = _converterHelper.ToAppointment(model, false);
-                    var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                    if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
-                    {
-                        user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
-                    }
-                    //Todo: Solicitar ao prof se essa é a melhor forma de fazer isso. ou se tenho mesmo que alterar o user e colocar o que alterou a consulta.
+
+                    var user = await _userHelper.GetUserByAnimalIdAsync(model.AnimalID);
+
                     appointment.User = user;
                     appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                     appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
@@ -204,9 +219,13 @@ namespace Veterinary.Controllers
                     if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
                     {
                         await _appointmentRepsitory.UpdateAsync(appointment);
-                        //ViewBag.appointments = appointments.ToList();
+
                         var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                        return Json(new { isValid = "success", message = "To add appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
+                        var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
+                        _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                            $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, has been changed to <b>{appointment.StartTime}</b>.<br/><br/> With regards.");
+
+                        return Json(new { isValid = "success", message = "To edit appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
                     }
                     else
                     {
@@ -226,9 +245,9 @@ namespace Veterinary.Controllers
                         throw;
                     }
                 }
-                
+
             }
-           
+
             model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
             model.Specialties = _combosHelper.GetComboSpecialties();
             model.Doctors = _combosHelper.GetComboDoctors(model.SpecialtyID);
@@ -245,20 +264,35 @@ namespace Veterinary.Controllers
                 return Json(new { result = "error" });
             }
 
-            var appointment = await _context.Appointments
-                .Include(a => a.Animal)
-                .Include(a => a.Doctor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var appointment = await _appointmentRepsitory.GetAppointmentByIdAsync(id.Value);
             if (appointment == null)
             {
                 return Json(new { result = "error" });
             }
             try
             {
+                
+                if (appointment.Status=="Accepted" || appointment.Status=="Pending")
+                {
+                    appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
+                    appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
+                    appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
+                    var user = await _userHelper.GetUserByAnimalIdAsync(appointment.AnimalID);
+                    var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
+
+                    _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                           $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was <b>Canceled</b>.<br/><br/> With regards.");
+                }
+
                 await _appointmentRepsitory.DeleteAsync(appointment);
+
                 var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
-                return Json(new { result = "success", appointments =  Newtonsoft.Json.JsonConvert.SerializeObject(upappointments), 
-                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending"))) });
+                return Json(new
+                {
+                    result = "success",
+                    appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments),
+                    pendingAppointment = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments.Where(a => a.Status.Equals("Pending")))
+                });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -273,20 +307,7 @@ namespace Veterinary.Controllers
             }
         }
 
-        //// POST: Appointments/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var appointment = await _context.Appointments.FindAsync(id);
-        //    _context.Appointments.Remove(appointment);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-      
-
-
+        
         public JsonResult GetDoctors(int specialtyId)
         {
             var doctors = _doctorRepository.GetDoctorsSpecialtyId(specialtyId);

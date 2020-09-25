@@ -30,7 +30,7 @@
     <div class="card-body badge-light">
         <ejs-grid id="Grid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick">
             <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
-
+            <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
             <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
             <e-grid-columns>
                 <e-grid-column field="FullName" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
@@ -39,7 +39,7 @@
                 <e-grid-column field="Nationality" headerText="Nationality" width="50" textAlign="Justify"></e-grid-column>
                 <e-grid-column field="User.Email" headerText="Email" width="50" textAlign="Justify"></e-grid-column>
                 <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
-                <e-grid-column headerText="Manage Records" width="100" commands="commands" ></e-grid-column>
+                <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
             </e-grid-columns>
         </ejs-grid>
 

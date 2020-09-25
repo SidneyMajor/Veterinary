@@ -1,85 +1,97 @@
-﻿@model Veterinary.Data.Entities.Doctor
+﻿@model Veterinary.Models.DoctorDetailsViewModel
 
 
-    <div class="col-md-12">
-        <div class="form-group">
-            <ejs-textbox ejs-for="FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-12">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nationality" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.Nationality" id="nationality" placeholder="Nationality" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group pt-4 ">
-            <label class="text-lg-center text-info">
-                Gender:
+<div class="col-md-6">
+    <div class="form-group pt-2 ">
+        <label class="text-lg-center text-info">
+            Gender:
 
-            </label>
-            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
-            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+        </label>
+        <ejs-radiobutton ejs-for="GetDoctor.Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
+        <ejs-radiobutton ejs-for="GetDoctor.Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
 
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
     </div>
+</div>
 
-    <div class="col-md-12">
-        <div class="form-group">
-            <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-12">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.City" id="city" placeholder="City" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox id="Specialty" ejs-for="Specialty.Description" placeholder="Specialty" type="text" floatLabelType="Always" enabled="false">
-            </ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox id="DocumentType" ejs-for="DocumentType.Description" placeholder="Document" type="text" floatLabelType="Always" enabled="false">
-            </ejs-textbox>
-        </div>
+
+
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox id="DocumentType" ejs-for="GetDoctor.DocumentType.Description" placeholder="Document" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline">
+        </ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" enabled="false"></ejs-textbox>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox id="Specialty" ejs-for="GetDoctor.Specialty.Description" placeholder="Specialty" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline">
+        </ejs-textbox>
     </div>
+</div>
 
-    <div class="col-md-6">
-        <div class="datepicker">
-            <ejs-datepicker ejs-for="DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Always" enabled="false"> </ejs-datepicker>
-        </div>
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
     </div>
+</div>
 
-    
+<div class="col-md-6">
+    <div class="datepicker">
+        <ejs-datepicker ejs-for="GetDoctor.DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Always" readonly="true" cssClass="e-outline"> </ejs-datepicker>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <ejs-textbox ejs-for="GetDoctor.User.Email" id="email" placeholder="Email Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+    </div>
+</div>

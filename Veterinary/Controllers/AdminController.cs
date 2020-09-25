@@ -93,7 +93,7 @@ namespace Veterinary.Controllers
             }
             var user = await _userHelper.GetUserByClientIdAsync(client.Id);
             var animals = await _animalRepository.GetAllAnimalAsync(user.Email);
-
+            client.User = user;
             var model = new AdminClientDetailsViewModel
             {
                 GetClient = client,

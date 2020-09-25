@@ -13,7 +13,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
-
+    [Authorize]
     public class DoctorsController : Controller
     {
         private readonly IDoctorRepository _doctorRepository;
@@ -31,7 +31,7 @@ namespace Veterinary.Controllers
 
         public DoctorsController(IDoctorRepository doctorRepository, ISpecialtyRepository specialtyRepository,
             IUserHelper userHelper, IImageHelper imageHelper, IDocumentTypeRepository documentTypeRepository,
-            IConverterHelper converterHelper, IMailHelper mailHelper, IAppointmentRepsitory appointmentRepsitory, 
+            IConverterHelper converterHelper, IMailHelper mailHelper, IAppointmentRepsitory appointmentRepsitory,
             ICombosHelper combosHelper, IAnimalRepository animalRepository, IClientRepository clientRepository, ISpeciesRepository speciesRepository)
         {
             _doctorRepository = doctorRepository;
@@ -45,7 +45,7 @@ namespace Veterinary.Controllers
             _combosHelper = combosHelper;
             _animalRepository = animalRepository;
             _clientRepository = clientRepository;
-           _speciesRepository = speciesRepository;
+            _speciesRepository = speciesRepository;
         }
 
         [Authorize(Roles = "Admin")]
@@ -65,8 +65,6 @@ namespace Veterinary.Controllers
 
             return View(model);
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> RegisterDoctor(RegisterNewDoctorViewModel model)
@@ -126,15 +124,20 @@ namespace Veterinary.Controllers
                     {
                         userid = user.Id,
                         token = myToken,
+                        name = $"{doctor.FirstName} {doctor.LastName}",
 
                     }, protocol: HttpContext.Request.Scheme);
 
-                    _mailHelper.SendMail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
-                       $"To allow the user, " +
-                       $"plase click in this link: </br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+                    _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
+                             "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
+                             $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
+                             $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
+                             $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
+                             $"background-color: #008CBA;'>Confirm your account</a></div>");
 
                     this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
-
+                    model.Documents = _documentTypeRepository.GetAll().ToList();
+                    model.Specialties = _specialtyRepository.GetAll().ToList();
                     return this.View(model);
                 }
                 this.ModelState.AddModelError(string.Empty, "The user already exists.");
@@ -145,8 +148,6 @@ namespace Veterinary.Controllers
             return this.View(model);
         }
 
-
-
         // GET: doctor/Details  
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DoctorDetails(int? id)
@@ -156,16 +157,22 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var model = await _doctorRepository.GetByIdAsync(id.Value);
+            Doctor doctor = await _doctorRepository.GetByIdAsync(id.Value);
 
-            if (model == null)
+            if (doctor == null)
             {
                 return NotFound();
             }
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            var specialty = await _specialtyRepository.GetByIdAsync(model.SpecialtyID);
-            model.DocumentType = documentType;
-            model.Specialty = specialty;
+            doctor.DocumentType = await _documentTypeRepository.GetByIdAsync(doctor.DocumentTypeID);
+            doctor.Specialty = await _specialtyRepository.GetByIdAsync(doctor.SpecialtyID);
+            doctor.User = await _userHelper.GetUserByDoctorIdAsync(doctor.Id);
+
+            var appointments = await _appointmentRepsitory.GetAllAppointmentlAsync(doctor.User.Email);
+            var model = new DoctorDetailsViewModel
+            {
+                GetDoctor = doctor,
+                GetAppointments=appointments,
+            };
             return View(model);
         }
 
@@ -230,7 +237,7 @@ namespace Veterinary.Controllers
             model.Animal.Species = await _speciesRepository.GetByIdAsync(model.Animal.SpeciesID);
             model.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
             model.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
-            model.GetClient= await _clientRepository.GetClientByUserEmailAsync(username);
+            model.GetClient = await _clientRepository.GetClientByUserEmailAsync(username);
             model.GetClient.User = await _userHelper.GetUserByEmailAsync(username);
             return PartialView("_startAppointmentPartial", model);
         }
@@ -253,7 +260,7 @@ namespace Veterinary.Controllers
 
             try
             {
-               
+
                 await _appointmentRepsitory.UpdateAsync(appointment);
                 var myupappointments = await _appointmentRepsitory.DoctorAppointmentsAsync(this.User.Identity.Name);
                 return Json(new { myappointments = Newtonsoft.Json.JsonConvert.SerializeObject(myupappointments) });

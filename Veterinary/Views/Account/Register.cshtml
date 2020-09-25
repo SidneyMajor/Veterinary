@@ -25,7 +25,7 @@
                             <div class="badge-light w-100 p-md-5 p-4">
 
                                 <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -169,7 +169,11 @@
                         </div>
 
                         <div class="col-md-4 d-block align-items-lg-stretch">
-
+                            <div class="text-success ml-5 mt-5">
+                                <p>
+                                    <h5 class="alert-success">@ViewBag.Message</h5>
+                                </p>
+                            </div>
                             <div class="card ml-5 mt-5  p-5 border-info">
                                 <div class="card-header text-lg-center badge-info ">
                                     Porfile picture
@@ -179,11 +183,7 @@
                                 </div>
                             </div>
 
-                            <div class="text-success ml-5 mt-5">
-                                <p>
-                                    <h5 class="alert-success">@ViewBag.Message</h5>
-                                </p>
-                            </div>
+
                         </div>
 
                       

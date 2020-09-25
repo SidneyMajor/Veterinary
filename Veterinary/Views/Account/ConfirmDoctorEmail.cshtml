@@ -1,43 +1,54 @@
 ﻿@model Veterinary.Models.SetPasswordViewModel
+@using Syncfusion.EJ2.SplitButtons;
 @{
-    ViewData["Title"] = "ConfirmDoctorEmail";
+    ViewData["Title"] = "Confirm Doctor Email";
 }
 
 
+@{
+    var spinRight = new ProgressButtonSpinSettings() { Position = SpinPosition.Right };
 
-<div class="login-container">
-    <div class="login-box">
-
+}
+<div class="login-container row mt-5">
+    <div class="login-box col-md-5">
         <div>
-            <p>
+            <div class="card-header text-lg-center alert-success border-dark">
+                <h5>Welcome Dr. @Model.FullName</h5>
+            </div>
+            <p class="alert-success">
                 Thank you for confirming your email. Now you can login into system.
+                Before that please set your password.
             </p>
         </div>
 
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form method="post" asp-action="ConfirmDoctorEmail">
+            <div asp-validation-summary="All" class="alert-danger"></div>
 
-            <div class="contact-wrap w-100 p-md-5 p-4">
+            <div class="card">
+                <div class="card-header badge-info text-lg-center">
+                    <h2 style="font-size:30px"><span class="flaticon-pawprint-1 mr-2 text-white-50"></span>New Password</h2>
+                </div>
 
-                <h2 style="font-size: 40px"><span class="flaticon-pawprint-1 mr-2" style="color:green"></span>New Password</h2>
+                <div class="card-body">
 
+                    <div class="form-group">
+                        <ejs-textbox id="setnewpw" ejs-for="NewPassword" type="password" cssClass="e-outline" floatLabelType="Auto" placeholder="New Password"></ejs-textbox>
+                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <ejs-textbox id="setconfirmpw" ejs-for="Confirm" type="password" cssClass="e-outline" floatLabelType="Auto" placeholder="Repeat Password"></ejs-textbox>
+                        <span asp-validation-for="Confirm" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="card-footer border-dark badge-light">
+                    <div class="form-group">
+                        <ejs-progressbutton id="spinright" content="Submit" isPrimary="true" spinSettings="spinRight" cssClass="e-success e-block"></ejs-progressbutton>
+                        <a asp-action="Login" class="e-btn e-secondary e-block mt-2 "><b><i class="fa fa-sign-in-alt"></i> Login</b></a>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <input asp-for="NewPassword" type="password" class="form-control" placeholder="New Password" required="required">
-                <span asp-validation-for="NewPassword" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input asp-for="Confirm" type="password" class="form-control" placeholder="Confirm" required="required">
-                <span asp-validation-for="Confirm" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-block btn-lg m-t-5" value="Change">
-                <a asp-action="Login" class="btn btn-custom">Login</a>
-            </div>
-
         </form>
 
 

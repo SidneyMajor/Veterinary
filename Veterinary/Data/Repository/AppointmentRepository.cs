@@ -48,6 +48,7 @@ namespace Veterinary.Data.Repository
             a.EndTime.Equals(model.EndTime) && a.DoctorID.Equals(model.DoctorID) && (a.Status.Equals("Accepted") || a.Status.Equals("Pending")));
         }
 
+
         public async Task<IQueryable<Appointment>> GetAllAppointmentlAsync(string username)
         {
             await NoShowAppointment();

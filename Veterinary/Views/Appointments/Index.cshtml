@@ -26,7 +26,7 @@
                 <div class="card-header badge-info" id="headingOne">
                     <h2 class="mb-0">
                         <button class="btn btn-info btn-block text-left text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Appointment Schedule.
+                            Schedule Appointment.
                         </button>
                     </h2>
                 </div>
@@ -63,6 +63,7 @@
 
                             <ejs-grid id="GridPending" dataSource="@Model.Where(s=> s.Status=="Pending")" allowPaging="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick" queryCellInfo="queryCellInfo">
                                 <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                                <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
                                 <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
                                 <e-grid-columns>
                                     <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
@@ -92,6 +93,7 @@
 
                             <ejs-grid id="GridAll" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo">
                                 <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+                                <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
                                 <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
                                 <e-grid-columns>
                                     <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Justify" width="100"></e-grid-column>
@@ -107,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-             }
+            }
 
 
         </div>
@@ -124,6 +126,15 @@
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        function onRenderCell(args) {
+            if (args.date.getDay() == 0 || args.date.getDay() == 6) {
+                //sets isDisabled to true to disable the date.
+                args.isDisabled = true;
+            }
+        }
+    </script>
     <script type="text/javascript">
 
         function cellClick(event) {
@@ -198,7 +209,7 @@
                         GridObjPending.dataSource = JSON.parse(res.pendingAppointment);
                         GridObjAll.dataSource = JSON.parse(res.appointments);
 
-                        
+
                         GridObjPending.refresh();
                         GridObjAll.refresh();
                         schObj.dataBind();
@@ -244,9 +255,8 @@
                         schObj.eventSettings.dataSource = JSON.parse(res.appointments);
                         GridObjAll.dataSource = JSON.parse(res.appointments);
 
-                        schObj.dataBind();
-                        schObj.refresh();
                         GridObjAll.refresh();
+                        schObj.dataBind();
                     }
                     else if (res.isValid === "failed") {
 
@@ -353,10 +363,9 @@
                                 GridObjPending.dataSource = JSON.parse(res.pendingAppointment);
                                 GridObjAll.dataSource = JSON.parse(res.appointments);
 
-                                schObj.dataBind();
-                                schObj.refresh();
                                 GridObjPending.refresh();
                                 GridObjAll.refresh();
+                                schObj.dataBind();
                             }
                             else {
                                 Swal.fire('Failed', 'Failed to delete schedule', 'warning')
@@ -460,11 +469,13 @@
 
     </script>
 
+    <script type="text/x-jsrender" id="statusTemplate">
+        <div id="status" class="statustemp">
+            <span class="statustxt">${Status}</span>
+        </div>
+    </script>
+
+
 }
-<script type="text/x-jsrender" id="statusTemplate">
-    <div id="status" class="statustemp">
-        <span class="statustxt">${Status}</span>
-    </div>
-</script>
 
 

@@ -22,5 +22,8 @@ namespace Veterinary.Models
         [DataType(DataType.Password)]
         [Compare("NewPassword")]
         public string Confirm { get; set; }
+
+
+        public string FullName { get; set; }
     }
 }

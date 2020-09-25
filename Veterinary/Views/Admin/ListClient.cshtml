@@ -26,6 +26,7 @@
     <div class="card-body badge-light">
         <ejs-grid id="Grid" dataSource="Model" allowPaging="true" allowSorting="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick" enableVirtualization="false">
             <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+            <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
             <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
             <e-grid-columns>
                 <e-grid-column headerText=" " template="#template" width="30">

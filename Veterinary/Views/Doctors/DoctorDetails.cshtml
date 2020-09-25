@@ -1,5 +1,5 @@
 ﻿
-@model Veterinary.Data.Entities.Doctor
+@model Veterinary.Models.DoctorDetailsViewModel
 
 @{
     ViewData["Title"] = "Doctor Details";
@@ -26,24 +26,58 @@
 
                 <div class="row no-gutters">
 
-                    <div class="col-md-7">
+                    <div class="col-md-9">
                         <div class="badge-light w-100 p-md-5 p-4">
 
                             <form asp-action="DoctorDetails" id="contactForm" name="contactForm" class="contactForm">
-                                <input type="hidden" asp-for="Id" />
-                                <input type="hidden" asp-for="ImageUrl" />
+                                <input type="hidden" asp-for="GetDoctor.Id" />
+                                <input type="hidden" asp-for="GetDoctor.ImageUrl" />
 
                                 <div class="row">
-                                    <partial name="_DoctorParcial" />
+                                    <button class="btn btn-info btn-block mt-2" type="button" data-toggle="collapse" data-target="#collapsedoctor" aria-expanded="false" aria-controls="collapseOne">
+                                        Doctor Information
+                                    </button>
 
+                                    <div class="collapse" id="collapsedoctor">
+                                        <div class="card card-body badge-light">
+                                            <div class="row">
+                                                <partial name="_DoctorParcial" />
+                                            </div>
 
-                                    <div class="col-md-12">
-                                       
+                                        </div>
                                     </div>
-                                    <div class="col-md-12">
+                                </div>
+
+                                <div class="row">
+                                    <button class="btn btn-warning btn-block mt-2" type="button" data-toggle="collapse" data-target="#collapseappointments" aria-expanded="false" aria-controls="collapseTwo">
+                                        Doctor Appointments
+                                    </button>
+
+                                    <div class="collapse" id="collapseappointments">
+                                        <div class="card card-body">
+                                            <div class="row">
+                                                <ejs-grid id="MyGrid" dataSource="Model.GetAppointments" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo">
+                                                    <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+                                                    <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                                    <e-grid-columns>
+                                                        <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Center" width="100"></e-grid-column>
+                                                        <e-grid-column field="EndTime" headerText="End Time" width="100" format="yyyy-MM-dd hh:mm" textAlign="Center"></e-grid-column>
+                                                        <e-grid-column field="Status" headerText="Status" width="75" textAlign="Center" template="#statusTemplate"></e-grid-column>
+                                                        <e-grid-column field="Animal.Name" headerText="Animal" width="100" textAlign="Center"></e-grid-column>
+                                                        <e-grid-column field="Specialty.Description" headerText="Specialty" width="100" textAlign="Center"></e-grid-column>
+                                                    </e-grid-columns>
+                                                </ejs-grid>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-12 mt-5">
                                         <div class="form-group">
                                             <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-secondary btn-block"><i class="fa fa-arrow-alt-circle-left"></i> Back to List</a>
-                                            <a asp-action="Delete" asp-route-id="@Model.Id" asp-controller="Doctors" class="btn btn-danger btn-block"><i class="fa fa-trash text-white"> Delete</i></a>
+                                            <a asp-action="Delete" asp-route-id="@Model.GetDoctor.Id" asp-controller="Doctors" class="btn btn-danger btn-block"><i class="fa fa-trash text-white"> Delete</i></a>
                                         </div>
                                     </div>
 
@@ -53,16 +87,16 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 d-block align-items-lg-stretch">
+                    <div class="col-md-3 d-block align-items-lg-stretch">
 
-                        <div class="card ml-5 mt-5  p-5 border-info">
+                        <div class="card ml-5 mt-5  p-2 border-info">
                             <div class="card-header text-lg-center badge-info ">
                                 Porfile picture
                             </div>
                             <div class="card-body text-lg-center">
-                                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                                @if (!string.IsNullOrEmpty(Model.GetDoctor.ImageUrl))
                                 {
-                                    <img src="@Url.Content(Model.ImageUrl)" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                    <img src="@Url.Content(Model.GetDoctor.ImageUrl)" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
                                 }
                                 else
                                 {
@@ -78,4 +112,51 @@
     </div>
 </div>
 
+
+@section Scripts{
+
+    <script type="text/x-jsrender" id="statusTemplate">
+        <div id="status" class="statustemp">
+            <span class="statustxt">${Status}</span>
+        </div>
+    </script>
+    <script type="text/javascript">
+
+
+
+        function queryCellInfo(args) {
+
+            if (args.column.field === 'Status') {
+
+                if (args.cell.textContent === "Accepted") {
+                    args.cell.querySelector(".statustxt").classList.add("e-activecolor");
+                    args.cell.querySelector(".statustemp").classList.add("e-activecolor");
+                }
+
+                if (args.cell.textContent === "Canceled") {
+                    args.cell.querySelector(".statustxt").classList.add("e-inactivecolor");
+                    args.cell.querySelector(".statustemp").classList.add("e-inactivecolor");
+                }
+
+                if (args.cell.textContent === "Pending") {
+                    args.cell.querySelector(".statustxt").classList.add("e-pending");
+                    args.cell.querySelector(".statustemp").classList.add("e-pending");
+                }
+
+
+                if (args.cell.textContent === "Concluded") {
+                    args.cell.querySelector(".statustxt").classList.add("e-concluded");
+                    args.cell.querySelector(".statustemp").classList.add("e-concluded");
+                }
+
+                if (args.cell.textContent === "No-show") {
+                    args.cell.querySelector(".statustxt").classList.add("e-no-show");
+                    args.cell.querySelector(".statustemp").classList.add("e-no-show");
+                }
+            }
+
+        }
+    </script>
+
+}
 

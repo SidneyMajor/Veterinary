@@ -10,7 +10,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Helpers
 {
-    public class UserHelper: IUserHelper
+    public class UserHelper : IUserHelper
     {
         //Manager User
         private readonly UserManager<User> _userManager;
@@ -63,7 +63,7 @@ namespace Veterinary.Helpers
 
         public async Task CheckRoleAsync(string roleName)
         {
-        
+
             var roleExists = await _roleManager.RoleExistsAsync(roleName);
 
             if (!roleExists)
@@ -79,7 +79,7 @@ namespace Veterinary.Helpers
 
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
-            return await _userManager.ConfirmEmailAsync(user, token);           
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
 
 
@@ -134,8 +134,8 @@ namespace Veterinary.Helpers
 
         public async Task<User> GetUserByClientIdAsync(int id)
         {
-            var clients = _context.Clients.Include(u=> u.User);
-            
+            var clients = _context.Clients.Include(u => u.User);
+
             return await _userManager.FindByIdAsync(clients.FirstOrDefault(c => c.Id == id && c.WasDeleted == false).User.Id);
         }
 
@@ -147,9 +147,11 @@ namespace Veterinary.Helpers
         }
 
 
-        //public async Task<IdentityResult> UpdateUserAsync(User user)
-        //{
-        //    return await _userManager.UpdateAsync(user);
-        //}
+        public async Task<User> GetUserByDoctorIdAsync(int id)
+        {
+            var doctors = _context.Doctors.Include(u => u.User);
+
+            return await _userManager.FindByIdAsync(doctors.FirstOrDefault(d => d.Id == id && d.WasDeleted == false).User.Id);
+        }
     }
 }

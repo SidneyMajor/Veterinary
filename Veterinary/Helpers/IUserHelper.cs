@@ -16,6 +16,8 @@ namespace Veterinary.Helpers
 
         Task<User> GetUserByAnimalIdAsync(int id);
 
+        Task<User> GetUserByDoctorIdAsync(int id);
+
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task LogoutAsync();
