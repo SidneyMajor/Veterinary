@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.EJ2.Linq;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
@@ -82,7 +83,7 @@ namespace Veterinary.Controllers
         }
 
 
-       
+
         public IActionResult Register()
         {
             var model = new RegisterNewUserViewModel
@@ -115,56 +116,78 @@ namespace Veterinary.Controllers
 
                 }
 
-                var user = await _userHelper.GetUserByEmailAsync(model.Email);
-                if (user == null)
+                try
                 {
-                    user = new User
-                    {
-                        UserName = model.Email,
-                        Email = model.Email,
-                        PhoneNumber = model.PhoneNumber,
-                    };
-
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-
-                    var result = await _userHelper.AddUserAsync(user, model.Password);
-                    if (result != IdentityResult.Success)
+                    var user = await _userHelper.GetUserByEmailAsync(model.Email);
+                    if (user == null)
                     {
-                        this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                        model.Documents = _documentTypeRepository.GetAll().ToList();
+                        user = new User
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            PhoneNumber = model.PhoneNumber,
+                        };
 
+                        var result = await _userHelper.AddUserAsync(user, model.Password);
+                        if (result != IdentityResult.Success)
+                        {
+                            this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                            model.Documents = _documentTypeRepository.GetAll().ToList();
+
+                            return this.View(model);
+                        }
+                    }
+
+
+                    var client = await _clientRepository.GetClientByUserEmailAsync(model.Email);
+
+                    if (client == null)
+                    {
+                        //add client
+                        await _userHelper.CheckRoleAsync("Customer");
+                        await _userHelper.AddUserToRoleAsync(user, "Customer");
+
+                        client = _converterHelper.ToClient(model, documentType, path);
+                        client.User = user;
+                        await _clientRepository.CreateAsync(client);
+
+
+                        var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                        var tokenLink = this.Url.Action("ConfirmEmail", "Account", new
+                        {
+                            userid = user.Id,
+                            token = myToken,
+
+                        }, protocol: HttpContext.Request.Scheme);
+
+                        _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
+                                "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
+                                $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
+                                $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
+                                $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
+                                $"background-color: #008CBA;'>Confirm your account</a></div>");
+
+                        this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
+                        model.Documents = _documentTypeRepository.GetAll().ToList();
                         return this.View(model);
                     }
 
-                    //add client
-                    await _userHelper.CheckRoleAsync("Customer");
-                    await _userHelper.AddUserToRoleAsync(user, "Customer");
+                    this.ModelState.AddModelError(string.Empty, "The user already exists.");
 
-                    var client = _converterHelper.ToClient(model, documentType, path);
-                    client.User = user;
-                    await _clientRepository.CreateAsync(client);
-
-
-                    var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-                    var tokenLink = this.Url.Action("ConfirmEmail", "Account", new
-                    {
-                        userid = user.Id,
-                        token = myToken,
-
-                    }, protocol: HttpContext.Request.Scheme);
-
-                    _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
-                            "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
-                            $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
-                            $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
-                            $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
-                            $"background-color: #008CBA;'>Confirm your account</a></div>");
-
-                    this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
-                    model.Documents = _documentTypeRepository.GetAll().ToList();
-                    return this.View(model);
                 }
-                this.ModelState.AddModelError(string.Empty, "The user already exists.");
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Theres is already a customer with that tax number or nº document!!");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+
             }
 
             model.Documents = _documentTypeRepository.GetAll().ToList();
@@ -223,7 +246,7 @@ namespace Veterinary.Controllers
                 return NotFound();
             }
 
-            var model = new SetPasswordViewModel { UserId = userid, FullName=name };
+            var model = new SetPasswordViewModel { UserId = userid, FullName = name };
             return View(model);
 
 
@@ -291,11 +314,11 @@ namespace Veterinary.Controllers
                 return this.View(model);
             }
 
-            
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)        
+        public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
             if (this.ModelState.IsValid)
             {
@@ -338,7 +361,7 @@ namespace Veterinary.Controllers
                         await _doctorRepository.UpdateAsync(doctor);
                     }
 
-                   // ViewBag.success = "Success";
+                    // ViewBag.success = "Success";
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -355,8 +378,8 @@ namespace Veterinary.Controllers
                 }
 
             }
-          
-            model.Documents = _documentTypeRepository.GetAll();            
+
+            model.Documents = _documentTypeRepository.GetAll();
             return this.View(model);
 
         }

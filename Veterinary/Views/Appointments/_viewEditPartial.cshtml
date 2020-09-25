@@ -35,10 +35,10 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-hourglass-start"></i></span>
                                 </div>
-                                @*<input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" id="myStarttime" />*@
-                                <ejs-dateTimepicker id="datepicker" ejs-for="StartTime" placeholder="Seletc a Date" floatLabelType="Auto" format="dd-MM-yyyy HH:mm" value="@DateTime.Now"
+                                <input asp-for="StartTime" type="datetime-local" class="form-control" aria-describedby="inputGroup-sizing-default" id="myStarttime" />
+                                @*<ejs-dateTimepicker id="datepicker" ejs-for="StartTime" placeholder="Seletc a Date" floatLabelType="Auto" format="dd-MM-yyyy HH:mm" value="@DateTime.Now"
                                                     renderDayCell="onRenderCell" strictMode="true" min="@DateTime.Today.AddHours(-16)" max="@DateTime.Today.AddHours(-6).AddMinutes(-30)" cssClass="e-outline" >                                    
-                                </ejs-dateTimepicker>
+                                </ejs-dateTimepicker>*@
 
                             </div>
                             <span asp-validation-for="StartTime" class="text-danger"></span>

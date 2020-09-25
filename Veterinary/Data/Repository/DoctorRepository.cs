@@ -23,7 +23,7 @@ namespace Veterinary.Data.Repository
 
         public async Task<Doctor> GetDoctorByUserEmailAsync(string email)
         {
-            return await _context.Doctors.SingleAsync(c => c.User.Email == email);
+            return await _context.Doctors.FirstOrDefaultAsync(c => c.User.Email == email);
         }
     }
 }

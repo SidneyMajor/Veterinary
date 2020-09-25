@@ -43,6 +43,18 @@ namespace Veterinary.Data
             {
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
+            //Unique Index
+            modelbuilder.Entity<Doctor>().HasIndex(d => d.SSNumber).IsUnique();
+            modelbuilder.Entity<Doctor>().HasIndex(d => d.TaxNumber).IsUnique();
+            modelbuilder.Entity<Doctor>().HasIndex(d => d.Document).IsUnique();
+            modelbuilder.Entity<Client>().HasIndex(c => c.TaxNumber).IsUnique();
+            modelbuilder.Entity<Client>().HasIndex(c => c.Document).IsUnique();
+
+            modelbuilder.Entity<DocumentType>().HasIndex(c => c.Description).IsUnique();
+            modelbuilder.Entity<Specialty>().HasIndex(c => c.Description).IsUnique();
+            modelbuilder.Entity<Species>().HasIndex(c => c.Description).IsUnique();
+
+
             base.OnModelCreating(modelbuilder);
         } 
         

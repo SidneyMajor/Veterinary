@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
@@ -56,8 +57,23 @@ namespace Veterinary.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _speciesRepository.CreateAsync(model);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _speciesRepository.CreateAsync(model);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Theres is already a species with that description!");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+                
             }
             return View(model);
         }

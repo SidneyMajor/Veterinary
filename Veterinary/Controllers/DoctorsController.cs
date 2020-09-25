@@ -86,61 +86,82 @@ namespace Veterinary.Controllers
 
                 }
 
-                var user = await _userHelper.GetUserByEmailAsync(model.Email);
-                if (user == null)
+                try
                 {
-                    user = new User
-                    {
-                        UserName = model.Email,
-                        Email = model.Email,
-                        PhoneNumber = model.PhoneNumber,
-                    };
-
                     var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
                     var specialty = await _specialtyRepository.GetByIdAsync(model.SpecialtyID);
-
-
-                    var result = await _userHelper.AddUserAsync(user, "");
-                    if (result != IdentityResult.Success)
+                    var user = await _userHelper.GetUserByEmailAsync(model.Email);
+                    if (user == null)
                     {
-                        this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                        user = new User
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            PhoneNumber = model.PhoneNumber,
+                        };
+
+                        var result = await _userHelper.AddUserAsync(user, "");
+                        if (result != IdentityResult.Success)
+                        {
+                            this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                            model.Documents = _documentTypeRepository.GetAll().ToList();
+                            model.Specialties = _specialtyRepository.GetAll().ToList();
+                            return this.View(model);
+                        }
+                    }
+
+                    var doctor = await _doctorRepository.GetDoctorByUserEmailAsync(model.Email);
+
+                    if (doctor == null)
+                    {
+                        //add doctor
+                        await _userHelper.CheckRoleAsync("Doctor");
+                        await _userHelper.AddUserToRoleAsync(user, "Doctor");
+
+                        doctor = _converterHelper.ToDoctor(model, documentType, specialty, path);
+                        doctor.User = user;
+                        await _doctorRepository.CreateAsync(doctor);
+
+                        var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                        var tokenLink = this.Url.Action("ConfirmDoctorEmail", "Account", new
+                        {
+                            userid = user.Id,
+                            token = myToken,
+                            name = $"{doctor.FirstName} {doctor.LastName}",
+
+                        }, protocol: HttpContext.Request.Scheme);
+
+                        _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
+                                 "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
+                                 $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
+                                 $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
+                                 $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
+                                 $"background-color: #008CBA;'>Confirm your account</a></div>");
+
+                        this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
                         model.Documents = _documentTypeRepository.GetAll().ToList();
                         model.Specialties = _specialtyRepository.GetAll().ToList();
                         return this.View(model);
                     }
-                    //add doctor
 
-                    await _userHelper.CheckRoleAsync("Doctor");
-                    await _userHelper.AddUserToRoleAsync(user, "Doctor");
+                    this.ModelState.AddModelError(string.Empty, "The user already exists.");
 
-                    var doctor = _converterHelper.ToDoctor(model, documentType, specialty, path);
-                    doctor.User = user;
-                    await _doctorRepository.CreateAsync(doctor);
-
-
-
-                    var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-                    var tokenLink = this.Url.Action("ConfirmDoctorEmail", "Account", new
-                    {
-                        userid = user.Id,
-                        token = myToken,
-                        name = $"{doctor.FirstName} {doctor.LastName}",
-
-                    }, protocol: HttpContext.Request.Scheme);
-
-                    _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
-                             "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
-                             $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
-                             $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
-                             $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
-                             $"background-color: #008CBA;'>Confirm your account</a></div>");
-
-                    this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
-                    model.Documents = _documentTypeRepository.GetAll().ToList();
-                    model.Specialties = _specialtyRepository.GetAll().ToList();
-                    return this.View(model);
                 }
-                this.ModelState.AddModelError(string.Empty, "The user already exists.");
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Theres is already a doctor with that tax number, nº document or social security number !!");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
+
+
+
             }
 
             model.Documents = _documentTypeRepository.GetAll().ToList();
@@ -171,7 +192,7 @@ namespace Veterinary.Controllers
             var model = new DoctorDetailsViewModel
             {
                 GetDoctor = doctor,
-                GetAppointments=appointments,
+                GetAppointments = appointments,
             };
             return View(model);
         }

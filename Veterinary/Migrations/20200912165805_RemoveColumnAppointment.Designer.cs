@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Veterinary.Data;
 
 namespace Veterinary.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200912165805_RemoveColumnAppointment")]
+    partial class RemoveColumnAppointment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,13 +271,7 @@ namespace Veterinary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Document")
-                        .IsUnique();
-
                     b.HasIndex("DocumentTypeID");
-
-                    b.HasIndex("TaxNumber")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -339,19 +335,9 @@ namespace Veterinary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Document")
-                        .IsUnique();
-
                     b.HasIndex("DocumentTypeID");
 
-                    b.HasIndex("SSNumber")
-                        .IsUnique()
-                        .HasFilter("[SSNumber] IS NOT NULL");
-
                     b.HasIndex("SpecialtyID");
-
-                    b.HasIndex("TaxNumber")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -375,9 +361,6 @@ namespace Veterinary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Description")
-                        .IsUnique();
-
                     b.ToTable("DocumentTypes");
                 });
 
@@ -398,9 +381,6 @@ namespace Veterinary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Description")
-                        .IsUnique();
-
                     b.ToTable("Specialties");
                 });
 
@@ -420,9 +400,6 @@ namespace Veterinary.Migrations
                     b.Property<bool>("WasDeleted");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Description")
-                        .IsUnique();
 
                     b.ToTable("Species");
                 });
