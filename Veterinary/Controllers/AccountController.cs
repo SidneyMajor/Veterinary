@@ -58,12 +58,18 @@ namespace Veterinary.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _userHelper.LoginAsync(model);
+                var user = await _userHelper.GetUserByEmailAsync(model.Username);
                 if (result.Succeeded)
                 {
                     if (this.Request.Query.Keys.Contains("ReturnUrl"))
                     {
                         //Direção de retorno
                         return this.Redirect(this.Request.Query["ReturnUrl"].First());
+                    }
+
+                    if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+                    {
+                        return this.RedirectToAction("Index","Admin");
                     }
                     return this.RedirectToAction("Index", "Home");
                 }

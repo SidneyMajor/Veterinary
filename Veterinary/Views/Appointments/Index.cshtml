@@ -122,6 +122,14 @@
 
 <div id="PlaceHolder"></div>
 
+<style>
+    .swal2-height {
+        font-size: 0.5rem !important;
+        height: 10vh;
+        background-color: forestgreen;
+        color: white !important;
+    }
+</style>
 
 @section Scripts {
 
@@ -137,13 +145,8 @@
     </script>
     <script type="text/javascript">
 
-        function cellClick(event) {
-        //The toISOString() method returns a string in simplified extended ISO format (ISO 8601),expected output: 2011-10-05T14:48:00.000Z
-        //console.log(event.startTime.toISOString());
-        //console.log(typeof event.startTime);
-        //console.log(event.endTime.toISOString());
-        //console.log(typeof event.endTime);
-
+      function cellClick(event) {
+        
         $.ajax({
             type: 'GET',
             url: '@Url.Action("Create", "Appointments")',
@@ -159,7 +162,7 @@
                     PlaceHolder.find('.modal').modal('show');
                 }
         })
-    }
+      }
 
         function popupOpen(args) {
             args.cancel = true;
@@ -216,7 +219,19 @@
                     }
                     else if (res.isValid ==="failed")  {
                         $('#myModal').modal('hide');
-                        swal.fire("Error", res.message, "warning");
+                        
+                        Swal.fire({
+                            position: 'bottom-end',
+                            icon: 'warning',
+                            title: 'Error',
+                            text: res.message,
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true,
+                            heightAuto: false,
+                            height: 100,
+
+                        })           
                     }
                     else {
                         var PlaceHolder = $("#PlaceHolder");
@@ -249,6 +264,19 @@
                         $('#myModal').modal('hide');
                         swal.fire("Success", res.message, "success");
 
+                        Swal.fire({
+                            position: 'bottom-end',
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message,
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true,
+                            heightAuto: false,
+                            height: 100,
+
+                        })           
+
                         var GridObjAll = document.getElementById("GridAll").ej2_instances[0];
                         var schObj = document.getElementById("schedule").ej2_instances[0];
 
@@ -260,7 +288,18 @@
                     }
                     else if (res.isValid === "failed") {
 
-                        swal.fire("Error", res.message, "warning");
+                        Swal.fire({
+                            position: 'bottom-end',
+                            icon: 'warning',
+                            title: 'Error',
+                            text: res.message,
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true,
+                            heightAuto: false,
+                            height: 100,
+
+                        })           
                     }
                     else {
                         var PlaceHolder = $("#PlaceHolder");
@@ -334,17 +373,18 @@
         function deleteAppointment() {
 
             Swal.fire({
-                title: 'Are you sure you want to delete this?',
-                showDenyButton: true,
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
                 showCancelButton: true,
-                showConfirmButton:false,
-                //confirmButtonText: 'Confirm',
-                denyButtonText: 'Confirm',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
             }).then((result) => {
                 debugger;
                 var id = document.getElementById("modelId").value;
 
-                if (result.isDenied) {
+                if (result.isConfirmed) {
 
                     $.ajax({
                         type: 'POST',
@@ -352,7 +392,17 @@
                         data: { id: id },
                         success: function (res) {
                             if (res.result === "success") {
-                                Swal.fire('Success!', 'To Delete Schedule', 'success')
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    icon: res.isValid,
+                                    title: 'Deleted!',
+                                    text: 'Your Schedule has been deleted.',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,                                    
+                                    customClass: 'swal2-height',
+                                })                               
                                 $('#myModal').modal('hide');
 
                                 var GridObjPending = document.getElementById("GridPending").ej2_instances[0];

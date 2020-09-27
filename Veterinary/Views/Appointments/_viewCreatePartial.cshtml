@@ -1,6 +1,6 @@
 ﻿@model Veterinary.Models.AppointmentViewModel
 <!--Modal-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <form id="form">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
                     <input asp-for="StartTime" type="hidden" />
                     <input asp-for="EndTime" type="hidden" />
                     <!--Using AntiForgeryToken with Jquery Ajax Request-->

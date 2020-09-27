@@ -79,14 +79,35 @@ body {
 }
 
 
+
+/*======================
+        Login
+=======================*/
+.login-container {    
+    width: 100vw;
+   
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.login-box {
+    width: 300px;
+    max-width: 500px;
+    height: 300px;
+}
+.logincheck{
+    padding-right: 125px;
+}
+
 /*======================
    styles/Grid syncfusion
 =======================*/
-
 .e-bigger .e-grid .statustxt {
     position: relative;
     top: -2px;
-    width:auto;
+    width: auto;
 }
 
 td.e-rowcell .statustxt.e-activecolor {
