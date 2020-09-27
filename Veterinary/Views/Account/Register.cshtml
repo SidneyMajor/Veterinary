@@ -22,22 +22,22 @@
                         <div class="col-md-8">
 
 
-                            <div class="badge-light w-100 p-md-5 p-4">
+                            <div class="bg-light w-100 p-md-5 p-4">
 
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm" enctype="multipart/form-data">
+                                <form method="POST" id="contactForm" name="contactForm" class="contactForm bg-white" enctype="multipart/form-data">
                                     <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="FirstName" id="firstname" type="text" placeholder="First Name" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                                <span asp-validation-for="FirstName" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="LastName" id="lastname" type="text" placeholder="Last Name" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                                <span asp-validation-for="LastName" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -45,7 +45,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nacionality" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Nationality" class="text-danger"></span>
+                                                <span asp-validation-for="Nationality" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -58,28 +58,28 @@
                                                 <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M"></ejs-radiobutton>
                                                 <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F"></ejs-radiobutton>
 
-                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                                <span asp-validation-for="Gender" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" multiline="true" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                                <span asp-validation-for="Address" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code (0000-000)" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                                <span asp-validation-for="ZipCode" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="TaxNumber" class="text-danger"></span>
+                                                <span asp-validation-for="TaxNumber" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -90,7 +90,7 @@
                                                 <ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto" cssClass="e-outline">
                                                     <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                                 </ejs-dropdownlist>
-                                                <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
+                                                <span asp-validation-for="DocumentTypeID" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -99,7 +99,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Document" class="text-danger"></span>
+                                                <span asp-validation-for="Document" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -107,14 +107,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="datepicker">
                                                 <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-18)" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
-                                                <span asp-validation-for="SelectDate" class="text-danger"></span>
+                                                <span asp-validation-for="SelectDate" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -123,14 +123,14 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Email" id="email" placeholder="Enter Email (email@email.com)" type="email" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                                <span asp-validation-for="Email" class="alert-danger"></span>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Password" id="password" placeholder="Password" type="password" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                                <span asp-validation-for="Password" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -138,7 +138,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <ejs-textbox ejs-for="Confirm" id="confirm" placeholder="Confirm" type="password" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                                <span asp-validation-for="Confirm" class="text-danger"></span>
+                                                <span asp-validation-for="Confirm" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -149,7 +149,7 @@
                                             <div class="form-group">
                                                 <label>Select a Image </label>
                                                 <input asp-for="ImageFile" accept="image/*" type="file" id="image" />
-                                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                                <span asp-validation-for="ImageFile" class="alert-danger"></span>
                                             </div>
                                         </div>
 
@@ -168,14 +168,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 d-block align-items-lg-stretch">
-                            <div class="text-success ml-5 mt-5">
+                        <div class="col-md-4 d-block align-items-lg-stretch bg-secondary">
+                            <div class="text-success ">
                                 <p>
                                     <h5 class="alert-success">@ViewBag.Message</h5>
                                 </p>
                             </div>
-                            <div class="card ml-5 mt-5  p-5 border-info">
-                                <div class="card-header text-lg-center badge-info ">
+                            <div class="card m-5  p-2 border-info">
+                                <div class="card-header text-lg-center bg-info ">
                                     Porfile picture
                                 </div>
                                 <div class="card-body text-lg-center">

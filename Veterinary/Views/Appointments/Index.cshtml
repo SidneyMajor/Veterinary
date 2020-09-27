@@ -12,18 +12,18 @@
     commands.Add(new { type = "Confirm", buttonOption = new { content = "", iconCss = "fas fa-clock text-warning", cssClass = "e-flat" } });
 
 }
-<div class="card badge-success">
-    <div class="card-header badge-success">
+<div class="card bg-success m-1 pt-5">
+    <div class="card-header bg-success">
         <h2 class="mb-0">
             <a class="text-lg-center text-white"><i class="fa fa-calendar-alt text-white"></i> Appointments</a>
         </h2>
     </div>
 
 
-    <div class="card-body badge-light">
+    <div class="card-body bg-light">
         <div class="accordion" id="accordionAppointment">
-            <div class="card badge-info">
-                <div class="card-header badge-info" id="headingOne">
+            <div class="card bg-info">
+                <div class="card-header bg-info" id="headingOne">
                     <h2 class="mb-0">
                         <button class="btn btn-info btn-block text-left text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             Schedule Appointment.
@@ -32,7 +32,7 @@
                 </div>
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionAppointment">
-                    <div class="card-body badge-info">
+                    <div class="card-body bg-info">
 
                         <div class="schedule-wrapper">
                             <ejs-schedule id="schedule" height="650px" width="auto" selectedDate="DateTime.Now" endHour="18:00" startHour="08:00" cellClick="cellClick"
@@ -50,7 +50,7 @@
 
             @if (this.User.Identity.IsAuthenticated && (this.User.IsInRole("Admin") || this.User.IsInRole("Doctor")))
             {
-                <div class="card badge-warning">
+                <div class="card bg-warning">
                     <div class="card-header" id="headingTwo">
                         <h2 class="mb-0">
                             <button class="btn btn-warning btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -80,7 +80,7 @@
                 </div>
 
 
-                <div class="card badge-success">
+                <div class="card bg-success">
                     <div class="card-header" id="headingThree">
                         <h2 class="mb-0">
                             <button class="btn btn-success btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">

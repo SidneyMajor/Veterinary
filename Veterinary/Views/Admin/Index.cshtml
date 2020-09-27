@@ -23,14 +23,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>@Model.NClients</h3>
 
-                    <p>New Orders</p>
+                    <p>Clients</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-bag"></i>
+                    <i class="fas fa-user-friends"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a asp-action="ListClient" asp-controller="Admin" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
 
@@ -42,14 +42,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    <h3>@Model.NAnimals</h3>
 
-                    <p>Bounce Rate</p>
+                    <p>Animals</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                    <i class="fas fa-paw"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a asp-action="ListAnimal" asp-controller="Admin" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
 
@@ -61,14 +61,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>@Model.NDoctors</h3>
 
-                    <p>User Registrations</p>
+                    <p>Doctors</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="fas fa-user-md"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a asp-action="ListDoctor" asp-controller="Doctors" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
 
@@ -78,14 +78,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>@Model.NAppointments</h3>
 
-                    <p>Unique Visitors</p>
+                    <p>Appointments</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fas fa-stethoscope"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a asp-action="Index" asp-controller="Appointments" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@
 
 
 
-<div class=" m-4 pt-5">
+<div class=" m-1 pt-2">
     <div class="row">
         @Html.AntiForgeryToken()
         <div class="col ">
@@ -106,7 +106,7 @@
             <div class="collapse " id="collapseDocumentType">
                 <div class="card-header bg-info">
                     <h5 class="text-lg-center">
-                        <a class=" text-white"><i class="fa fa-address-card text-white"></i> Documents Types</a>
+                        <a asp-action="Index" asp-controller="DocumentTypes" class=" text-white"><i class="fa fa-address-card text-white"></i> Documents Types</a>
                     </h5>
 
                     <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showCreatePopup(0,'Add Document Type')"><i class="fa fa-plus-circle text-white"></i>Add New</a>
@@ -135,7 +135,7 @@
             <div class="collapse" id="collapseSpecies">
                 <div class="card-header bg-info">
                     <h5 class="text-lg-center">
-                        <a class="text-white"><i class="fa fa-paw text-white"></i> Species</a>
+                        <a asp-action="Index" asp-controller="Species" class="text-white"><i class="fa fa-paw text-white"></i> Species</a>
                     </h5>
 
                     <a class="btn text-lg-center bg-primary text-white btn-block" onclick="showSpeciesAddOrEditPopup(0,'Add Species')"><i class="fa fa-plus-circle text-white"></i> Add New</a>
@@ -167,7 +167,7 @@
             <div class="collapse" id="collapseSpecialty">
                 <div class="card-header bg-info">
                     <h5 class="text-lg-center ">
-                        <a class="text-white"><i class="fa fa-stethoscope text-white"></i> Specialties</a>
+                        <a asp-action="Index" asp-controller="Specialties" class="text-white"><i class="fa fa-stethoscope text-white"></i> Specialties</a>
                     </h5>
 
                     <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showSpecialtyAddOrEditPopup(0, 'Add Specialty')"><i class="fa fa-plus-circle text-white"></i> Add New</a>
@@ -194,24 +194,22 @@
 
 
 
-<div class=" m-4 pt-5">
+<div class=" m-1 pt-2">
     <div class="row">
-       
+
         <div class="col ">
-            <button class="btn btn-warning btn-block" type="button" data-toggle="collapse" data-target="#collapseDocumentType" aria-expanded="false" aria-controls="collapseOne">
+            <button class="btn btn-danger btn-block" type="button" data-toggle="collapse" data-target="#collapseAppointment" aria-expanded="false" aria-controls="collapseRFor">
                 Today's Schedule.
             </button>
-            <div class="collapse " id="collapseDocumentType">
-                <div class="card-header bg-info">
-                    <h5 class="text-lg-center">
-                        <a class=" text-white"><i class="fa fa-address-card text-white"></i> Documents Types</a>
+            <div class="collapse " id="collapseAppointment">
+                <div class="card-header bg-secondary">
+                    <h5 class="text-warning">
+                        <a asp-action="Index" asp-controller="Appointments" class="text-warning"><i class="fa fa-book text-white-50"></i> Pending Appointments #@Model.GetAppointments.Where(a=> a.Status=="Pending").Count()</a>
                     </h5>
-
-                    <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showCreatePopup(0,'Add Document Type')"><i class="fa fa-plus-circle text-white"></i>Add New</a>
 
                     <div class="e-grid">
 
-                        <ejs-grid id="MyGrid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
+                        <ejs-grid id="AdminGrid" dataSource="Model.GetAppointments" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo">
                             <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
                             <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
                             <e-grid-columns>
@@ -220,7 +218,7 @@
                                 <e-grid-column field="Status" headerText="Status" width="75" textAlign="Center" template="#statusTemplate"></e-grid-column>
                                 <e-grid-column field="Animal.Name" headerText="Animal" width="100" textAlign="Center"></e-grid-column>
                                 <e-grid-column field="Specialty.Description" headerText="Specialty" width="100" textAlign="Center"></e-grid-column>
-                                <e-grid-column headerText="Manage Records" width="50" commands="commands" textAlign="Center"></e-grid-column>
+                                <e-grid-column field="Doctor.FullName" headerText="Doctor" width="100" textAlign="Center"></e-grid-column>
 
                             </e-grid-columns>
                         </ejs-grid>
@@ -248,6 +246,47 @@
 @section Scripts{
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/x-jsrender" id="statusTemplate">
+        <div id="status" class="statustemp">
+            <span class="statustxt">${Status}</span>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        function queryCellInfo(args) {
+
+            if (args.column.field === 'Status') {
+
+                if (args.cell.textContent === "Accepted") {
+                    args.cell.querySelector(".statustxt").classList.add("e-activecolor");
+                    args.cell.querySelector(".statustemp").classList.add("e-activecolor");
+                }
+
+                if (args.cell.textContent === "Canceled") {
+                    args.cell.querySelector(".statustxt").classList.add("e-inactivecolor");
+                    args.cell.querySelector(".statustemp").classList.add("e-inactivecolor");
+                }
+
+                if (args.cell.textContent === "Pending") {
+                    args.cell.querySelector(".statustxt").classList.add("e-pending");
+                    args.cell.querySelector(".statustemp").classList.add("e-pending");
+                }
+
+
+                if (args.cell.textContent === "Concluded") {
+                    args.cell.querySelector(".statustxt").classList.add("e-concluded");
+                    args.cell.querySelector(".statustemp").classList.add("e-concluded");
+                }
+
+                if (args.cell.textContent === "No-show") {
+                    args.cell.querySelector(".statustxt").classList.add("e-no-show");
+                    args.cell.querySelector(".statustemp").classList.add("e-no-show");
+                }
+            }
+
+        }
+    </script>
 
     <script type="text/javascript">
 

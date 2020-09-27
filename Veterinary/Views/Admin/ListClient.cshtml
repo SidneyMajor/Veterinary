@@ -18,12 +18,12 @@
 
 
 
-<div class="card-header badge-info">
+<div class="card-header bg-info m-1 pt-5">
     <h2 class="mb-0">
         <a class="text-lg-center text-white"><i class="fa fa-user-friends text-white"></i> Clients</a>
     </h2>
 
-    <div class="card-body badge-light">
+    <div class="card-body bg-light">
         <ejs-grid id="Grid" dataSource="Model" allowPaging="true" allowSorting="true" toolbar="@(new List<string>() {"Search" })" commandClick="commandClick" enableVirtualization="false">
             <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
             <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
@@ -49,11 +49,11 @@
         function commandClick(args) {
 
             if (args.commandColumn.type === "Delete") {
-
+                
                 window.location.href = "/Admin/DeleteClient?id=" + args.rowData.Id;
             }
             else if (args.commandColumn.type === "Details") {
-
+                
                 window.location.href = "/Admin/ClientDetails?id=" + args.rowData.Id;
             }
         }
@@ -79,38 +79,4 @@
 
 
 
-    @*<script type="text/javascript">
-
-            function queryCellInfo(args) {
-                console.log(args);
-                //if (args.column.field === 'FullName') {
-                //    if (args.data.Gender === 'M') {
-                //        args.cell.querySelector('.e-userimg').classList.add("sf-icon-Male");
-                //    } else {
-                //        args.cell.querySelector('.e-userimg').classList.add("sf-icon-FeMale");
-                //    }
-                //}
-                //if (args.column.field === "ImagePath") {
-                //    debugger
-                //    var img = args.data.ImageUrl;
-                //    console.log(img);
-                //    var imgpath = document.getElementById('teste');
-                //    console.log(imgpath);
-                //    imgpath.src = img.replace('~/', '');
-                //    console.log(imgpath);
-                //}
-                //if (args.column.field === 'Status') {
-                //    if (args.cell.textContent === "Active") {
-                //        args.cell.querySelector(".statustxt").classList.add("e-activecolor");
-                //        args.cell.querySelector(".statustemp").classList.add("e-activecolor");
-                //    }
-                //    if (args.cell.textContent === "Inactive") {
-                //        args.cell.querySelector(".statustxt").classList.add("e-inactivecolor");
-                //        args.cell.querySelector(".statustemp").classList.add("e-inactivecolor");
-                //    }
-                //}
-
-            }
-
-        </script>*@
 }

@@ -27,7 +27,7 @@ namespace Veterinary.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
-        private readonly IAppointmentRepsitory _appointmentRepsitory;        
+        private readonly IAppointmentRepsitory _appointmentRepsitory;
         private readonly ICombosHelper _combosHelper;
 
         public AdminController(IDocumentTypeRepository documentTypeRepository,
@@ -49,17 +49,22 @@ namespace Veterinary.Controllers
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
             _appointmentRepsitory = appointmentRepsitory;
-           _combosHelper = combosHelper;
+            _combosHelper = combosHelper;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new AdminViewModel
             {
-                GetDocumentTypes = _documentTypeRepository.GetAll().ToList(),
-                GetSpecialties=_specialtyRepository.GetAll().ToList(),
-                GetSpecies=_speciesRepository.GetAll().ToList(),
+                GetDocumentTypes = await _documentTypeRepository.GetAll().ToListAsync(),
+                GetSpecialties = await _specialtyRepository.GetAll().ToListAsync(),
+                GetSpecies = await _speciesRepository.GetAll().ToListAsync(),
+                GetAppointments = await _appointmentRepsitory.GetAll().Include(a=> a.Doctor).Where(a=> a.StartTime.Date==DateTime.Today.Date).ToListAsync(),
+                NClients = _clientRepository.GetAll().Count(),
+                NDoctors = _doctorRepository.GetAll().Count(),
+                NAnimals = _animalRepository.GetAll().Count(),
+                NAppointments = _appointmentRepsitory.GetAll().Count(),
             };
             return View(model);
         }
@@ -68,7 +73,7 @@ namespace Veterinary.Controllers
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
-       
+
         public async Task<IActionResult> ListClient()
         {
             var userAdmin = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -139,9 +144,9 @@ namespace Veterinary.Controllers
         }
 
 
-        
+
         public async Task<IActionResult> ListAnimal()
-        {            
+        {
             return View(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
         }
 
@@ -184,6 +189,6 @@ namespace Veterinary.Controllers
         }
 
 
-       
+
     }
 }
