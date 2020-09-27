@@ -1,0 +1,663 @@
+﻿@model Veterinary.Models.AdminViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+
+    List<object> commands = new List<object>();
+
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit text-warning", cssClass = "e-flat" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete text-danger", cssClass = "e-flat" } });
+}
+
+
+
+
+
+<div class=" m-4 pt-5">
+    <div class="row">
+
+
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>150</h3>
+
+                    <p>New Orders</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                    <p>Bounce Rate</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>44</h3>
+
+                    <p>User Registrations</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>65</h3>
+
+                    <p>Unique Visitors</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+<div class=" m-4 pt-5">
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="col ">
+            <button class="btn btn-warning btn-block" type="button" data-toggle="collapse" data-target="#collapseDocumentType" aria-expanded="false" aria-controls="collapseOne">
+                Documents Types Information
+            </button>
+            <div class="collapse " id="collapseDocumentType">
+                <div class="card-header bg-info">
+                    <h5 class="text-lg-center">
+                        <a class=" text-white"><i class="fa fa-address-card text-white"></i> Documents Types</a>
+                    </h5>
+
+                    <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showCreatePopup(0,'Add Document Type')"><i class="fa fa-plus-circle text-white"></i>Add New</a>
+
+                    <ejs-grid id="docGrid" dataSource="Model.GetDocumentTypes" allowPaging="true" commandClick="docGridcommandClick" toolbar="@(new List<string>() {"Search" })">
+                        <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                        <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="Description" headerText="Description" editType="stringedit" validationRules="@(new { required = true})" textAlign="Justify" width="100"></e-grid-column>
+                            <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+                        </e-grid-columns>
+                    </ejs-grid>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col">
+
+            <button class="btn btn-success btn-block" type="button" data-toggle="collapse" data-target="#collapseSpecies" aria-expanded="false" aria-controls="collapseTwo">
+                Species Information
+            </button>
+
+            <div class="collapse" id="collapseSpecies">
+                <div class="card-header bg-info">
+                    <h5 class="text-lg-center">
+                        <a class="text-white"><i class="fa fa-paw text-white"></i> Species</a>
+                    </h5>
+
+                    <a class="btn text-lg-center bg-primary text-white btn-block" onclick="showSpeciesAddOrEditPopup(0,'Add Species')"><i class="fa fa-plus-circle text-white"></i> Add New</a>
+
+
+                    <ejs-grid id="specieGrid" dataSource="Model.GetSpecies" allowPaging="true" commandClick="specieGridcommandClick" toolbar="@(new List<string>() {"Search"})">
+                        <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                        <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="Description" headerText="Description" editType="stringedit" validationRules="@(new { required = true})" textAlign="Justify" width="100"></e-grid-column>
+                            <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+
+                        </e-grid-columns>
+                    </ejs-grid>
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
+
+            <button class="btn btn-secondary btn-block" type="button" data-toggle="collapse" data-target="#collapseSpecialty" aria-expanded="false" aria-controls="collapseThree">
+                Specialties Information
+            </button>
+
+            <div class="collapse" id="collapseSpecialty">
+                <div class="card-header bg-info">
+                    <h5 class="text-lg-center ">
+                        <a class="text-white"><i class="fa fa-stethoscope text-white"></i> Specialties</a>
+                    </h5>
+
+                    <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showSpecialtyAddOrEditPopup(0, 'Add Specialty')"><i class="fa fa-plus-circle text-white"></i> Add New</a>
+
+                    <ejs-grid id="specialtyGrid" dataSource="Model.GetSpecialties" allowPaging="true" commandClick="specialtyGridcommandClick" toolbar="@(new List<string>() {"Search" })">
+                        <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                        <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+                        <e-grid-columns>
+                            <e-grid-column field="Description" headerText="Description" editType="stringedit" validationRules="@(new { required = true})" textAlign="Justify" width="100"></e-grid-column>
+                            <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+                        </e-grid-columns>
+                    </ejs-grid>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div class=" m-4 pt-5">
+    <div class="row">
+       
+        <div class="col ">
+            <button class="btn btn-warning btn-block" type="button" data-toggle="collapse" data-target="#collapseDocumentType" aria-expanded="false" aria-controls="collapseOne">
+                Today's Schedule.
+            </button>
+            <div class="collapse " id="collapseDocumentType">
+                <div class="card-header bg-info">
+                    <h5 class="text-lg-center">
+                        <a class=" text-white"><i class="fa fa-address-card text-white"></i> Documents Types</a>
+                    </h5>
+
+                    <a class="btn text-lg-center bg-primary btn-block text-white" onclick="showCreatePopup(0,'Add Document Type')"><i class="fa fa-plus-circle text-white"></i>Add New</a>
+
+                    <div class="e-grid">
+
+                        <ejs-grid id="MyGrid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
+                            <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
+                            <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                            <e-grid-columns>
+                                <e-grid-column field="StartTime" headerText="Start Time" format="yyyy-MM-dd hh:mm" textAlign="Center" width="50"></e-grid-column>
+                                <e-grid-column field="EndTime" headerText="End Time" width="50" format="yyyy-MM-dd hh:mm" textAlign="Center"></e-grid-column>
+                                <e-grid-column field="Status" headerText="Status" width="75" textAlign="Center" template="#statusTemplate"></e-grid-column>
+                                <e-grid-column field="Animal.Name" headerText="Animal" width="100" textAlign="Center"></e-grid-column>
+                                <e-grid-column field="Specialty.Description" headerText="Specialty" width="100" textAlign="Center"></e-grid-column>
+                                <e-grid-column headerText="Manage Records" width="50" commands="commands" textAlign="Center"></e-grid-column>
+
+                            </e-grid-columns>
+                        </ejs-grid>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div id="PlaceHolder"></div>
+
+<style>
+    .swal2-height {
+        font-size: 0.5rem !important;
+        height: 10vh;
+        background-color: forestgreen;
+        color: white !important;
+    }
+</style>
+
+@section Scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+            function docGridcommandClick(args) {
+
+                if (args.commandColumn.type === "Edit") {
+
+                    console.log(args.rowData.Id);
+                    showCreatePopup(args.rowData.Id,"Edit Document Type");
+                }
+                else if (args.commandColumn.type === "Delete") {
+
+                    deletedocumentType(args.rowData.Id);
+                }
+            }
+
+            function showCreatePopup (id,title) {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("AddOrEdit", "DocumentTypes")',
+                    data: {id:id},
+                    success: function (res) {
+                        var PlaceHolder = $("#PlaceHolder");
+                        console.log(res);
+                        PlaceHolder.html(res);
+                        PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                            $(document).off('focusin.modal')
+                        });
+                        PlaceHolder.find('.modal .modal-title').html('<i class=\"fas fa-book text-info\"></i> ' + title);
+                        PlaceHolder.find('.modal').modal('show');
+                    }
+                })
+            }
+
+            function onAddOrEditdoc() {
+
+                 $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddOrEdit", "DocumentTypes")',
+                    data: $("#form").serialize(),
+                    success: function (res) {
+                        debugger;
+                        if (res.isValid ==="success") {
+                            $('#myModal').modal('hide');
+
+                            var GridObjAll = document.getElementById("docGrid").ej2_instances[0];
+                            GridObjAll.dataSource = JSON.parse(res.documenttypes);
+
+                            GridObjAll.refresh();
+
+                        }
+                        else if (res.isValid ==="failed")  {
+
+                            swal.fire("Error", res.mensage, "warning");
+                        }
+                        else {
+                            var PlaceHolder = $("#PlaceHolder");
+                            var newBody = $('.modal-body', res);
+                            PlaceHolder.find('.modal-body').replaceWith(newBody);
+                            //PlaceHolder.find('.modal').modal('show');
+                        }
+                    },
+                    error: function (ex) {
+                        console.log(ex);
+                        swal.fire(ex.statusText, 'Failed to create a document type.', "error");
+                    }
+
+
+                })
+            }
+
+
+            function deletedocumentType(id) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33' ,
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: '@Url.Action("Delete", "DocumentTypes")',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("RequestVerificationToken",
+                                    $('input:hidden[name="__RequestVerificationToken"]').val());
+                            },
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (res) {
+                                if (res.isValid === "success") {
+                                    Swal.fire({
+                                        position: 'bottom-end',
+                                        title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Your file has been deleted.</span> ',
+                                        showConfirmButton: false,
+                                        timer: 2500,
+                                        timerProgressBar: true,
+                                        heightAuto: false,
+                                        customClass: 'swal2-height',
+
+                                    })
+
+
+                                    var GridObjAll = document.getElementById("docGrid").ej2_instances[0];
+                                    GridObjAll.dataSource = JSON.parse(res.documenttypes);
+
+                                    GridObjAll.refresh();
+                                }
+                                else  {
+
+                                    Swal.fire('Error', res.mensage, 'error')
+                                }
+
+                            },
+                            error: function (ex) {
+                                Swal.fire(ex.statusText,'Failed to delete document type.',ex.statusText);
+                            }
+                        })
+                    }
+
+                })
+            }
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        function specieGridcommandClick(args) {
+
+            if (args.commandColumn.type === "Edit") {
+
+                console.log(args.rowData.Id);
+                showSpeciesAddOrEditPopup(args.rowData.Id,"Edit Species");
+            }
+            else if (args.commandColumn.type === "Delete") {
+
+                deleteSpecies(args.rowData.Id);
+            }
+        }
+
+        function showSpeciesAddOrEditPopup (id,title) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("AddOrEdit", "Species")',
+                data: {id:id},
+                success: function (res) {
+
+                    if (res.isValid==="error") {
+
+                        Swal.fire('Error', res.mensage, 'error')
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        console.log(res);
+                        PlaceHolder.html(res);
+                        PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                            $(document).off('focusin.modal')
+                        });
+                        PlaceHolder.find('.modal .modal-title').html('<i class=\"fas fa-paw text-info\"></i> ' + title);
+                        PlaceHolder.find('.modal').modal('show');
+                    }
+
+
+                }
+            })
+        }
+
+        function onAddOrEditspecies() {
+
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddOrEdit", "Species")',
+                data: $("#form").serialize(),
+                success: function (res) {
+                    debugger;
+                    if (res.isValid ==="success") {
+                        $('#myModal').modal('hide');
+
+                        var GridObjAll = document.getElementById("specieGrid").ej2_instances[0];
+                        GridObjAll.dataSource = JSON.parse(res.species);
+
+                        GridObjAll.refresh();
+
+                    }
+                    else if (res.isValid ==="failed")  {
+
+                        swal.fire("Error", res.mensage, "warning");
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        var newBody = $('.modal-body', res);
+                        PlaceHolder.find('.modal-body').replaceWith(newBody);
+                        //PlaceHolder.find('.modal').modal('show');
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    swal.fire(ex.statusText, 'Failed to create a document type.', "error");
+                }
+
+
+            })
+        }
+
+
+        function deleteSpecies(id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33' ,
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Species")',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("RequestVerificationToken",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.isValid === "success") {
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Your file has been deleted.</span> ',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,
+                                    customClass: 'swal2-height',
+
+                                })
+
+
+                                var GridObjAll = document.getElementById("specieGrid").ej2_instances[0];
+                                GridObjAll.dataSource = JSON.parse(res.species);
+
+                                GridObjAll.refresh();
+                            }
+                            else  {
+
+                                Swal.fire('Error', res.mensage, 'error')
+                            }
+
+                        },
+                        error: function (ex) {
+                            Swal.fire(ex.statusText,'Failed to delete document type.',ex.statusText);
+                        }
+                    })
+                }
+
+            })
+        }
+
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        function specialtyGridcommandClick(args) {
+
+            if (args.commandColumn.type === "Edit") {
+
+                console.log(args.rowData.Id);
+                showSpecialtyAddOrEditPopup(args.rowData.Id,"Edit Specialty");
+            }
+            else if (args.commandColumn.type === "Delete") {
+
+                deleteSpecialty(args.rowData.Id);
+            }
+        }
+
+        function showSpecialtyAddOrEditPopup (id,title) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("AddOrEdit", "Specialties")',
+                data: {id:id},
+                success: function (res) {
+
+                    if (res.isValid==="error") {
+
+                        Swal.fire('Error', res.mensage, 'error')
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        console.log(res);
+                        PlaceHolder.html(res);
+                        PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                            $(document).off('focusin.modal')
+                        });
+                        PlaceHolder.find('.modal .modal-title').html('<i class=\"fas fa-stethoscope text-info\"></i> ' + title);
+                        PlaceHolder.find('.modal').modal('show');
+                    }
+
+
+                }
+            })
+        }
+
+        function onAddOrEditspecialty() {
+
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddOrEdit", "Specialties")',
+                data: $("#form").serialize(),
+                success: function (res) {
+                    debugger;
+                    if (res.isValid ==="success") {
+                        $('#myModal').modal('hide');
+
+                        var GridObjAll = document.getElementById("specialtyGrid").ej2_instances[0];
+                        GridObjAll.dataSource = JSON.parse(res.specialties);
+
+                        GridObjAll.refresh();
+
+                    }
+                    else if (res.isValid ==="failed")  {
+
+                        swal.fire("Error", res.mensage, "warning");
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        var newBody = $('.modal-body', res);
+                        PlaceHolder.find('.modal-body').replaceWith(newBody);
+                        //PlaceHolder.find('.modal').modal('show');
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    swal.fire(ex.statusText, 'Failed to create a specialty.', "error");
+                }
+
+
+            })
+        }
+
+
+        function deleteSpecialty(id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33' ,
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Specialties")',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("RequestVerificationToken",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.isValid === "success") {
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Your file has been deleted.</span> ',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,
+                                    customClass: 'swal2-height',
+
+                                })
+
+
+                                var GridObjAll = document.getElementById("specialtyGrid").ej2_instances[0];
+                                GridObjAll.dataSource = JSON.parse(res.specialties);
+
+                                GridObjAll.refresh();
+                            }
+                            else  {
+
+                                Swal.fire('Error', res.mensage, 'error')
+                            }
+
+                        },
+                        error: function (ex) {
+                            Swal.fire(ex.statusText,'Failed to delete specialty.',ex.statusText);
+                        }
+                    })
+                }
+
+            })
+        }
+
+
+    </script>
+
+
+}
+

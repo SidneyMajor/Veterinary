@@ -27,8 +27,7 @@ namespace Veterinary.Controllers
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
-        private readonly IAppointmentRepsitory _appointmentRepsitory;
-        private readonly DataContext context;
+        private readonly IAppointmentRepsitory _appointmentRepsitory;        
         private readonly ICombosHelper _combosHelper;
 
         public AdminController(IDocumentTypeRepository documentTypeRepository,
@@ -37,7 +36,7 @@ namespace Veterinary.Controllers
             /*IMailHelper mailHelper,*/ ISpecialtyRepository specialtyRepository,
             IDoctorRepository doctorRepository, IAnimalRepository animalRepository,
             ISpeciesRepository speciesRepository, IAppointmentRepsitory appointmentRepsitory,
-            DataContext context, ICombosHelper combosHelper)
+            ICombosHelper combosHelper)
         {
             _documentTypeRepository = documentTypeRepository;
             _clientRepository = clientRepository;
@@ -50,14 +49,19 @@ namespace Veterinary.Controllers
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
             _appointmentRepsitory = appointmentRepsitory;
-            this.context = context;
            _combosHelper = combosHelper;
         }
 
 
         public IActionResult Index()
         {
-            return View();
+            var model = new AdminViewModel
+            {
+                GetDocumentTypes = _documentTypeRepository.GetAll().ToList(),
+                GetSpecialties=_specialtyRepository.GetAll().ToList(),
+                GetSpecies=_speciesRepository.GetAll().ToList(),
+            };
+            return View(model);
         }
 
 

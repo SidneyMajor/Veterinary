@@ -26,137 +26,177 @@ namespace Veterinary.Controllers
             return View(await _documentTypeRepository.GetAll().ToListAsync());
         }
 
-        // GET: DocumentTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        
+
+        // GET: DocumentTypes/AddOrEdit
+        public async Task<IActionResult> AddOrEdit(int id=0)
         {
-            if (id == null)
+            if (id==0)
             {
-                return NotFound();
+                var model = new DocumentType();
+                return PartialView("_AddOrEditPartial", model);
             }
-
-            var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
-            if (documentType == null)
+            else
             {
-                return NotFound();
-            }
-
-            return View(documentType);
-        }
-
-        // GET: DocumentTypes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: DocumentTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DocumentType documentType)
-        {
-            if (ModelState.IsValid)
-            {
-                try
+                
+                var documentType = await _documentTypeRepository.GetByIdAsync(id);
+                if (documentType == null)
                 {
-                    await _documentTypeRepository.CreateAsync(documentType);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    if (ex.InnerException.Message.Contains("duplicate"))
+                    return Json(new
                     {
-                        ModelState.AddModelError(string.Empty, "Theres is already a document type with that description!");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }
+                        isValid = "error",
+                        mensage = "Document Type Not Found!"
+                    });
                 }
-
+                return PartialView("_AddOrEditPartial",documentType);
             }
-            return View(documentType);
+
+            
         }
 
-        // GET: DocumentTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
-            if (documentType == null)
-            {
-                return NotFound();
-            }
-            return View(documentType);
-        }
+        
 
         // POST: DocumentTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DocumentType documentType)
+        public async Task<IActionResult> AddOrEdit(int id, DocumentType documentType)
         {
-            if (id != documentType.Id)
-            {
-                return NotFound();
-            }
-
+            
             if (ModelState.IsValid)
             {
-                try
+                if (id==0)
                 {
-                    await _documentTypeRepository.UpdateAsync(documentType);
+                    try
+                    {
+                        await _documentTypeRepository.CreateAsync(documentType);
+                        //return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException.Message.Contains("duplicate"))
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = "Theres is already a document type with that description!",
+                                model = documentType
+                            });
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = ex.InnerException.Message,
+                                model = documentType
+                            });
+                        }
+                    }
 
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!await _documentTypeRepository.ExistAsync(documentType.Id))
+                    try
                     {
-                        return NotFound();
+                        await _documentTypeRepository.UpdateAsync(documentType);
+
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!await _documentTypeRepository.ExistAsync(documentType.Id))
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = "There is not exist that document type",
+                                model=documentType
+                            });
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var updocumenttype =await  _documentTypeRepository.GetAll().ToListAsync();
+                return Json(new
+                {
+                    isValid = "success",
+                    documenttypes = Newtonsoft.Json.JsonConvert.SerializeObject(updocumenttype)
+                });
             }
-            return View(documentType);
+
+            return PartialView("_AddOrEditPartial", documentType);
         }
 
-        // GET: DocumentTypes/Delete/5
+        //// GET: DocumentTypes/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
+        //    if (documentType == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(documentType);
+        //}
+
+        // POST: DocumentTypes/Delete/5       
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Json(new
+                {
+                    isValid = "error",
+                    mensage = "Document Type Not Found!"
+                });
             }
 
             var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
             if (documentType == null)
             {
-                return NotFound();
+                return Json(new 
+                { 
+                    isValid = "error",
+                    mensage = "Document Type Not Found!"
+                });
             }
-
-            return View(documentType);
-        }
-
-        // POST: DocumentTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var documentType = await _documentTypeRepository.GetByIdAsync(id);
-            //documentType.WasDeleted = false;
-            await _documentTypeRepository.DeleteAsync(documentType);
-
-            return RedirectToAction(nameof(Index));
+            
+            try
+            { 
+                await _documentTypeRepository.DeleteAsync(documentType);
+                var updocumenttype = await _documentTypeRepository.GetAll().ToListAsync();
+                return Json(new
+                {
+                    isValid = "success",
+                    documenttypes = Newtonsoft.Json.JsonConvert.SerializeObject(updocumenttype)
+                });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _documentTypeRepository.ExistAsync(documentType.Id))
+                {
+                    return Json(new
+                    {
+                        isValid = "failed",
+                        mensage = "There is not exist that document type"
+                    });
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
 

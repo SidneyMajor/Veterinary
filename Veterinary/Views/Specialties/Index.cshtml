@@ -3,49 +3,206 @@
 @{
     ViewData["Title"] = "Index";
 }
+@{
+    ViewData["Title"] = "Index";
+}
 
-<br />
-<p>
-    <a asp-action="Create" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> New</a>
-</p>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Specialties</h3>
+@{
+
+    List<object> commands = new List<object>();
+
+    commands.Add(new { type = "Edit", buttonOption = new { iconCss = "e-icons e-edit text-warning", cssClass = "e-flat" } });
+    commands.Add(new { type = "Delete", buttonOption = new { iconCss = "e-icons e-delete text-danger", cssClass = "e-flat" } });
+}
+
+
+<div class=" container">
+    <div class="row">
+        <div class="col m-1">
+
+            <div class="card-header badge-info">
+                <h2 class="mb-0">
+                    <a class="text-lg-center text-white"><i class="fa fa-stethoscope text-white"></i> Specialties</a>
+                </h2>
+
+                <a class="btn text-lg-center btn-success text-white" onclick="showSpecialtyAddOrEditPopup(0, 'Add Specialty')"><i class="fa fa-plus-circle text-white"></i> Add New</a>
+                @Html.AntiForgeryToken()
+                <ejs-grid id="specialtyGrid" dataSource="Model" allowPaging="true" commandClick="specialtyGridcommandClick" toolbar="@(new List<string>() {"Search" })">
+                    <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                    <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                    <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+                    <e-grid-columns>
+                        <e-grid-column field="Description" headerText="Description" editType="stringedit" validationRules="@(new { required = true})" textAlign="Justify" width="100"></e-grid-column>
+                        <e-grid-column headerText="Manage Records" width="100" commands="commands"></e-grid-column>
+                    </e-grid-columns>
+                </ejs-grid>
+
+
+
             </div>
-            <div class="panel-body">
-                <table class="table table-hover table-responsive table-striped " id="MyTable">
-                    <thead class="table-borderless">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Description)
-                            </th>
 
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-pen"></i></a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-list"></i></a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </div>
+
+
+<div id="PlaceHolder"></div>
+
+
+<style>
+    .swal2-height {
+        font-size: 0.5rem !important;
+        height: 10vh;
+        background-color: forestgreen;
+        color: white !important;
+    }
+</style>
+
+@section Scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        function specialtyGridcommandClick(args) {
+
+            if (args.commandColumn.type === "Edit") {
+
+                console.log(args.rowData.Id);
+                showSpecialtyAddOrEditPopup(args.rowData.Id,"Edit Specialty");
+            }
+            else if (args.commandColumn.type === "Delete") {
+
+                deleteSpecialty(args.rowData.Id);
+            }
+        }
+
+        function showSpecialtyAddOrEditPopup (id,title) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("AddOrEdit", "Specialties")',
+                data: {id:id},
+                success: function (res) {
+
+                    if (res.isValid==="error") {
+
+                        Swal.fire('Error', res.mensage, 'error')
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        console.log(res);
+                        PlaceHolder.html(res);
+                        PlaceHolder.find('myModal').on('shown.bs.modal', function () {
+                            $(document).off('focusin.modal')
+                        });
+                        PlaceHolder.find('.modal .modal-title').html('<i class=\"fas fa-stethoscope text-info\"></i> ' + title);
+                        PlaceHolder.find('.modal').modal('show');
+                    }
+
+
+                }
+            })
+        }
+
+        function onAddOrEditspecialty() {
+
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddOrEdit", "Specialties")',
+                data: $("#form").serialize(),
+                success: function (res) {
+                    debugger;
+                    if (res.isValid ==="success") {
+                        $('#myModal').modal('hide');
+
+                        var GridObjAll = document.getElementById("specialtyGrid").ej2_instances[0];
+                        GridObjAll.dataSource = JSON.parse(res.specialties);
+
+                        GridObjAll.refresh();
+
+                    }
+                    else if (res.isValid ==="failed")  {
+
+                        swal.fire("Error", res.mensage, "warning");
+                    }
+                    else {
+                        var PlaceHolder = $("#PlaceHolder");
+                        var newBody = $('.modal-body', res);
+                        PlaceHolder.find('.modal-body').replaceWith(newBody);
+                        //PlaceHolder.find('.modal').modal('show');
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                    swal.fire(ex.statusText, 'Failed to create a specialty.', "error");
+                }
+
+
+            })
+        }
+
+
+        function deleteSpecialty(id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33' ,
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Specialties")',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("RequestVerificationToken",
+                                $('input:hidden[name="__RequestVerificationToken"]').val());
+                        },
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.isValid === "success") {
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Your file has been deleted.</span> ',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,
+                                    customClass: 'swal2-height',
+
+                                })
+
+
+                                var GridObjAll = document.getElementById("specialtyGrid").ej2_instances[0];
+                                GridObjAll.dataSource = JSON.parse(res.specialties);
+
+                                GridObjAll.refresh();
+                            }
+                            else  {
+
+                                Swal.fire('Error', res.mensage, 'error')
+                            }
+
+                        },
+                        error: function (ex) {
+                            Swal.fire(ex.statusText,'Failed to delete specialty.',ex.statusText);
+                        }
+                    })
+                }
+
+            })
+        }
+
+
+    </script>
+
+
+
+}
 

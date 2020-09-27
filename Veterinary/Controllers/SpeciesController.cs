@@ -25,135 +25,165 @@ namespace Veterinary.Controllers
             return View(await _speciesRepository.GetAll().ToListAsync());
         }
 
-        // GET: Species/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+
+
+
+        // GET: species/AddOrEdit/5
+        public async Task<IActionResult> AddOrEdit(int id = 0)
+        {
+            if (id == 0)
+            {
+                var model = new Species();
+                return PartialView("_AddOrEditPartial", model);
+            }
+            else
+            {
+
+                var species = await _speciesRepository.GetByIdAsync(id);
+                if (species == null)
+                {
+                    return Json(new
+                    {
+                        isValid = "error",
+                        mensage = "Species Not Found!"
+                    });
+                }
+                return PartialView("_AddOrEditPartial", species);
+            }
+
+
+        }
+
+
+
+        // POST: species/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(int id, Species species)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (id == 0)
+                {
+                    try
+                    {
+                        await _speciesRepository.CreateAsync(species);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException.Message.Contains("duplicate"))
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = "Theres is already a species with that description!",
+                                model = species
+                            });
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = ex.InnerException.Message,
+                                model = species
+                            });
+                        }
+                    }
+
+                }
+                else
+                {
+                    try
+                    {
+                        await _speciesRepository.UpdateAsync(species);
+
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!await _speciesRepository.ExistAsync(species.Id))
+                        {
+                            return Json(new
+                            {
+                                isValid = "failed",
+                                mensage = "There is not exist that species registed",
+                                model = species
+                            });
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+                var upspecies = await _speciesRepository.GetAll().ToListAsync();
+                return Json(new
+                {
+                    isValid = "success",
+                    species = Newtonsoft.Json.JsonConvert.SerializeObject(upspecies)
+                });
+            }
+
+            return PartialView("_AddOrEditPartial", species);
+        }
+
+        // POST: species/Delete/5       
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Json(new
+                {
+                    isValid = "error",
+                    mensage = "Species Not Found!"
+                });
             }
 
             var species = await _speciesRepository.GetByIdAsync(id.Value);
             if (species == null)
             {
-                return NotFound();
-            }
-
-            return View(species);
-        }
-
-        // GET: Species/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Species/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Species model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
+                return Json(new
                 {
-                    await _speciesRepository.CreateAsync(model);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
+                    isValid = "error",
+                    mensage = "Species Not Found!"
+                });
+            }
+
+            try
+            {
+                await _speciesRepository.DeleteAsync(species);
+                var upspecies = await _speciesRepository.GetAll().ToListAsync();
+                return Json(new
                 {
-                    if (ex.InnerException.Message.Contains("duplicate"))
-                    {
-                        ModelState.AddModelError(string.Empty, "Theres is already a species with that description!");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }
-                }
-                
+                    isValid = "success",
+                    species = Newtonsoft.Json.JsonConvert.SerializeObject(upspecies)
+                });
             }
-            return View(model);
-        }
-
-        // GET: Species/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
+            catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
-            }
-
-            var model = await _speciesRepository.GetByIdAsync(id.Value);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            return View(model);
-        }
-
-        // POST: Species/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Species model)
-        {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!await _speciesRepository.ExistAsync(species.Id))
                 {
-                    await _speciesRepository.UpdateAsync(model);
+                    return Json(new
+                    {
+                        isValid = "failed",
+                        mensage = "There is not exist that species registed"
+                    });
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!await _speciesRepository.ExistAsync(model.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(model);
         }
 
-        // GET: Species/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var model = await _speciesRepository.GetByIdAsync(id.Value);
-            if (model == null)
-            {
-                return NotFound();
-            }
 
-            return View(model);
-        }
-
-        // POST: Species/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var model = await _speciesRepository.GetByIdAsync(id);
-            await _speciesRepository.DeleteAsync(model);
-            return RedirectToAction(nameof(Index));
-        }
 
     }
 }
