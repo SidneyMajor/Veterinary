@@ -87,7 +87,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="SpeciesID" ejs-for="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto" cssClass="e-outline">
+                                            <ejs-dropdownlist id="SpeciesID" value="Model.SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto" cssClass="e-outline">
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="SpeciesID" class="text-danger"></span>

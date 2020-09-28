@@ -93,7 +93,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" cssClass="e-outline">
+                                            <ejs-dropdownlist id="SpecialtyID"  dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" cssClass="e-outline">
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="SpecialtyID" class="text-danger"></span>
@@ -102,7 +102,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto" cssClass="e-outline">
+                                            <ejs-dropdownlist id="DocumentTypeID"  dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto" cssClass="e-outline">
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="DocumentTypeID" class="text-danger"></span>
@@ -128,7 +128,7 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-18)" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="yyyy-MM-dd" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-18)" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>

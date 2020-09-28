@@ -43,7 +43,7 @@ namespace Veterinary.Data.Entities
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
         [Required]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
 

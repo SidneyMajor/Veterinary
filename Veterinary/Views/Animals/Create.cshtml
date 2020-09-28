@@ -55,7 +55,7 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="yyyy-MM-dd" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="SpeciesID" ejs-for="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto" cssClass="e-outline">
+                                            <ejs-dropdownlist id="SpeciesID" dataSource="Model.GetSpecies" placeholder="Select a Species" floatLabelType="Auto" cssClass="e-outline">
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="SpeciesID" class="text-danger"></span>

@@ -6,7 +6,7 @@
 
 
 <div class="container">
-    <div class="card-header bg-info text-white">
+    <div class="card-header bg-info text-white mt-5">
         <a style="font-size: 30px"><i class="fa fa-user mr-2 text-white-50"></i>Register</a>
     </div>
     <div class="row justify-content-center">
@@ -17,14 +17,14 @@
             </div>
             <div class="wrapper">
 
-                <div class="row no-gutters">
+                <div class="row no-gutters bg-lightblue">
 
-                    <div class="col-md-8">
+                    <div class="col-md-8 bg-light ">
 
 
-                        <div class="bg-light w-100 p-md-5 p-4">
+                        <div class=" w-100 p-md-5 p-4">
 
-                            <form method="POST" id="contactForm" name="contactForm" class="contactForm bg-white" enctype="multipart/form-data">
+                            <form method="POST" id="contactForm" name="contactForm" class="contactForm " enctype="multipart/form-data">
                                 <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -78,12 +78,24 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <ejs-textbox ejs-for="City" id="city" placeholder="City" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
+                                            <span asp-validation-for="City" class="alert-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
                                             <span asp-validation-for="TaxNumber" class="alert-danger"></span>
                                         </div>
                                     </div>
 
-
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
+                                            <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -104,16 +116,11 @@
                                     </div>
 
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                            <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
-                                        </div>
-                                    </div>
+
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-18)" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="yyyy-MM-dd" id="datetimepicker" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-1)" floatLabelType="Auto" cssClass="e-outline"> </ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="alert-danger"></span>
                                         </div>
                                     </div>
@@ -168,7 +175,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4 d-block align-items-lg-stretch bg-secondary">
+                    <div class="col-md-4 d-block align-items-lg-stretch ">
                         <div class="text-success bg-white text-lg-center ">
                             <p>
                                 <h5 class="alert-success">@ViewBag.Message</h5>

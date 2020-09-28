@@ -23,9 +23,9 @@
 
         <form method="post" asp-action="ConfirmDoctorEmail">
             <div asp-validation-summary="All" class="alert-danger"></div>
-
+            <input asp-for="FullName" type="hidden" />
             <div class="card">
-                <div class="card-header badge-info text-lg-center">
+                <div class="card-header bg-info text-lg-center">
                     <h2 style="font-size:30px"><span class="flaticon-pawprint-1 mr-2 text-white-50"></span>New Password</h2>
                 </div>
 

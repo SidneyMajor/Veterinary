@@ -70,7 +70,7 @@ namespace Veterinary.Controllers
                 var user = await _userHelper.GetUserByAnimalIdAsync(appointment.AnimalID);
                 var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
 
-                _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{ client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{ appointment.Animal.Name}</b>  " +
+                await _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{ client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{ appointment.Animal.Name}</b>  " +
                        $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was <b>{status}</b>.<br/><br/> With regards.");
 
                 var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
@@ -136,7 +136,7 @@ namespace Veterinary.Controllers
                     var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
                     try
                     {
-                        _mailHelper.SendMail(this.User.Identity.Name, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                        await _mailHelper.SendMail(this.User.Identity.Name, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
                             $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was successful. You will soon receive confirmation.<br/><br/> With regards.");
 
                     }
@@ -228,7 +228,7 @@ namespace Veterinary.Controllers
 
                         var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
                         var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
-                        _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                        await _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
                             $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, has been changed to <b>{appointment.StartTime}</b>.<br/><br/> With regards.");
 
                         return Json(new { isValid = "success", message = "To edit appointment", appointments = Newtonsoft.Json.JsonConvert.SerializeObject(upappointments) });
@@ -286,7 +286,7 @@ namespace Veterinary.Controllers
                     var user = await _userHelper.GetUserByAnimalIdAsync(appointment.AnimalID);
                     var client = await _clientRepository.GetClientByUserEmailAsync(user.Email);
 
-                    _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                   await _mailHelper.SendMail(user.Email, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
                            $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was <b>Canceled</b>.<br/><br/> With regards.");
                 }
 

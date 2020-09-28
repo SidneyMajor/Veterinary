@@ -32,10 +32,12 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionAppointment">
                     <div class="card-body bg-info">
-
+                        <h5 class="text-warning">
+                            <a asp-action="Index" asp-controller="Appointments" class="text-warning"><i class="fa fa-book text-white-50"></i> Pending Appointments #@Model.Where(a => a.Status == "Pending").Count()</a>
+                        </h5>
                         <div class="e-grid">
 
-                            <ejs-grid id="MyGrid" dataSource="Model" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
+                            <ejs-grid id="MyGrid" dataSource="@Model.Where(a => a.Status == "Accepted")" allowPaging="true" toolbar="@(new List<string>() {"Search" })" queryCellInfo="queryCellInfo" commandClick="commandClick">
                                 <e-grid-pagesettings pageSize="10"></e-grid-pagesettings>
                                 <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
                                 <e-grid-columns>
@@ -58,7 +60,7 @@
                 <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
                         <button class="btn btn-secondary btn-block text-left collapsed text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
-                            <i class="animated-fast fa-notes-medical text-white-50"></i>Finsh Appointment
+                            <i class="fas fa-notes-medical text-white-50"></i>Finsh Appointment
                         </button>
                     </h2>
                 </div>
@@ -70,11 +72,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
 
         </div>
 

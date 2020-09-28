@@ -1,6 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using System.Threading.Tasks;
 
 namespace Veterinary.Helpers
 {
@@ -13,7 +14,7 @@ namespace Veterinary.Helpers
             _configuration = configuration;
         }
 
-        public void SendMail(string to, string subject, string body)
+        public async Task SendMail(string to, string subject, string body)
         {
             var nameFrom = _configuration["Mail:NameFrom"];
             var from = _configuration["Mail:From"];
@@ -33,12 +34,12 @@ namespace Veterinary.Helpers
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            using (var client = new SmtpClient())
+            using  (var client = new SmtpClient())
             {
-                client.Connect(smtp, int.Parse(port), false);
-                client.Authenticate(from, password);
-                client.Send(message);
-                client.Disconnect(true);
+                await client.ConnectAsync(smtp, int.Parse(port), false);
+                await client.AuthenticateAsync(from, password);
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
             }
         }
     }

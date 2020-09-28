@@ -1,7 +1,9 @@
-﻿namespace Veterinary.Helpers
+﻿using System.Threading.Tasks;
+
+namespace Veterinary.Helpers
 {
     public interface IMailHelper
     {
-        void SendMail(string to, string subject, string body);
+        Task SendMail(string to, string subject, string body);
     }
 }

@@ -83,9 +83,8 @@ body {
 /*======================
         Login
 =======================*/
-.login-container {    
-    width: 100vw;
-   
+.login-container {
+    width: 100vw;   
     height: 100vh;
     display: flex;
     flex-direction: row;
@@ -93,12 +92,13 @@ body {
 }
 
 .login-box {
-    width: 300px;
-    max-width: 500px;
-    height: 300px;
+    /*width: 200px;*/
+    max-width: 450px;
+    /*height: 300px;*/
+    max-height:200px;
 }
 .logincheck{
-    padding-right: 125px;
+    /*padding-right: 85px;*/
 }
 
 /*======================

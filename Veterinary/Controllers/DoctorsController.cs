@@ -130,12 +130,20 @@ namespace Veterinary.Controllers
 
                         }, protocol: HttpContext.Request.Scheme);
 
-                        _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
-                                 "<h1 style=\"color: aliceblue;\"> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
+                        try
+                        {
+                           await _mailHelper.SendMail(model.Email, "Email confirmation", $"<center><h1 style=\"margin:20px\">Email Confirmation</h1></center>" + "<div style=\"padding: 0 2.5em; text-align: center;\">" +
+                                 "<h1> To allow the user</h1>	" + $"<a href=\"{tokenLink}\" style='display: inline-block;font-weight: 600; " +
                                  $"color: aliceblue;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;" +
                                  $"user-select: none;background-color: transparent;border: 1px solid transparent;padding: 0.375rem 0.75rem;font-size: 1rem;" +
                                  $"line-height: 2.5;border-radius: 0.25rem;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; " +
                                  $"background-color: #008CBA;'>Confirm your account</a></div>");
+                        }
+                        catch (Exception)
+                        {
+
+                           
+                        } 
 
                         this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
                         model.Documents = await _documentTypeRepository.GetComboDocuments();

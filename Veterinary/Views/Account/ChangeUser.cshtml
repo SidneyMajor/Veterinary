@@ -138,7 +138,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <ejs-dropdownlist id="SpecialtyID" ejs-for="SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" enabled="false" cssClass="e-outline">
+                                                <ejs-dropdownlist id="SpecialtyID" value="Model.SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" enabled="false" cssClass="e-outline">
                                                     <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                                 </ejs-dropdownlist>
                                                 <span asp-validation-for="SpecialtyID" class="alert-danger"></span>
@@ -166,7 +166,7 @@
 
                                     <div class="col-md-6">
                                         <div class="datepicker">
-                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="SelectDate" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-3)" floatLabelType="Auto" cssClass="e-outline"></ejs-datepicker>
+                                            <ejs-datepicker ejs-for="SelectDate" format="dd-MM-yyyy" id="SelectDate" placeholder="Select a Date Of Birth" max="@DateTime.Now.AddYears(-1)" floatLabelType="Auto" cssClass="e-outline"></ejs-datepicker>
                                             <span asp-validation-for="SelectDate" class="alert-danger"></span>
                                         </div>
                                     </div>
