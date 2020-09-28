@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +68,7 @@ namespace Veterinary
             //Erro 400
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath= "/Account/NotAuthorized";
+                options.LoginPath = "/Account/NotAuthorized";
                 options.AccessDeniedPath = "/Account/NotAuthorized";
             });
 
@@ -86,7 +81,7 @@ namespace Veterinary
 
             //Register Syncfusion license
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjk0ODA2QDMxMzgyZTMyMmUzMEs4dTVPL1JWWVVHRmpFR3lpWHZqeSsrWC9od2dJQ2xRWHNyVlN6S3czbUE9");
-           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
-    public class RegisterNewDoctorViewModel:Doctor
+    public class RegisterNewDoctorViewModel : Doctor
     {
         public IEnumerable<DocumentType> Documents { get; set; }
 
@@ -35,7 +33,7 @@ namespace Veterinary.Models
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
 
-      
+
 
         public IEnumerable<Specialty> Specialties { get; set; }
     }

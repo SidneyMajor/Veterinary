@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -57,11 +56,11 @@ namespace Veterinary.Controllers
         }
 
         // GET: Animals/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new AnimalViewModel
             {
-                GetSpecies = _speciesRepository.GetAll().ToList(),
+                GetSpecies = await _speciesRepository.GetComboSpecies(),
             };
             return View(model);
         }
@@ -95,7 +94,7 @@ namespace Veterinary.Controllers
                 await _animalRepository.CreateAsync(animal);
                 return RedirectToAction(nameof(Index));
             }
-            model.GetSpecies = _speciesRepository.GetAll().ToList();
+            model.GetSpecies = await _speciesRepository.GetComboSpecies();
             return View(model);
         }
 
@@ -114,7 +113,7 @@ namespace Veterinary.Controllers
             }
             ///var species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
             var model = _converterHelper.ToAnimalViewModel(animal);
-            model.GetSpecies = _speciesRepository.GetAll().ToList();
+            model.GetSpecies = await _speciesRepository.GetComboSpecies();
             return View(model);
         }
 
@@ -169,7 +168,7 @@ namespace Veterinary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            model.GetSpecies = _speciesRepository.GetAll().ToList();
+            model.GetSpecies = await _speciesRepository.GetComboSpecies();
             return View(model);
         }
 

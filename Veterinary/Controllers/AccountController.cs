@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.EJ2.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,9 +65,9 @@ namespace Veterinary.Controllers
                         return this.Redirect(this.Request.Query["ReturnUrl"].First());
                     }
 
-                    if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+                    if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
                     {
-                        return this.RedirectToAction("Index","Admin");
+                        return this.RedirectToAction("Index", "Admin");
                     }
                     return this.RedirectToAction("Index", "Home");
                 }
@@ -90,11 +88,11 @@ namespace Veterinary.Controllers
 
 
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             var model = new RegisterNewUserViewModel
             {
-                Documents = _documentTypeRepository.GetAll().ToList()
+                Documents = await _documentTypeRepository.GetComboDocuments()
             };
 
             return View(model);
@@ -139,7 +137,7 @@ namespace Veterinary.Controllers
                         if (result != IdentityResult.Success)
                         {
                             this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                            model.Documents = _documentTypeRepository.GetAll().ToList();
+                            model.Documents = await _documentTypeRepository.GetComboDocuments();
 
                             return this.View(model);
                         }
@@ -175,7 +173,7 @@ namespace Veterinary.Controllers
                                 $"background-color: #008CBA;'>Confirm your account</a></div>");
 
                         this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
-                        model.Documents = _documentTypeRepository.GetAll().ToList();
+                        model.Documents = await _documentTypeRepository.GetComboDocuments();
                         return this.View(model);
                     }
 
@@ -196,7 +194,7 @@ namespace Veterinary.Controllers
 
             }
 
-            model.Documents = _documentTypeRepository.GetAll().ToList();
+            model.Documents = await _documentTypeRepository.GetComboDocuments();
             return this.View(model);
         }
 
@@ -304,8 +302,8 @@ namespace Veterinary.Controllers
                 }
 
                 var model = _converterHelper.ToChangeUserViewModel(doctor);
-                model.Documents = _documentTypeRepository.GetAll();
-                model.Specialties = _specialtyRepository.GetAll();
+                model.Documents = await _documentTypeRepository.GetComboDocuments();
+                model.Specialties = await _specialtyRepository.GetComboSpecialties();
                 return this.View(model);
             }
             else
@@ -316,7 +314,7 @@ namespace Veterinary.Controllers
                     return NotFound();
                 }
                 var model = _converterHelper.ToChangeUserViewModel(client);
-                model.Documents = _documentTypeRepository.GetAll();
+                model.Documents = await _documentTypeRepository.GetComboDocuments();
                 return this.View(model);
             }
 
@@ -367,7 +365,7 @@ namespace Veterinary.Controllers
                         await _doctorRepository.UpdateAsync(doctor);
                     }
 
-                    // ViewBag.success = "Success";
+                    ViewBag.Message = "User updated successfully";
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -385,7 +383,8 @@ namespace Veterinary.Controllers
 
             }
 
-            model.Documents = _documentTypeRepository.GetAll();
+            model.Documents = await _documentTypeRepository.GetComboDocuments();
+            model.Specialties = await _specialtyRepository.GetComboSpecialties();
             return this.View(model);
 
         }

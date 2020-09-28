@@ -33,7 +33,11 @@
 
                             </div>
                         </div>
-
+                        <div class="text-success ">
+                            <p>
+                                <h5 class="alert-success">@ViewBag.Message</h5>
+                            </p>
+                        </div>
                     </div>
 
                     <div class="col-md-8">
@@ -116,6 +120,13 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
+                                            <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
+                                        </div>
+                                    </div>
+
                                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Doctor"))
                                     {
                                         <div class="col-md-6">
@@ -138,7 +149,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <ejs-dropdownlist id="DocumentTypeID" ejs-for="DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto" cssClass="e-outline">
+                                            <ejs-dropdownlist id="DocumentTypeID" value="Model.DocumentTypeID" dataSource="Model.Documents" placeholder="Select a document" floatLabelType="Auto" cssClass="e-outline" >
                                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                                             </ejs-dropdownlist>
                                             <span asp-validation-for="DocumentTypeID" class="alert-danger"></span>
@@ -152,14 +163,6 @@
                                         </div>
                                     </div>
 
-
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" type="text" floatLabelType="Auto" cssClass="e-outline"></ejs-textbox>
-                                            <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
-                                        </div>
-                                    </div>
 
                                     <div class="col-md-6">
                                         <div class="datepicker">

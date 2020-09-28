@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -55,12 +54,12 @@ namespace Veterinary.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult RegisterDoctor()
+        public async Task<IActionResult> RegisterDoctor()
         {
             var model = new RegisterNewDoctorViewModel
             {
-                Specialties = _specialtyRepository.GetAll().ToList(),
-                Documents = _documentTypeRepository.GetAll().ToList(),
+                Specialties = await _specialtyRepository.GetComboSpecialties(),
+                Documents = await _documentTypeRepository.GetComboDocuments(),
             };
 
             return View(model);
@@ -104,8 +103,8 @@ namespace Veterinary.Controllers
                         if (result != IdentityResult.Success)
                         {
                             this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                            model.Documents = _documentTypeRepository.GetAll().ToList();
-                            model.Specialties = _specialtyRepository.GetAll().ToList();
+                            model.Documents = await _documentTypeRepository.GetComboDocuments();
+                            model.Specialties = await _specialtyRepository.GetComboSpecialties();
                             return this.View(model);
                         }
                     }
@@ -139,8 +138,8 @@ namespace Veterinary.Controllers
                                  $"background-color: #008CBA;'>Confirm your account</a></div>");
 
                         this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
-                        model.Documents = _documentTypeRepository.GetAll().ToList();
-                        model.Specialties = _specialtyRepository.GetAll().ToList();
+                        model.Documents = await _documentTypeRepository.GetComboDocuments();
+                        model.Specialties = await _specialtyRepository.GetComboSpecialties();
                         return this.View(model);
                     }
 
@@ -164,8 +163,8 @@ namespace Veterinary.Controllers
 
             }
 
-            model.Documents = _documentTypeRepository.GetAll().ToList();
-            model.Specialties = _specialtyRepository.GetAll().ToList();
+            model.Documents = await _documentTypeRepository.GetComboDocuments();
+            model.Specialties = await _specialtyRepository.GetComboSpecialties();
             return this.View(model);
         }
 

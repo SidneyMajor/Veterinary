@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Veterinary.Data.Entities
 {
@@ -35,21 +32,21 @@ namespace Veterinary.Data.Entities
 
         [Required]
         [DataType(DataType.Time)]
-        public DateTime EndTime { get; set; }        
-      
+        public DateTime EndTime { get; set; }
+
 
         public string Remarks { get; set; }
 
 
         public string Status { get; set; }
 
-        
+
         public User User { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "You  must select an Animal.")]
         public int AnimalID { get; set; }
-        
-        
+
+
         public Animal Animal { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "You  must select a Specialty.")]
@@ -65,10 +62,11 @@ namespace Veterinary.Data.Entities
         public Doctor Doctor { get; set; }
 
         [NotMapped]
-        public string Subject { 
-            get 
+        public string Subject
+        {
+            get
             {
-                if (Animal==null)
+                if (Animal == null)
                 {
                     return $"Unknown -{ this.Status}";
                 }
@@ -76,8 +74,8 @@ namespace Veterinary.Data.Entities
                 {
                     return $"{this.Animal.Name} - {this.Status}";
                 }
-            
-            } 
+
+            }
         }
     }
 }

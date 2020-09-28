@@ -1,13 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Veterinary.Data.Entities
 {
-    public class Doctor:Person
+    public class Doctor : Person
     {
 
         [MinLength(9, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
@@ -16,7 +11,7 @@ namespace Veterinary.Data.Entities
         [Range(1, int.MaxValue, ErrorMessage = "You  must select a Specialty.")]
         public int SpecialtyID { get; set; }
 
-       
+
         public Specialty Specialty { get; set; }
 
 

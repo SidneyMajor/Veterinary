@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
@@ -23,18 +22,18 @@ namespace Veterinary.Data.Repository
 
         private async Task NoShowAppointment()
         {
-            await _context.Appointments.ForEachAsync( a =>
-            {
+            await _context.Appointments.ForEachAsync(a =>
+           {
 
-                if (a.StartTime.Date < DateTime.Now.Date && a.Status=="Accepted")
-                {
-                    a.Status = "No-show";
-                }
-                _context.Update(a);
-                
-            });
+               if (a.StartTime.Date < DateTime.Now.Date && a.Status == "Accepted")
+               {
+                   a.Status = "No-show";
+               }
+               _context.Update(a);
 
-              await _context.SaveChangesAsync();
+           });
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> CheckAppointmentAsync(Appointment model)
@@ -70,7 +69,7 @@ namespace Veterinary.Data.Repository
                 var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
 
                 return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
-                   .Include(a => a.User).Include(a=> a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor)).OrderByDescending(a => a.StartTime);
+                   .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor)).OrderByDescending(a => a.StartTime);
             }
 
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Doctor).Include(a => a.Specialty)
@@ -105,7 +104,7 @@ namespace Veterinary.Data.Repository
             var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.User == user);
 
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
-               .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime.Date==DateTime.Today.Date && a.Status=="Accepted").OrderByDescending(a => a.StartTime);
+               .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime.Date == DateTime.Today.Date && a.Status == "Accepted").OrderByDescending(a => a.StartTime);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Veterinary.Models
 {
     public class ErrorViewModel

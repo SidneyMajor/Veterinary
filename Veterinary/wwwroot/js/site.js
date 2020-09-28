@@ -5,8 +5,9 @@
 
 // Validate images.
 
-var file = document.getElementById("image");
 
+
+var file = document.getElementById("image");
 file.onchange = function () {
     var validFilesTypes = ["bmp", "png", "jpg", "jpeg"];
 
@@ -32,13 +33,16 @@ file.onchange = function () {
         swal.fire("System warning", "Invalid File. Please upload a File with" +
             " extension:\n" + validFilesTypes.join(", "), "warning");
         file.value = "";
-        result.src ="../images/img.jpg";
+        result.src = "../images/img.jpg";
     }
     else {
-        
+
         result.src = URL.createObjectURL(event.target.files[0]);
     }
 }
+
+
+
 
 // images click.
 var image = document.getElementById("imgpreview");

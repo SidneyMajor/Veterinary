@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>a70d1474-21cf-4ba0-b882-bd01b9908d43</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -112,6 +113,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\Clients\" />
   </ItemGroup>
 

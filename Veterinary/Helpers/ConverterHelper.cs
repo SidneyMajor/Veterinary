@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Veterinary.Data.Entities;
+﻿using Veterinary.Data.Entities;
 using Veterinary.Models;
 
 namespace Veterinary.Helpers
@@ -116,7 +112,7 @@ namespace Veterinary.Helpers
         {
             return new Doctor
             {
-                
+
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Address = model.Address,
@@ -153,15 +149,15 @@ namespace Veterinary.Helpers
                 SelectDate = model.DateOfBirth,
                 Nationality = model.Nationality,
                 DocumentTypeID = model.DocumentTypeID,
-                SpecialtyID=model.SpecialtyID,
+                SpecialtyID = model.SpecialtyID,
                 Document = model.Document,
                 ImageUrl = model.ImageUrl,
                 CreatedDate = model.CreatedDate,
-                SSNumber=model.SSNumber,
+                SSNumber = model.SSNumber,
             };
         }
 
-        public Doctor ToDoctor(ChangeUserViewModel model, DocumentType documentType,Specialty specialty,string path)
+        public Doctor ToDoctor(ChangeUserViewModel model, DocumentType documentType, Specialty specialty, string path)
         {
             return new Doctor
             {
@@ -194,12 +190,12 @@ namespace Veterinary.Helpers
                 //AppointmentDate = model.SelectDate.Value,
                 //AppointmentTime = model.SelectTime.Value,
                 //Subject=model.Animal.Name,
-                AnimalID=model.AnimalID,
-                DoctorID=model.DoctorID,
-                SpecialtyID=model.SpecialtyID,
-                Status = isNew? "Pending":"Accepted",
-                StartTime=model.StartTime,
-                EndTime=model.StartTime.AddMinutes(30),
+                AnimalID = model.AnimalID,
+                DoctorID = model.DoctorID,
+                SpecialtyID = model.SpecialtyID,
+                Status = isNew ? "Pending" : "Accepted",
+                StartTime = model.StartTime,
+                EndTime = model.StartTime.AddMinutes(30),
             };
         }
 
@@ -215,19 +211,19 @@ namespace Veterinary.Helpers
                 EndTime = model.EndTime,
             };
         }
-        
+
         public DoctorAppointmentViewModel ToDoctorAppointmentViewModel(Appointment model)
         {
             return new DoctorAppointmentViewModel
             {
-                Id=model.Id,
+                Id = model.Id,
                 AnimalID = model.AnimalID,
                 DoctorID = model.DoctorID,
                 SpecialtyID = model.SpecialtyID,
                 Status = model.Status,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
-                Remarks=model.Remarks
+                Remarks = model.Remarks
             };
         }
 
@@ -235,7 +231,7 @@ namespace Veterinary.Helpers
         {
             return new Appointment
             {
-                
+
                 Id = model.Id,
                 //AppointmentDate = model.SelectDate.Value,
                 //AppointmentTime = model.SelectTime.Value,                
@@ -245,7 +241,7 @@ namespace Veterinary.Helpers
                 Status = "Concluded",
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
-                Remarks=model.Remarks
+                Remarks = model.Remarks
             };
         }
 

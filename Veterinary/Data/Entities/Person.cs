@@ -22,6 +22,7 @@ namespace Veterinary.Data.Entities
 
         [Required]
         [Display(Name = "Zip Code")]
+        [MinLength(4, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
         public string ZipCode { get; set; }
 
 
@@ -29,7 +30,8 @@ namespace Veterinary.Data.Entities
 
         [Required]
         [Display(Name = "Tax Number")]
-        [MaxLength(9, ErrorMessage = "The  field {0} only can contain {1} characters.")]
+        [MaxLength(20, ErrorMessage = "The  field {0} only can contain {1} characters.")]
+        [MinLength(9, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
         public string TaxNumber { get; set; }
 
 
@@ -69,6 +71,7 @@ namespace Veterinary.Data.Entities
         [MinLength(5, ErrorMessage = "The  field {0} can contain minimum {1} characters.")]
         public string Document { get; set; }
 
+        //[Required(ErrorMessage = "You  must select a Document Type.")]
         [Range(1, int.MaxValue, ErrorMessage = "You  must select a Document Type.")]
         public int DocumentTypeID { get; set; }
 

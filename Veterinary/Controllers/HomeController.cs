@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Veterinary.Models;
 
 namespace Veterinary.Controllers
@@ -41,7 +37,7 @@ namespace Veterinary.Controllers
         }
 
         [Route("error/404")]
-        public  IActionResult Error404()
+        public IActionResult Error404()
         {
             return View();
         }

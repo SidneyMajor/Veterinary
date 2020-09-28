@@ -2,7 +2,7 @@
 
 namespace Veterinary.Data.Entities
 {
-    public class Clinic:IEntity
+    public class Clinic : IEntity
     {
         public int Id { get; set; }
 

@@ -26,19 +26,19 @@ namespace Veterinary.Controllers
             return View(await _documentTypeRepository.GetAll().ToListAsync());
         }
 
-        
+
 
         // GET: DocumentTypes/AddOrEdit
-        public async Task<IActionResult> AddOrEdit(int id=0)
+        public async Task<IActionResult> AddOrEdit(int id = 0)
         {
-            if (id==0)
+            if (id == 0)
             {
                 var model = new DocumentType();
                 return PartialView("_AddOrEditPartial", model);
             }
             else
             {
-                
+
                 var documentType = await _documentTypeRepository.GetByIdAsync(id);
                 if (documentType == null)
                 {
@@ -48,13 +48,13 @@ namespace Veterinary.Controllers
                         mensage = "Document Type Not Found!"
                     });
                 }
-                return PartialView("_AddOrEditPartial",documentType);
+                return PartialView("_AddOrEditPartial", documentType);
             }
 
-            
+
         }
 
-        
+
 
         // POST: DocumentTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -63,10 +63,10 @@ namespace Veterinary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit(int id, DocumentType documentType)
         {
-            
+
             if (ModelState.IsValid)
             {
-                if (id==0)
+                if (id == 0)
                 {
                     try
                     {
@@ -111,7 +111,7 @@ namespace Veterinary.Controllers
                             {
                                 isValid = "failed",
                                 mensage = "There is not exist that document type",
-                                model=documentType
+                                model = documentType
                             });
                         }
                         else
@@ -120,7 +120,7 @@ namespace Veterinary.Controllers
                         }
                     }
                 }
-                var updocumenttype =await  _documentTypeRepository.GetAll().ToListAsync();
+                var updocumenttype = await _documentTypeRepository.GetAll().ToListAsync();
                 return Json(new
                 {
                     isValid = "success",
@@ -131,22 +131,7 @@ namespace Veterinary.Controllers
             return PartialView("_AddOrEditPartial", documentType);
         }
 
-        //// GET: DocumentTypes/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
-        //    if (documentType == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(documentType);
-        //}
 
         // POST: DocumentTypes/Delete/5       
         [ValidateAntiForgeryToken]
@@ -165,15 +150,15 @@ namespace Veterinary.Controllers
             var documentType = await _documentTypeRepository.GetByIdAsync(id.Value);
             if (documentType == null)
             {
-                return Json(new 
-                { 
+                return Json(new
+                {
                     isValid = "error",
                     mensage = "Document Type Not Found!"
                 });
             }
-            
+
             try
-            { 
+            {
                 await _documentTypeRepository.DeleteAsync(documentType);
                 var updocumenttype = await _documentTypeRepository.GetAll().ToListAsync();
                 return Json(new

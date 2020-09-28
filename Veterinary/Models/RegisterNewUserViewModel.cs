@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
-    public class RegisterNewUserViewModel:Person
+    public class RegisterNewUserViewModel : Person
     {
         public IEnumerable<DocumentType> Documents { get; set; }
 
@@ -17,7 +14,7 @@ namespace Veterinary.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        
+
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
@@ -33,7 +30,7 @@ namespace Veterinary.Models
         public string Confirm { get; set; }
 
 
-        [Display(Name = "Image")]        
+        [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
     }
 }

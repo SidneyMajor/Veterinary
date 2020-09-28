@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Veterinary.Data;
 using Veterinary.Data.Entities;
 
@@ -37,7 +35,7 @@ namespace Veterinary.Helpers
 
         public IEnumerable<SelectListItem> GetComboDoctors(int id)
         {
-            var list = _context.Doctors.Where(s=> s.SpecialtyID==id).Select(d => new SelectListItem
+            var list = _context.Doctors.Where(s => s.SpecialtyID == id).Select(d => new SelectListItem
             {
                 Text = d.FullName,
                 Value = d.Id.ToString()

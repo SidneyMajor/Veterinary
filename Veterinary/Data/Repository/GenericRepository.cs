@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 
 namespace Veterinary.Data.Repository
 {
-    public class GenericRepository<T>: IGenericRepository<T> where T : class, IEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : class, IEntity
     {
         private readonly DataContext _context;
 
         public GenericRepository(DataContext context)
         {
-           _context = context;
+            _context = context;
         }
 
 
@@ -51,7 +50,7 @@ namespace Veterinary.Data.Repository
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _context.Set<T>()                
+            return await _context.Set<T>()
                  .FirstOrDefaultAsync(e => e.Id == id && e.WasDeleted == false);
         }
 
@@ -60,7 +59,7 @@ namespace Veterinary.Data.Repository
         {
             entity.UpdatedDate = DateTime.Now;
             _context.Set<T>().Update(entity);
-           await SaveAllAsync();            
+            await SaveAllAsync();
         }
 
 

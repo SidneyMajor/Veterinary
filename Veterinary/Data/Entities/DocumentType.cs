@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Veterinary.Data.Entities
 {
-    public class DocumentType:IEntity
+    public class DocumentType : IEntity
     {
         public int Id { get; set; }
-        
+
         [Required]
         public string Description { get; set; }
 
@@ -23,6 +20,6 @@ namespace Veterinary.Data.Entities
 
         public DateTime UpdatedDate { get; set; }
 
-        
+
     }
 }

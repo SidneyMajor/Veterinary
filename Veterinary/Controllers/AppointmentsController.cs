@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Veterinary.Data;
 using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
@@ -137,8 +134,17 @@ namespace Veterinary.Controllers
                 {
                     await _appointmentRepsitory.CreateAsync(appointment);
                     var client = await _clientRepository.GetClientByUserEmailAsync(this.User.Identity.Name);
-                    _mailHelper.SendMail(this.User.Identity.Name, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
-                        $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was successful. You will soon receive confirmation.<br/><br/> With regards.");
+                    try
+                    {
+                        _mailHelper.SendMail(this.User.Identity.Name, "Veterinary-Schedule Appointment", $"Dear customer <b>{client.FullName}</b> <br/><br/>Your schedule appointment  for patient <b>{appointment.Animal.Name}</b>  " +
+                            $"in specialty <b>\"{appointment.Specialty.Description}\"</b>, for doctor <b>{appointment.Doctor.FullName}</b>, for the date <b>{appointment.StartTime}</b>, was successful. You will soon receive confirmation.<br/><br/> With regards.");
+
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
 
                     var upappointments = await _appointmentRepsitory.GetAllAppointmentlAsync(this.User.Identity.Name);
                     return Json(new
@@ -271,8 +277,8 @@ namespace Veterinary.Controllers
             }
             try
             {
-                
-                if (appointment.Status=="Accepted" || appointment.Status=="Pending")
+
+                if (appointment.Status == "Accepted" || appointment.Status == "Pending")
                 {
                     appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                     appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
@@ -307,7 +313,7 @@ namespace Veterinary.Controllers
             }
         }
 
-        
+
         public JsonResult GetDoctors(int specialtyId)
         {
             var doctors = _doctorRepository.GetDoctorsSpecialtyId(specialtyId);

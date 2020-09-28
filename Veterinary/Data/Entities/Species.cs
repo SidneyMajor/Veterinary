@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Veterinary.Data.Entities
 {
-    public class Species:IEntity
+    public class Species : IEntity
     {
         public int Id { get; set; }
 

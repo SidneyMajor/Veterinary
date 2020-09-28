@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
@@ -8,12 +6,12 @@ using Veterinary.Helpers;
 
 namespace Veterinary.Data.Repository
 {
-    public class AnimalRepository:GenericRepository<Animal>, IAnimalRepository
+    public class AnimalRepository : GenericRepository<Animal>, IAnimalRepository
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
 
-        public AnimalRepository(DataContext context, IUserHelper userHelper): base(context)
+        public AnimalRepository(DataContext context, IUserHelper userHelper) : base(context)
         {
             _context = context;
             _userHelper = userHelper;
@@ -30,14 +28,14 @@ namespace Veterinary.Data.Repository
 
             if (await _userHelper.IsUserInRoleAsync(user, "Admin") || await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
-                return _context.Animals   
+                return _context.Animals
                     .Include(a => a.User)
-                    .Include(a => a.Species)                    
+                    .Include(a => a.Species)
                     .OrderByDescending(a => a.Name);
             }
 
-            return _context.Animals.Include(o => o.Species)                
-                .Where(a => a.User == user && a.WasDeleted==false)
+            return _context.Animals.Include(o => o.Species)
+                .Where(a => a.User == user && a.WasDeleted == false)
                 .OrderByDescending(o => o.Name);
         }
 
@@ -50,13 +48,13 @@ namespace Veterinary.Data.Repository
                 return null;
             }
 
-            if (await _userHelper.IsUserInRoleAsync(user,"Admin"))
+            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 var animals = _context.Animals.Include(u => u.User);
                 return await animals.FirstOrDefaultAsync(a => a.Id == id && a.WasDeleted == false);
             }
 
-            return await _context.Animals.FirstOrDefaultAsync(a => a.User == user && a.Id==id && a.WasDeleted==false );
+            return await _context.Animals.FirstOrDefaultAsync(a => a.User == user && a.Id == id && a.WasDeleted == false);
         }
     }
 }

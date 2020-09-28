@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Veterinary.Data.Entities;
-using Veterinary.Models;
 
 namespace Veterinary.Data
 {
-    public class DataContext: IdentityDbContext<User>
+    public class DataContext : IdentityDbContext<User>
     {
         public DbSet<Client> Clients { get; set; }
 
@@ -29,7 +25,7 @@ namespace Veterinary.Data
 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {     
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
@@ -56,8 +52,8 @@ namespace Veterinary.Data
 
 
             base.OnModelCreating(modelbuilder);
-        } 
-        
+        }
+
     }
 
 }

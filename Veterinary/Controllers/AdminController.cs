@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Veterinary.Data;
-using Veterinary.Data.Entities;
 using Veterinary.Data.Repository;
 using Veterinary.Helpers;
 using Veterinary.Models;
@@ -60,7 +56,7 @@ namespace Veterinary.Controllers
                 GetDocumentTypes = await _documentTypeRepository.GetAll().ToListAsync(),
                 GetSpecialties = await _specialtyRepository.GetAll().ToListAsync(),
                 GetSpecies = await _speciesRepository.GetAll().ToListAsync(),
-                GetAppointments = await _appointmentRepsitory.GetAll().Include(a=> a.Doctor).Where(a=> a.StartTime.Date==DateTime.Today.Date).ToListAsync(),
+                GetAppointments = await _appointmentRepsitory.GetAll().Include(a => a.Doctor).Where(a => a.StartTime.Date == DateTime.Today.Date).ToListAsync(),
                 NClients = _clientRepository.GetAll().Count(),
                 NDoctors = _doctorRepository.GetAll().Count(),
                 NAnimals = _animalRepository.GetAll().Count(),
