@@ -102,9 +102,9 @@ namespace Veterinary.Controllers
         {
             var model = new AppointmentViewModel
             {
-                Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name)),
-                Specialties = _combosHelper.GetComboSpecialties(),
-                Doctors = _combosHelper.GetComboDoctors(0),
+                Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name),
+                Specialties = await _specialtyRepository.GetComboSpecialties(),
+                Doctors = await _doctorRepository.GetComboDoctors(),
                 StartTime = startTime,
                 EndTime = endTime,
             };
@@ -161,9 +161,9 @@ namespace Veterinary.Controllers
                 }
 
             }
-            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
-            model.Specialties = _combosHelper.GetComboSpecialties();
-            model.Doctors = _combosHelper.GetComboDoctors(model.SpecialtyID);
+            model.Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name);
+            model.Specialties = await _specialtyRepository.GetComboSpecialties();
+            model.Doctors =await _doctorRepository.GetComboDoctors();
 
             return PartialView("_viewCreatePartial", model);
         }
@@ -190,9 +190,9 @@ namespace Veterinary.Controllers
             }
 
             var model = _converterHelper.ToAppointmentViewModel(appointment);
-            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
-            model.Specialties = _combosHelper.GetComboSpecialties();
-            model.Doctors = _combosHelper.GetComboDoctors(appointment.SpecialtyID);
+            model.Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name);
+            model.Specialties = await _specialtyRepository.GetComboSpecialties();
+            model.Doctors = await _doctorRepository.GetComboDoctors();
 
             return PartialView("_viewEditPartial", model);
         }
@@ -221,7 +221,7 @@ namespace Veterinary.Controllers
                     appointment.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
                     appointment.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
                     appointment.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
-                    //var teste = await _appointmentRepsitory.CheckAppointmentAsync(appointment);
+
                     if (!await _appointmentRepsitory.CheckAppointmentAsync(appointment))
                     {
                         await _appointmentRepsitory.UpdateAsync(appointment);
@@ -254,9 +254,9 @@ namespace Veterinary.Controllers
 
             }
 
-            model.Animals = _combosHelper.GetComboAnimals(await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name));
-            model.Specialties = _combosHelper.GetComboSpecialties();
-            model.Doctors = _combosHelper.GetComboDoctors(model.SpecialtyID);
+            model.Animals = await _animalRepository.GetAllAnimalAsync(this.User.Identity.Name);
+            model.Specialties = await _specialtyRepository.GetComboSpecialties();
+            model.Doctors = await _doctorRepository.GetComboDoctors();
 
             return PartialView("_viewEditPartial", model);
         }

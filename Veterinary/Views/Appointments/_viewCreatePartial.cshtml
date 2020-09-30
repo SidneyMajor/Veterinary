@@ -17,39 +17,30 @@
                     <!--Using AntiForgeryToken with Jquery Ajax Request-->
                     @Html.AntiForgeryToken()
                     <div class="row">
-                        <div class="col-md-12 m-1">
-                            <div class="input-group ">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-dog"></i></span>
-                                </div>
-                                <select asp-for="AnimalID" asp-items="Model.Animals" class="form-control"></select>
-                            </div>
+                        <div class="col-md-12 ">
+                            <ejs-dropdownlist id="AnimalID" value="Model.AnimalID" dataSource="Model.Animals" placeholder="Select an Animal" floatLabelType="Auto" cssClass="e-outline">
+                                <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
+                            </ejs-dropdownlist>
                             <span asp-validation-for="AnimalID" class="alert-warning"></span>
                         </div>
 
-                        <div class="col-md-12">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-hospital-user"></i></span>
-                                </div>
-                                <select asp-for="SpecialtyID" asp-items="Model.Specialties" class="form-control" onchange="SpecialtyChange()"></select>
-                            </div>
+                        <div class="col-md-12 mt-2">
+                            <ejs-dropdownlist id="SpecialtyID" value="Model.SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" cssClass="e-outline" change="specialtychange">
+                                <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
+                            </ejs-dropdownlist>
                             <span asp-validation-for="SpecialtyID" class="alert-warning"></span>
                         </div>
 
-                        <div class="col-md-12 m-1">
-                            <div class="input-group ">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user-md"></i></span>
-                                </div>
-                                <select asp-for="DoctorID" asp-items="Model.Doctors" class="form-control"></select>
-                            </div>
+                        <div class="col-md-12 mt-2">
+                            <ejs-dropdownlist id="DoctorID" value="Model.DoctorID" dataSource="Model.Doctors" placeholder="Select a Doctor" floatLabelType="Auto" cssClass="e-outline" change="doctorchange" enabled="false">
+                                <e-dropdownlist-fields text="FullName" value="Id"></e-dropdownlist-fields>
+                            </ejs-dropdownlist>
                             <span asp-validation-for="DoctorID" class="alert-warning"></span>
                         </div>
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="card-footer">
                         <input type="button" value="Create" class="btn btn-success btn-block" onclick="addAppointment()" />
                     </div>
                 </form>
@@ -60,7 +51,7 @@
     </div>
 </div>
 
-
+<ejs-scripts></ejs-scripts>
 
 @section Scripts {
 

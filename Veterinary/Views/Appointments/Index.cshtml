@@ -102,8 +102,6 @@
                                     <e-grid-column field="Animal.Name" headerText="Animal" width="50" textAlign="Justify"></e-grid-column>
                                     <e-grid-column field="Specialty.Description" headerText="Specialty" width="50" textAlign="Justify"></e-grid-column>
                                     <e-grid-column field="Doctor.FullName" headerText="Doctor" width="50" textAlign="Justify"></e-grid-column>
-
-
                                 </e-grid-columns>
                             </ejs-grid>
                         </div>
@@ -129,11 +127,47 @@
         background-color: forestgreen;
         color: white !important;
     }
+
+    .swal2-color {
+        background-color: orangered;
+        color: white !important;
+    }
 </style>
 
 @section Scripts {
 
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");};
+
+    <script type="text/javascript">
+
+        function specialtychange() {
+            // disable the doctor DropDownList
+            var doctor = document.getElementById('DoctorID').ej2_instances[0];
+            var specialty = document.getElementById('SpecialtyID').ej2_instances[0];
+            doctor.enabled = true;
+            //frame the query based on selected value in specialty DropDownList.
+            var tempQuery = new ej.data.Query().where('SpecialtyID', 'equal', specialty.value);
+            // set the framed query based on selected value in specialty DropDownList.
+            doctor.query = tempQuery;
+            // set null value to doctor DropDownList text property
+            doctor.text = null;
+            //  bind the property changes to doctor DropDownList
+            doctor.dataBind();
+        }
+
+        function doctorchange() {
+            // disable the doctor DropDownList
+            var doctor = document.getElementById('DoctorID').ej2_instances[0];
+            var specialty = document.getElementById('SpecialtyID').ej2_instances[0];
+
+            if (specialty.text != null) {
+                doctor.enabled = true;
+            }
+        }
+
+
+
+    </script>
 
     <script type="text/javascript">
         function onRenderCell(args) {
@@ -142,11 +176,13 @@
                 args.isDisabled = true;
             }
         }
+
     </script>
+
     <script type="text/javascript">
 
       function cellClick(event) {
-        
+
         $.ajax({
             type: 'GET',
             url: '@Url.Action("Create", "Appointments")',
@@ -204,6 +240,17 @@
                     if (res.isValid ==="success") {
                         $('#myModal').modal('hide');
 
+                        Swal.fire({
+                            position: 'bottom-end',
+                            title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Success' + res.message + '</span> ',
+                            showConfirmButton: false,
+                            timer: 2500,
+                            timerProgressBar: true,
+                            heightAuto: false,
+                            customClass: 'swal2-height',
+
+                        })
+
                         var schObj = document.getElementById("schedule").ej2_instances[0];
                         schObj.eventSettings.dataSource = JSON.parse(res.appointments);
 
@@ -216,28 +263,31 @@
 
                         var GridObjPending = document.getElementById("GridPending").ej2_instances[0];
                         var GridObjAll = document.getElementById("GridAll").ej2_instances[0];
-                                                
+
                         GridObjPending.dataSource = JSON.parse(res.pendingAppointment);
                         GridObjAll.dataSource = JSON.parse(res.appointments);
 
 
                         GridObjPending.refresh();
                         GridObjAll.refresh();
-                        
+
                     }
                     else if (res.isValid ==="failed")  {
                         $('#myModal').modal('hide');
 
 
                         swal.fire('Error', res.message, "warning");
-                        
+
                     }
                     else {
+                        //destroy a modal without page reloading. but it will completely remove modal from your html page. 
+                        //After this modal hide show will not work
+                        $("#myModal").remove();
+                        $('.modal-backdrop').remove();
                         var PlaceHolder = $("#PlaceHolder");
-                        //PlaceHolder.html(res);
-                        var newBody = $('.modal-body', res);
-                        PlaceHolder.find('.modal-body').replaceWith(newBody);
-                        //PlaceHolder.find('.modal').modal('show');
+                        PlaceHolder.html(res);                        
+                        PlaceHolder.find('.modal .modal-title').html('<i class="fas fa-comment-medical text-info"></i> Add Appointment');
+                        PlaceHolder.find('.modal').modal('show');
                     }
                 },
                 error: function (ex) {
@@ -261,20 +311,19 @@
                     if (res.isValid === "success") {
 
                         $('#myModal').modal('hide');
-                        swal.fire("Success", res.message, "success");
+                        //swal.fire("Success", res.message, "success");
 
                         Swal.fire({
                             position: 'bottom-end',
-                            icon: 'success',
-                            title: 'Success',
-                            text: res.message,
+                            title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> '+res.message+'</span> ',
                             showConfirmButton: false,
                             timer: 2500,
                             timerProgressBar: true,
                             heightAuto: false,
-                            height: 100,
+                            customClass: 'swal2-height',
+                        })
 
-                        })           
+
 
                         var schObj = document.getElementById("schedule").ej2_instances[0];
                         schObj.eventSettings.dataSource = JSON.parse(res.appointments);
@@ -298,18 +347,7 @@
                     }
                     else if (res.isValid === "failed") {
 
-                        Swal.fire({
-                            position: 'bottom-end',
-                            icon: 'warning',
-                            title: 'Error',
-                            text: res.message,
-                            showConfirmButton: false,
-                            timer: 2500,
-                            timerProgressBar: true,
-                            heightAuto: false,
-                            height: 100,
-
-                        })           
+                        swal.fire('Error', res.message, "warning");
                     }
                     else {
                         var PlaceHolder = $("#PlaceHolder");
@@ -335,7 +373,8 @@
                 confirmButtonText: 'Confirm',
                 denyButtonText: 'Denied',
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied */
+            /* Read more about isConfirmed, isDenied */
+
                 var res = "";
                 if (result.isConfirmed) {
                     res = "Accepted";
@@ -349,16 +388,39 @@
                         url: '@Url.Action("ConfirmSchedule", "Appointments")',
                         data: { id: args.rowData.Id, status: res },
                         success: function (res) {
-                            if (res.result ==="Accepted") {
-                                Swal.fire('Success!', 'Schedule Confirmed', 'success')
+                            if (res.result === "Accepted") {
+
+
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Schedule Confirmed.</span> ',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,
+                                    customClass: 'swal2-height',
+
+                                })
+
                             }
                             else {
-                                Swal.fire('Denied', 'Schedule Denied', 'warning')
+
+                                Swal.fire({
+                                    position: 'bottom-end',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Schedule Denied.</span> ',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                    timerProgressBar: true,
+                                    heightAuto: false,
+                                    customClass: 'swal2-color swal2-height',
+
+                                })
+                                //Swal.fire('Denied', 'Schedule Denied', 'warning')
                             }
 
                             var schObj = document.getElementById("schedule").ej2_instances[0];
-                            schObj.eventSettings.dataSource = JSON.parse(res.appointments);                           
-                            
+                            schObj.eventSettings.dataSource = JSON.parse(res.appointments);
+
                             schObj.dataBind();
 
 
@@ -388,7 +450,7 @@
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
-                icon: 'warning',
+                icon: 'error',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
@@ -407,15 +469,14 @@
                             if (res.result === "success") {
                                 Swal.fire({
                                     position: 'bottom-end',
-                                    icon: res.isValid,
-                                    title: 'Deleted!',
-                                    text: 'Your Schedule has been deleted.',
+                                    title: '<span class="text-white"><i class="fas fa-check-circle text-white-50"></i> Your file has been deleted.</span> ',
                                     showConfirmButton: false,
                                     timer: 2500,
                                     timerProgressBar: true,
-                                    heightAuto: false,                                    
+                                    heightAuto: false,
                                     customClass: 'swal2-height',
-                                })                               
+
+                                })
                                 $('#myModal').modal('hide');
 
                                 var schObj = document.getElementById("schedule").ej2_instances[0];
@@ -545,6 +606,7 @@
             <span class="statustxt">${Status}</span>
         </div>
     </script>
+
 
 
 }

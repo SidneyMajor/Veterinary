@@ -70,6 +70,7 @@ namespace Veterinary
             {
                 options.LoginPath = "/Account/NotAuthorized";
                 options.AccessDeniedPath = "/Account/NotAuthorized";
+                options.LogoutPath = "/Home/Index";
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

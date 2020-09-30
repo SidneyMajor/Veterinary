@@ -35,7 +35,7 @@ namespace Veterinary.Helpers
 
         public IEnumerable<SelectListItem> GetComboDoctors(int id)
         {
-            var list = _context.Doctors.Where(s => s.SpecialtyID == id).Select(d => new SelectListItem
+            var list = _context.Doctors.Where(s => s.SpecialtyID == id && s.WasDeleted==false).Select(d => new SelectListItem
             {
                 Text = d.FullName,
                 Value = d.Id.ToString()
@@ -52,7 +52,7 @@ namespace Veterinary.Helpers
 
         public IEnumerable<SelectListItem> GetComboSpecialties()
         {
-            var list = _context.Specialties.Select(s => new SelectListItem
+            var list = _context.Specialties.Where(s=> s.WasDeleted==false).Select(s =>  new SelectListItem
             {
                 Text = s.Description,
                 Value = s.Id.ToString()

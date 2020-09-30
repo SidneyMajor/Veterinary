@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 
@@ -10,6 +11,7 @@ namespace Veterinary.Data.Repository
 
         IQueryable<Doctor> GetDoctorsSpecialtyId(int specialtyId);
 
+        Task<IEnumerable<Doctor>> GetComboDoctors();
         //IQueryable<Doctor> GetDoctorBySpecialtyAsync(int id);
     }
 }

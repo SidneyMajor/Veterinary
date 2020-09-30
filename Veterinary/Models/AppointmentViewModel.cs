@@ -6,11 +6,11 @@ namespace Veterinary.Models
 {
     public class AppointmentViewModel : Appointment
     {
-        public IEnumerable<SelectListItem> Animals { get; set; }
+        public IEnumerable<Animal> Animals { get; set; }
 
-        public IEnumerable<SelectListItem> Specialties { get; set; }
+        public IEnumerable<Specialty> Specialties { get; set; }
 
-        public IEnumerable<SelectListItem> Doctors { get; set; }
+        public IEnumerable<Doctor> Doctors { get; set; }
 
         public IEnumerable<Appointment> GetAppointments { get; set; }
     }

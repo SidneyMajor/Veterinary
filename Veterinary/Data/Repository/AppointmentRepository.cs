@@ -38,11 +38,16 @@ namespace Veterinary.Data.Repository
 
         public async Task<bool> CheckAppointmentAsync(Appointment model)
         {
-            if (model.StartTime < DateTime.Now || model.StartTime.Hour >= 18)
+            if (model.StartTime < DateTime.Now)
             {
                 return true;
             }
 
+            if ((model.StartTime.Hour>=18 && model.StartTime.Hour<=24) || (model.StartTime.Hour<8 && model.StartTime.Hour>=0))
+            {
+                return true;
+            }
+            
             return await _context.Appointments.AnyAsync(a => a.StartTime.Equals(model.StartTime) &&
             a.EndTime.Equals(model.EndTime) && a.DoctorID.Equals(model.DoctorID) && (a.Status.Equals("Accepted") || a.Status.Equals("Pending")));
         }

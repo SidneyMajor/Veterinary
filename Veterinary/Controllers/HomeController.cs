@@ -1,27 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
+using Veterinary.Data.Repository;
 using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IClientRepository _clientRepository;
+        private readonly IDoctorRepository _doctorRepository;
+        private readonly IAnimalRepository _animalRepository;
+
+        public HomeController(IClientRepository clientRepository, IDoctorRepository doctorRepository, IAnimalRepository animalRepository)
+        {
+           _clientRepository = clientRepository;
+            _doctorRepository = doctorRepository;
+            _animalRepository = animalRepository;
+        }
         public IActionResult Index()
         {
+            ViewBag.Clients = _clientRepository.GetAll().Count();
+            ViewBag.Doctors = _doctorRepository.GetAll().Count();
+            ViewBag.Animals =_animalRepository.GetAll().Count();
             return View();
         }
 
         public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
+        {           
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

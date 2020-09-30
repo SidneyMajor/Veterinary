@@ -28,7 +28,7 @@ namespace Veterinary.Data.Repository
 
             if (await _userHelper.IsUserInRoleAsync(user, "Admin") || await _userHelper.IsUserInRoleAsync(user, "Doctor"))
             {
-                return _context.Animals
+                return _context.Animals.Where(a => a.WasDeleted == false)
                     .Include(a => a.User)
                     .Include(a => a.Species)
                     .OrderByDescending(a => a.Name);

@@ -56,7 +56,7 @@ namespace Veterinary.Controllers
                 GetDocumentTypes = await _documentTypeRepository.GetAll().ToListAsync(),
                 GetSpecialties = await _specialtyRepository.GetAll().ToListAsync(),
                 GetSpecies = await _speciesRepository.GetAll().ToListAsync(),
-                GetAppointments = await _appointmentRepsitory.GetAll().Include(a => a.Doctor).Where(a => a.StartTime.Date == DateTime.Today.Date).ToListAsync(),
+                GetAppointments = await _appointmentRepsitory.GetAll().Include(a => a.Doctor).Include(a=> a.Animal).Include(a=>a.Specialty).Where(a => a.StartTime.Date == DateTime.Today.Date).ToListAsync(),
                 NClients = _clientRepository.GetAll().Count(),
                 NDoctors = _doctorRepository.GetAll().Count(),
                 NAnimals = _animalRepository.GetAll().Count(),
@@ -64,8 +64,6 @@ namespace Veterinary.Controllers
             };
             return View(model);
         }
-
-
 
         // GET: Clients only for admin
         //TODO: tenho que trabalhar a view de modo apenas mostrar os btns apagar e detalhes. criar tbm uma para mostrar os utilizadores inativos.
