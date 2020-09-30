@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
 
@@ -11,5 +12,8 @@ namespace Veterinary.Data.Repository
 
         //get a animal
         Task<Animal> GetDetailAnimalAsync(int id, string username);
+
+        IEnumerable<Animal> AnimalsDelete();
+
     }
 }

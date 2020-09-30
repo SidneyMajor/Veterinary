@@ -13,6 +13,12 @@ namespace Veterinary.Models
 
         public IEnumerable<Appointment> GetAppointments { get; set; }
 
+        public IEnumerable<Client> DeleteClients { get; set; }
+
+        public IEnumerable<Doctor> DeleteDoctors { get; set; }
+
+        public IEnumerable<Animal> DeleteAnimals { get; set; }
+
         public int NClients { get; set; }
 
         public int NDoctors { get; set; }

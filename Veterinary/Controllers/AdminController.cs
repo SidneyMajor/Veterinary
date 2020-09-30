@@ -61,6 +61,9 @@ namespace Veterinary.Controllers
                 NDoctors = _doctorRepository.GetAll().Count(),
                 NAnimals = _animalRepository.GetAll().Count(),
                 NAppointments = _appointmentRepsitory.GetAll().Count(),
+                DeleteAnimals= _animalRepository.AnimalsDelete(),
+                DeleteClients=_clientRepository.ClientsDelete(),
+                DeleteDoctors=_doctorRepository.DoctorsDelete(),
             };
             return View(model);
         }
@@ -88,12 +91,13 @@ namespace Veterinary.Controllers
             }
 
             var client = await _clientRepository.GetByIdAsync(id.Value);
-            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
-            client.DocumentType = documentType;
+            
             if (client == null)
             {
                 return NotFound();
             }
+            var documentType = await _documentTypeRepository.GetByIdAsync(client.DocumentTypeID);
+            client.DocumentType = documentType;
             var user = await _userHelper.GetUserByClientIdAsync(client.Id);
             var animals = await _animalRepository.GetAllAnimalAsync(user.Email);
             client.User = user;
@@ -115,11 +119,20 @@ namespace Veterinary.Controllers
             }
 
             var model = await _clientRepository.GetByIdAsync(id.Value);
-            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
-            model.DocumentType = documentType;
+           
             if (model == null)
             {
                 return NotFound();
+            }
+
+            var documentType = await _documentTypeRepository.GetByIdAsync(model.DocumentTypeID);
+            model.DocumentType = documentType;
+
+            var user = await _userHelper.GetUserByClientIdAsync(model.Id);
+
+            if (await _appointmentRepsitory.CheckAppointmentUserdAsync(user))
+            {
+                return RedirectToAction(nameof(ListClient));
             }
 
             return View(model);

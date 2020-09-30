@@ -4,7 +4,7 @@
 }
 
 <div class="container">
-  
+
     <div class="card-header bg-warning text-white">
         <a style="font-size: 40px"><i class="fa fa-user-md mr-2 text-danger"></i>Delete Doctor</a>
         <h3 class="h3 text-danger">Are you sure you want to delete this?</h3>
@@ -23,17 +23,111 @@
                     <div class="col-md-7">
                         <div class="bg-light w-100 p-md-5 p-4">
 
-                            <form asp-action="Delete" id="contactForm" name="contactForm" class="contactForm">
+                            <form asp-action="Delete" method="post" id="contactForm" name="contactForm" class="contactForm">
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
 
                                 <div class="row">
-                                    <partial name="_DoctorParcial" />
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Nationality" id="nationality" placeholder="Nationality" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group pt-2 ">
+                                            <label class="text-lg-center text-info">
+                                                Gender:
+
+                                            </label>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
+                                            <ejs-radiobutton ejs-for="Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Address" id="address" placeholder="Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="City" id="city" placeholder="City" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="SSNumber" id="ssnumber" placeholder="Social Security Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox id="DocumentType" ejs-for="DocumentType.Description" placeholder="Document" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline">
+                                            </ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="Document" id="document" placeholder="Nº Document" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox id="Specialty" ejs-for="Specialty.Description" placeholder="Specialty" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline">
+                                            </ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="datepicker">
+                                            <ejs-datepicker ejs-for="DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Always" readonly="true" cssClass="e-outline"> </ejs-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <ejs-textbox ejs-for="User.Email" id="email" placeholder="Email Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group text-lg-center">
                                             <a asp-action="ListDoctor" asp-controller="Doctors" class="btn btn-secondary btn-block"><i class="fa fa-arrow-alt-circle-left"></i> Back to List</a>
-                                            <button type="submit"  class="btn btn-danger btn-block" ><i class="fa fa-trash text-white"> Delete</i></button>
+                                            <button type="submit" class="btn btn-danger btn-block"><i class="fa fa-trash text-white"> Delete</i></button>
                                         </div>
                                     </div>
 
@@ -51,12 +145,12 @@
                             </div>
                             <div class="card-body text-lg-center">
                                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                                {                                   
+                                {
                                     <img src="@Url.Content(Model.ImageUrl)" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
                                 }
                                 else
                                 {
-                                    <img src="/images/img.jpg"  alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
+                                    <img src="/images/img.jpg" alt="image" style="max-height:88%; max-width:88%; border-radius:10px; margin:auto; cursor:pointer;" />
                                 }
                             </div>
                         </div>

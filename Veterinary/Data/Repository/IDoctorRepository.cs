@@ -12,6 +12,7 @@ namespace Veterinary.Data.Repository
         IQueryable<Doctor> GetDoctorsSpecialtyId(int specialtyId);
 
         Task<IEnumerable<Doctor>> GetComboDoctors();
-        //IQueryable<Doctor> GetDoctorBySpecialtyAsync(int id);
+
+        IEnumerable<Doctor> DoctorsDelete();
     }
 }

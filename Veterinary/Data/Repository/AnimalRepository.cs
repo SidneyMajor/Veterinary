@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
@@ -15,6 +16,13 @@ namespace Veterinary.Data.Repository
         {
             _context = context;
             _userHelper = userHelper;
+        }
+
+        public IEnumerable<Animal> AnimalsDelete()
+        {
+           return _context.Animals.Where(a => a.WasDeleted == true)
+                   .Include(a => a.Species)
+                   .OrderByDescending(a => a.Name).ToList();
         }
 
         /// <summary>

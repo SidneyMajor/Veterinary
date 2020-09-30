@@ -24,7 +24,7 @@
                     <div class="col-md-7">
                         <div class="bg-light w-100 p-md-5 p-4">
 
-                            <form asp-action="Delete" id="contactForm" name="contactForm" class="contactForm">
+                            <form asp-action="DeleteClient" method="post" id="contactForm" name="contactForm" class="contactForm">
                                 <input type="hidden" asp-for="Id" />
                                 <input type="hidden" asp-for="ImageUrl" />
 
@@ -34,7 +34,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <a asp-action="ListClient" asp-controller="Admin" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Back </a>
-                                            <a asp-action="DeleteClient" asp-route-id="@Model.Id" asp-controller="Admin" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                                            <button type="submit"  class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                                         </div>
                                     </div>
 

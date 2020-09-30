@@ -223,7 +223,10 @@ namespace Veterinary.Controllers
             var specialty = await _specialtyRepository.GetByIdAsync(model.SpecialtyID);
             model.DocumentType = documentType;
             model.Specialty = specialty;
-
+            if (await _appointmentRepsitory.CheckAppointmentDoctorIdAsync(model.Id))
+            {
+                return RedirectToAction(nameof(ListDoctor));
+            }
             return View(model);
         }
 

@@ -420,8 +420,8 @@
                             }
 
                             var schObj = document.getElementById("schedule").ej2_instances[0];
-                            schObj.eventSettings.dataSource = JSON.parse(res.appointments);
-
+                           
+                            schObj.eventSettings.dataSource = JSON.parse(res.appointments);                            
                             schObj.dataBind();
 
 
@@ -440,7 +440,6 @@
                         }
                     })
                 }
-
 
             })
         }

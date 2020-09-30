@@ -11,6 +11,7 @@ using Veterinary.Models;
 
 namespace Veterinary.Controllers
 {
+    [Authorize]
     public class AppointmentsController : Controller
     {
         private readonly IAppointmentRepsitory _appointmentRepsitory;
@@ -237,8 +238,6 @@ namespace Veterinary.Controllers
                     {
                         return Json(new { isValid = "failed", message = "The appointment schedule you have chosen is not available. Please choose another hour or date!" });
                     }
-                    //_context.Update(appointment);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

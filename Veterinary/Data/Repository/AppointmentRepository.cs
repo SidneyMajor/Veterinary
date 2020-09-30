@@ -61,6 +61,22 @@ namespace Veterinary.Data.Repository
             a.EndTime.Equals(model.EndTime) && a.DoctorID.Equals(model.DoctorID) && (a.Status.Equals("Accepted") || a.Status.Equals("Pending")));
         }
 
+        public async Task<bool> CheckAppointmentDoctorIdAsync(int id)
+        {
+            return await _context.Appointments.AnyAsync(a => a.DoctorID==id);
+        }
+
+        public async Task<bool> CheckAppointmentAnimalIdAsync(int id)
+        {
+            return await _context.Appointments.AnyAsync(a => a.AnimalID == id);
+        }
+
+
+        public async Task<bool> CheckAppointmentUserdAsync(User user)
+        {
+            return await _context.Appointments.AnyAsync(a => a.User== user);
+        }
+
         /// <summary>
         /// Get all appointment by user
         /// </summary>
@@ -143,5 +159,7 @@ namespace Veterinary.Data.Repository
             return _context.Appointments.Include(a => a.Animal).Include(a => a.Specialty)
                .Include(a => a.User).Include(a => a.Doctor).Where(a => a.WasDeleted == false && a.Doctor.Equals(doctor) && a.StartTime.Date == DateTime.Today.Date ).OrderByDescending(a => a.StartTime);
         }
+
+        
     }
 }

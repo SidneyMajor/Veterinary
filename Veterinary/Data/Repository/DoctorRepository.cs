@@ -49,5 +49,10 @@ namespace Veterinary.Data.Repository
             return await _context.Doctors.Where(d => d.WasDeleted == false).ToListAsync();
 
         }
+
+        public IEnumerable<Doctor> DoctorsDelete()
+        {
+            return _context.Doctors.Where(d => d.WasDeleted == true).Include(d=> d.User).ToList();
+        }
     }
 }

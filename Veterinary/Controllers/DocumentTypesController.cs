@@ -22,7 +22,6 @@ namespace Veterinary.Controllers
         // GET: DocumentTypes
         public async Task<IActionResult> Index()
         {
-            //ViewBag.Document = await _documentTypeRepository.GetAll().ToListAsync();
             return View(await _documentTypeRepository.GetAll().ToListAsync());
         }
 

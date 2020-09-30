@@ -47,13 +47,14 @@ namespace Veterinary.Controllers
             }
 
             var animal = await _animalRepository.GetDetailAnimalAsync(id.Value, this.User.Identity.Name);
-            animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
+           
 
             if (animal == null)
             {
                 return new NotFoundViewResult("AnimalNotFound");
             }
 
+            animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
             ViewBag.Appointments = await _appointmentRepsitory.GetUserAppointmentDetailAsync(animal.Id, this.User.Identity.Name);
 
             return View(animal);
@@ -115,7 +116,6 @@ namespace Veterinary.Controllers
             {
                 return new NotFoundViewResult("AnimalNotFound");
             }
-            ///var species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
             var model = _converterHelper.ToAnimalViewModel(animal);
             model.GetSpecies = await _speciesRepository.GetComboSpecies();
             return View(model);
@@ -185,10 +185,16 @@ namespace Veterinary.Controllers
             }
 
             var animal = await _animalRepository.GetByIdAsync(id.Value);
-            animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
+           
             if (animal == null)
             {
                 return new NotFoundViewResult("AnimalNotFound");
+            }
+            animal.Species = await _speciesRepository.GetByIdAsync(animal.SpeciesID);
+
+            if (await _appointmentRepsitory.CheckAppointmentAnimalIdAsync(animal.Id))
+            {
+                return RedirectToAction(nameof(Index));
             }
 
             return View(animal);

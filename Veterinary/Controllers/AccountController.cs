@@ -227,18 +227,11 @@ namespace Veterinary.Controllers
             {
                 return NotFound();
             }
-            ////teste
-            //if (await _userHelper.IsUserInRoleAsync(user, "Doctor"))
-            //{
-            //    var model = new SetPasswordViewModel { UserId = userid };
-            //    return View(model);
-            //}
-
-
+           
             return View();
         }
 
-        //Todo: melhorar essa view
+      
         public async Task<IActionResult> ConfirmDoctorEmail(string userid, string token, string name)
         {
             if (string.IsNullOrEmpty(userid) || string.IsNullOrEmpty(token))

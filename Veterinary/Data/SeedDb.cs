@@ -40,7 +40,15 @@ namespace Veterinary.Data
                     CreatedDate = DateTime.Now,
                 };
 
+                var document1 = new DocumentType
+                {
+                    Description = "Título de Risidência",
+                    UpdatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                };
+
                 _context.DocumentTypes.Add(document);
+                _context.DocumentTypes.Add(document1);
                 await _context.SaveChangesAsync();
             }
             //add species
@@ -53,7 +61,15 @@ namespace Veterinary.Data
                     CreatedDate = DateTime.Now,
                 };
 
+                var species1 = new Species
+                {
+                    Description = "Dog",
+                    UpdatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                };
+
                 _context.Species.Add(species);
+                _context.Species.Add(species1);
                 await _context.SaveChangesAsync();
             }
 
@@ -66,8 +82,15 @@ namespace Veterinary.Data
                     UpdatedDate = DateTime.Now,
                     CreatedDate = DateTime.Now,
                 };
+                var specialty1 = new Specialty
+                {
+                    Description = "Vacinação",
+                    UpdatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                };
 
                 _context.Specialties.Add(specialty);
+                _context.Specialties.Add(specialty1);
                 await _context.SaveChangesAsync();
             }
 
@@ -75,16 +98,16 @@ namespace Veterinary.Data
             if (!_context.Clients.Any())
             {
 
-                var userAdmin = await _userHelper.GetUserByEmailAsync("Sidney.major@seed.pt");
+                var userAdmin = await _userHelper.GetUserByEmailAsync("Sidney.seed@yopmail.com");
 
-                var userCustomer = await _userHelper.GetUserByEmailAsync("Isabel@seed.pt");
+                var userCustomer = await _userHelper.GetUserByEmailAsync("Isabel.seed@yopmail.com");
 
                 if (userAdmin == null)
                 {
                     userAdmin = new User
                     {
-                        Email = "Sidney.major@seed.pt",
-                        UserName = "Sidney.major@seed.pt",
+                        Email = "Sidney.seed@yopmail.com",
+                        UserName = "Sidney.seed@yopmail.com",
                     };
                     var result = await _userHelper.AddUserAsync(userAdmin, "123456");
                     if (result != IdentityResult.Success)
@@ -97,8 +120,8 @@ namespace Veterinary.Data
                 {
                     userCustomer = new User
                     {
-                        Email = "Isabel@seed.pt",
-                        UserName = "Isabel@seed.pt",
+                        Email = "Isabel.seed@yopmail.com",
+                        UserName = "Isabel.seed@yopmail.com",
                     };
                     var result = await _userHelper.AddUserAsync(userCustomer, "123456");
                     if (result != IdentityResult.Success)
@@ -138,14 +161,14 @@ namespace Veterinary.Data
             if (!_context.Doctors.Any())
             {
 
-                var userDoctor = await _userHelper.GetUserByEmailAsync("Doctor@seed.pt");
+                var userDoctor = await _userHelper.GetUserByEmailAsync("Doctor.seed@yopmail.com");
 
                 if (userDoctor == null)
                 {
                     userDoctor = new User
                     {
-                        Email = "Doctor@seed.pt",
-                        UserName = "Doctor@seed.pt",
+                        Email = "Doctor.seed@yopmail.com",
+                        UserName = "Doctor.seed@yopmail.com",
                     };
                     var result = await _userHelper.AddUserAsync(userDoctor, "123456");
                     if (result != IdentityResult.Success)
@@ -188,7 +211,7 @@ namespace Veterinary.Data
                 Document = _random.Next(10000, 999999).ToString(),
                 TaxNumber = _random.Next(100000000, 399999999).ToString(),
                 DateOfBirth = new DateTime(_random.Next(1930, 2020), _random.Next(1, 12), _random.Next(1, 32)),
-                Gender = "N/N",
+                Gender = "F",
                 User = user,
                 UpdatedDate = DateTime.Now,
                 CreatedDate = DateTime.Now,
@@ -227,7 +250,7 @@ namespace Veterinary.Data
                 Document = _random.Next(10000, 999999).ToString(),
                 TaxNumber = _random.Next(100000000, 399999999).ToString(),
                 DateOfBirth = new DateTime(_random.Next(1930, 2020), _random.Next(1, 12), _random.Next(1, 32)),
-                Gender = "N/N",
+                Gender = "M",
                 User = user,
                 SpecialtyID = _context.Specialties.FirstOrDefault().Id,
                 Specialty = _context.Specialties.FirstOrDefault(),

@@ -198,11 +198,11 @@
     <div class="row">
 
         <div class="col ">
-            <button class="btn btn-danger btn-block" type="button" data-toggle="collapse" data-target="#collapseAppointment" aria-expanded="false" aria-controls="collapseRFor">
+            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapseAppointment" aria-expanded="false" aria-controls="collapseRFor">
                 Today's Schedule.
             </button>
             <div class="collapse " id="collapseAppointment">
-                <div class="card-header bg-secondary">
+                <div class="card-header bg-info">
                     <h5 class="text-warning">
                         <a asp-action="Index" asp-controller="Appointments" class="text-warning"><i class="fa fa-book text-white-50"></i> Pending Appointments #@Model.GetAppointments.Where(a=> a.Status=="Pending").Count()</a>
                     </h5>
@@ -231,6 +231,115 @@
     </div>
 
 </div>
+
+
+<div class=" m-1 pt-2">
+    <div class="row">
+
+        <div class="col ">
+            <button class="btn btn-danger btn-block" type="button" data-toggle="collapse" data-target="#collapseDelete" aria-expanded="false" aria-controls="collapseRFor">
+               Delete data.
+            </button>
+            <div class="collapse " id="collapseDelete">
+
+                <div class=" m-1 pt-2">
+                    <div class="row">
+                       
+                        <div class="col-12 ">
+                            <button class="btn btn-warning btn-block" type="button" data-toggle="collapse" data-target="#collapseClients" aria-expanded="false" aria-controls="collapseOne">
+                                Clients
+                            </button>
+                            <div class="collapse " id="collapseClients">
+                                <div class="card-body bg-light">
+                                    <ejs-grid id="CleintGrid" dataSource="Model.DeleteClients" allowPaging="true" allowSorting="true" toolbar="@(new List<string>() {"Search" })">
+                                        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                                        <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                        <e-grid-columns>
+                                            <e-grid-column field="FullName" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+                                            <e-grid-column field="TaxNumber" headerText="Tax Number" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Nationality" headerText="Nationality" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="User.Email" headerText="Email" width="50" textAlign="Justify"></e-grid-column>
+                                        </e-grid-columns>
+                                    </ejs-grid>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mt-2">
+
+                            <button class="btn btn-secondary btn-block " type="button" data-toggle="collapse" data-target="#collapseDoctors" aria-expanded="false" aria-controls="collapseTwo">
+                                Doctors
+                            </button>
+
+                            <div class="collapse" id="collapseDoctors">
+                                <div class="card-body bg-light">
+                                    <ejs-grid id="DoctorGrid" dataSource="Model.DeleteDoctors" allowPaging="true" toolbar="@(new List<string>() {"Search" })" >
+                                        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                                        <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                        <e-grid-columns>
+                                            <e-grid-column field="FullName" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+                                            <e-grid-column field="Address" headerText="Address" width="100" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="TaxNumber" headerText="Tax Number" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Nationality" headerText="Nationality" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="User.Email" headerText="Email" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+                                        </e-grid-columns>
+                                    </ejs-grid>
+
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 mt-2">
+
+                            <button class="btn btn-danger btn-block" type="button" data-toggle="collapse" data-target="#collapseAnimals" aria-expanded="false" aria-controls="collapseThree">
+                               Animals
+                            </button>
+
+                            <div class="collapse" id="collapseAnimals">
+                                <div class="card-body bg-light">
+                                    <ejs-grid id="AnimalGrid" dataSource="Model.DeleteAnimals" allowPaging="true" toolbar="@(new List<string>() {"Search" })" >
+                                        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+                                        <e-grid-searchsettings ignoreAccent="true"></e-grid-searchsettings>
+                                        <e-grid-editSettings allowDeleting="false" allowEditing="false" mode="Normal"></e-grid-editSettings>
+                                        <e-grid-columns>
+                                            <e-grid-column field="Name" headerText="Name" textAlign="Justify" width="100"></e-grid-column>
+                                            <e-grid-column field="Breed" headerText="Breed" width="100" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Gender" headerText="Gender" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Color" headerText="Color" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Weight" headerText="Weight" format="N2" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Size" headerText="Size" format="N2" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="Species.Description" headerText="Species" width="50" textAlign="Justify"></e-grid-column>
+                                            <e-grid-column field="DateOfBirth" headerText="Date Of Birth" format="yMd" width="50" textAlign="Justify"></e-grid-column>
+                                        </e-grid-columns>
+                                    </ejs-grid>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
 
 <div id="PlaceHolder"></div>
 
