@@ -17,6 +17,11 @@ namespace Veterinary.Data.Repository
             _userHelper = userHelper;
         }
 
+        /// <summary>
+        /// Get All Animal by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public async Task<IQueryable<Animal>> GetAllAnimalAsync(string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
@@ -39,6 +44,12 @@ namespace Veterinary.Data.Repository
                 .OrderByDescending(o => o.Name);
         }
 
+        /// <summary>
+        /// Get Animal by id and username
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public async Task<Animal> GetDetailAnimalAsync(int id, string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);

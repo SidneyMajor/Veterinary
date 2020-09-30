@@ -1,4 +1,5 @@
-﻿using Veterinary.Data.Entities;
+﻿using System.Collections.Generic;
+using Veterinary.Data.Entities;
 
 namespace Veterinary.Models
 {
@@ -7,5 +8,7 @@ namespace Veterinary.Models
         public Client Client { get; set; }
 
         public Animal Animal { get; set; }
+
+        public IEnumerable<Appointment> GetAppointments { get; set; }
     }
 }

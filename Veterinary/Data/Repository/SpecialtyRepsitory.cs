@@ -15,6 +15,10 @@ namespace Veterinary.Data.Repository
             _context = context;
         }
 
+        /// <summary>
+        /// Get Specialties
+        /// </summary>
+        /// <returns>List Specialties</returns>
         public async Task<IEnumerable<Specialty>> GetComboSpecialties()
         {
 

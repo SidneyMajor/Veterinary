@@ -27,73 +27,111 @@
 
                             <form asp-action="Details" method="get" id="contactForm" name="contactForm" class="contactForm">
 
+
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Animal.Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                    <button class="btn btn-info btn-block mt-2" type="button" data-toggle="collapse" data-target="#collapseAnimal" aria-expanded="false" aria-controls="collapseTwo">
+                                        Animal Information
+                                    </button>
+
+                                    <div class="collapse" id="collapseAnimal">
+                                        <div class="card card-body bg-gradient-white">
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="Animal.Name" id="name" type="text" placeholder="Full Name" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="Animal.Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group pt-2 ">
+                                                        <label class="text-lg-center text-info">
+                                                            Gender:
+
+                                                        </label>
+                                                        <ejs-radiobutton ejs-for="Animal.Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
+                                                        <ejs-radiobutton ejs-for="Animal.Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
+
+                                                        <span asp-validation-for="Animal.Gender" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="datepicker">
+                                                        <ejs-datepicker ejs-for="Animal.DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Auto" readonly="true" cssClass="e-outline"> </ejs-datepicker>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="Animal.Color" id="color" placeholder="Color" type="text" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-numerictextbox ejs-for="Animal.Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-numerictextbox>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <ejs-numerictextbox ejs-for="Animal.Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-numerictextbox>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <ejs-textbox id="SpeciesID" ejs-for="Animal.Species.Description" placeholder="Select a Species" floatLabelType="Auto" readonly="true" cssClass="e-outline">
+                                                        </ejs-textbox>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <ejs-textbox ejs-for="Animal.Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Animal.Breed" id="breed" type="text" placeholder="Breed" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
+
+
+
+                                <div class="row">
+                                    <button class="btn btn-warning btn-block mt-2" type="button" data-toggle="collapse" data-target="#collapseAppointment" aria-expanded="false" aria-controls="collapseTwo">
+                                        Appointment Information
+                                    </button>
+
+                                    <div class="collapse" id="collapseAppointment">
+                                        <div class="card card-body bg-gradient-info">
+
+                                            <ejs-grid id="Grid" dataSource="Model.GetAppointments" allowPaging="true" rowTemplate="#rowtemplate">
+                                                <e-grid-pagesettings pageSize="3"></e-grid-pagesettings>
+                                                <e-grid-columns>
+                                                    <e-grid-column headerText="Doctor" textAlign="Center" width="150"></e-grid-column>
+                                                    <e-grid-column headerText="Appointment Details" textAlign="Left" field="Id"></e-grid-column>
+                                                </e-grid-columns>
+                                            </ejs-grid>
                                         </div>
                                     </div>
+                                </div>
 
-
-                                    <div class="col-md-6">
-                                        <div class="form-group pt-2 ">
-                                            <label class="text-lg-center text-info">
-                                                Gender:
-
-                                            </label>
-                                            <ejs-radiobutton ejs-for="Animal.Gender" id="radio1" label="Male" value="M" disabled="true"></ejs-radiobutton>
-                                            <ejs-radiobutton ejs-for="Animal.Gender" id="radio2" label="Female" value="F" disabled="true"></ejs-radiobutton>
-
-                                            <span asp-validation-for="Animal.Gender" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="datepicker">
-                                            <ejs-datepicker ejs-for="Animal.DateOfBirth" format="dd-MM-yyyy" id="datetimepicker" placeholder="Date Of Birth" floatLabelType="Auto" readonly="true" cssClass="e-outline"> </ejs-datepicker>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Animal.Color" id="color" placeholder="Color" type="text" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-numerictextbox ejs-for="Animal.Weight" id="weight" placeholder="Weigth" format="###.### kg" step="0.5" min="0" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-numerictextbox>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <ejs-numerictextbox ejs-for="Animal.Size" id="size" placeholder="Size" format="###.### cm" step="0.5" min="0" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-numerictextbox>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <ejs-textbox id="SpeciesID" ejs-for="Animal.Species.Description" placeholder="Select a Species" floatLabelType="Auto" readonly="true" cssClass="e-outline">
-                                            </ejs-textbox>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <ejs-textbox ejs-for="Animal.Remarks" id="remarks" placeholder="Remarks" type="text" multiline="true" floatLabelType="Auto" readonly="true" cssClass="e-outline"></ejs-textbox>
-                                        </div>
-                                    </div>
-
+                                <div class="row mt-4">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <!-- Button trigger modal -->
@@ -105,6 +143,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </form>
 
                         </div>
@@ -153,26 +192,26 @@
                 <div class="row text-dark">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.FullName" id="fullname" type="text" placeholder="Full Name" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.Address" id="address" placeholder="Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.ZipCode" id="zipcode" placeholder="Zip Code" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.TaxNumber" id="taxnumber" placeholder="Tax Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
@@ -180,13 +219,13 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Client.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Client.PhoneNumber" id="phoneNumber" placeholder="Phone Number" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <ejs-textbox ejs-for="Animal.User.Email" id="useremail" placeholder="Email Address" type="text" floatLabelType="Always" readonly="true"></ejs-textbox>
+                            <ejs-textbox ejs-for="Animal.User.Email" id="useremail" placeholder="Email Address" type="text" floatLabelType="Always" readonly="true" cssClass="e-outline"></ejs-textbox>
                         </div>
                     </div>
 
@@ -198,3 +237,89 @@
         </div>
     </div>
 </div>
+
+
+<style type="text/css" class="cssStyles">
+
+
+    .photo,
+    .details {
+        border-color: #e0e0e0;
+        border-style: solid;
+        color: black;
+    }
+
+    .photo {
+        border-width: 1px 0px 0px 0px;
+        text-align: center;
+    }
+
+    .details {
+        border-width: 1px 0px 0px 0px;
+        padding-left: 18px;
+    }
+
+    .e-bigger .details {
+        padding-left: 25px;
+    }
+
+    .e-device .details {
+        padding-left: 8px;
+    }
+
+    .details > table {
+        width: 100%;
+    }
+
+    .CardHeader {
+        font-weight: 600;
+    }
+
+    td {
+        padding: 2px 2px 3px 4px;
+    }
+</style>
+
+<script id="rowtemplate" type="text/x-template">
+    <tr>
+        <td class="photo">
+            <b>${Doctor.FullName}</b>
+        </td>
+        <td class="details">
+            <table class="CardTable" cellpadding="3" cellspacing="2">
+                <colgroup>
+                    <col width="50">
+                    <col width="50">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td class="CardHeader">Start Time</td>
+                        <td>${StartTime.toLocaleString()} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">End Time</td>
+                        <td>${EndTime.toLocaleString()} </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Specialty
+                        </td>
+
+                        <td>
+                            ${Specialty.Description}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="CardHeader">
+                            Remarks
+                        </td>
+                        <td>
+                            ${Remarks}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</script>

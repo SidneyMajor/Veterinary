@@ -18,21 +18,23 @@
                     @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-12 ">
-                            <ejs-dropdownlist id="AnimalID" value="Model.AnimalID" dataSource="Model.Animals" placeholder="Select an Animal" floatLabelType="Auto" cssClass="e-outline">
+                            <ejs-dropdownlist id="AnimalID" value="Model.AnimalID" dataSource="Model.Animals" placeholder="Select an Animal" floatLabelType="Auto" cssClass="e-outline"
+                                               filterBarPlaceholder="e.g: gul" allowFiltering="true" ignoreAccent="true">
                                 <e-dropdownlist-fields text="Name" value="Id"></e-dropdownlist-fields>
                             </ejs-dropdownlist>
                             <span asp-validation-for="AnimalID" class="alert-warning"></span>
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <ejs-dropdownlist id="SpecialtyID" value="Model.SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" cssClass="e-outline" change="specialtychange">
+                            <ejs-dropdownlist id="SpecialtyID" value="Model.SpecialtyID" dataSource="Model.Specialties" placeholder="Select a Specialty" floatLabelType="Auto" cssClass="e-outline" change="specialtychange" filterBarPlaceholder="e.g: gul" allowFiltering="true" ignoreAccent="true">
                                 <e-dropdownlist-fields text="Description" value="Id"></e-dropdownlist-fields>
                             </ejs-dropdownlist>
                             <span asp-validation-for="SpecialtyID" class="alert-warning"></span>
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <ejs-dropdownlist id="DoctorID" value="Model.DoctorID" dataSource="Model.Doctors" placeholder="Select a Doctor" floatLabelType="Auto" cssClass="e-outline" change="doctorchange" enabled="false">
+                            <ejs-dropdownlist id="DoctorID" value="Model.DoctorID" dataSource="Model.Doctors" placeholder="Select a Doctor" floatLabelType="Auto" cssClass="e-outline" actionBegin="enabledoctor" enabled="false"
+                                              filterBarPlaceholder="e.g: gul" allowFiltering="true" ignoreAccent="true">
                                 <e-dropdownlist-fields text="FullName" value="Id"></e-dropdownlist-fields>
                             </ejs-dropdownlist>
                             <span asp-validation-for="DoctorID" class="alert-warning"></span>

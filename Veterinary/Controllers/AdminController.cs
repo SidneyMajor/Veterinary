@@ -170,7 +170,8 @@ namespace Veterinary.Controllers
             var viewmodel = new AdminAnimalDetailViewModel
             {
                 Client = client,
-                Animal = model
+                Animal = model,
+                GetAppointments=await _appointmentRepsitory.GetUserAppointmentDetailAsync(model.Id,model.User.Email),
             };
             return View(viewmodel);
         }

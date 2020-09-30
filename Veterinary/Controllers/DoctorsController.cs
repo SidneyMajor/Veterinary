@@ -291,7 +291,7 @@ namespace Veterinary.Controllers
 
                 await _appointmentRepsitory.UpdateAsync(appointment);
                 var myupappointments = await _appointmentRepsitory.DoctorAppointmentsAsync(this.User.Identity.Name);
-                return Json(new { myappointments = Newtonsoft.Json.JsonConvert.SerializeObject(myupappointments) });
+                return Json(new { myappointments = Newtonsoft.Json.JsonConvert.SerializeObject(myupappointments.Where(a => a.Status == "Accepted")) });
 
             }
             catch (DbUpdateConcurrencyException)
@@ -305,12 +305,7 @@ namespace Veterinary.Controllers
                     throw;
                 }
             }
-            //model = _converterHelper.ToDoctorAppointmentViewModel(appointment);
-            //model.Animal = await _animalRepository.GetByIdAsync(appointment.AnimalID);
-            //model.Specialty = await _specialtyRepository.GetByIdAsync(appointment.SpecialtyID);
-            //model.Doctor = await _doctorRepository.GetByIdAsync(appointment.DoctorID);
-
-            //return PartialView("_startAppointmentPartial", model);
+            
         }
 
     }

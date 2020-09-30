@@ -16,17 +16,19 @@ namespace Veterinary.Controllers
         private readonly ISpeciesRepository _speciesRepository;
         private readonly IConverterHelper _converterHelper;
         private readonly IImageHelper _imageHelper;
+        private readonly IAppointmentRepsitory _appointmentRepsitory;
 
         public AnimalsController(IAnimalRepository animalRepository, IUserHelper userHelper,
             ISpeciesRepository speciesRepository,
             IConverterHelper converterHelper,
-            IImageHelper imageHelper)
+            IImageHelper imageHelper, IAppointmentRepsitory appointmentRepsitory)
         {
             _animalRepository = animalRepository;
             _userHelper = userHelper;
             _speciesRepository = speciesRepository;
             _converterHelper = converterHelper;
             _imageHelper = imageHelper;
+            _appointmentRepsitory = appointmentRepsitory;
         }
 
         // GET: Animals
@@ -51,6 +53,8 @@ namespace Veterinary.Controllers
             {
                 return new NotFoundViewResult("AnimalNotFound");
             }
+
+            ViewBag.Appointments = await _appointmentRepsitory.GetUserAppointmentDetailAsync(animal.Id, this.User.Identity.Name);
 
             return View(animal);
         }

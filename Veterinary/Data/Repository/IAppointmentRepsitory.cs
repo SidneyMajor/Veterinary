@@ -8,7 +8,7 @@ namespace Veterinary.Data.Repository
     {
         Task<IQueryable<Appointment>> GetAllAppointmentlAsync(string username);
 
-        Task<Appointment> GetUserAppointmentDetailAsync(int id, string username);
+        Task<IQueryable<Appointment>> GetUserAppointmentDetailAsync(int animalid, string username);
 
         Task<Appointment> GetAppointmentByIdAsync(int id);
 

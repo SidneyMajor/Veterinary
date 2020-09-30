@@ -15,6 +15,11 @@ namespace Veterinary.Data.Repository
             _context = context;
         }
 
+
+        /// <summary>
+        /// Get Document Type
+        /// </summary>
+        /// <returns>List Document types</returns>
         public async Task<IEnumerable<DocumentType>> GetComboDocuments()
         {
 
@@ -22,6 +27,11 @@ namespace Veterinary.Data.Repository
 
         }
 
+        /// <summary>
+        /// Get Document type by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>document type</returns>
         public async Task<DocumentType> GetDocumentType(int id)
         {
             return await _context.DocumentTypes.FindAsync(id);

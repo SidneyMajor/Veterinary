@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Veterinary.Data.Entities;
@@ -13,13 +14,16 @@ namespace Veterinary.Data.Repository
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
 
-        //DateTime.Now.Hour >= 18 || DateTime.Now.TimeOfDay > Convert.ToDateTime(lblHora.Text).TimeOfDay
         public AppointmentRepository(DataContext context, IUserHelper userHelper) : base(context)
         {
             _context = context;
             _userHelper = userHelper;
         }
 
+        /// <summary>
+        /// Checks the customer's appearance and changes the status of the appointment
+        /// </summary>
+        /// <returns></returns>
         private async Task NoShowAppointment()
         {
             await _context.Appointments.ForEachAsync(a =>
@@ -36,6 +40,11 @@ namespace Veterinary.Data.Repository
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Checks availability
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>true/false</returns>
         public async Task<bool> CheckAppointmentAsync(Appointment model)
         {
             if (model.StartTime < DateTime.Now)
@@ -52,7 +61,11 @@ namespace Veterinary.Data.Repository
             a.EndTime.Equals(model.EndTime) && a.DoctorID.Equals(model.DoctorID) && (a.Status.Equals("Accepted") || a.Status.Equals("Pending")));
         }
 
-
+        /// <summary>
+        /// Get all appointment by user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>IQueryable<Appointment></returns>
         public async Task<IQueryable<Appointment>> GetAllAppointmentlAsync(string username)
         {
             await NoShowAppointment();
@@ -82,15 +95,28 @@ namespace Veterinary.Data.Repository
                 .OrderByDescending(a => a.StartTime);
         }
 
+        /// <summary>
+        /// Get appointment by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Appointment</returns>
         public async Task<Appointment> GetAppointmentByIdAsync(int id)
         {
             return await _context.Appointments
                  .Include(a => a.Animal)
                  .Include(a => a.Doctor)
+                 .Include(a=> a.Specialty)
                  .FirstOrDefaultAsync(m => m.Id == id && m.WasDeleted == false);
         }
 
-        public async Task<Appointment> GetUserAppointmentDetailAsync(int id, string username)
+
+        /// <summary>
+        /// Get appointment by animal id and username
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <returns>Appointment</returns>
+        public async Task<IQueryable<Appointment>> GetUserAppointmentDetailAsync(int animalid, string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
 
@@ -99,10 +125,16 @@ namespace Veterinary.Data.Repository
                 return null;
             }
 
-            return await _context.Appointments.FirstOrDefaultAsync(a => a.User == user && a.Id == id && a.WasDeleted == false);
+            return  _context.Appointments.Where(a => a.User == user && a.AnimalID == animalid && a.WasDeleted == false)
+                .Include(a=> a.Doctor)
+                .Include(a=> a.Specialty);
         }
 
-
+        /// <summary>
+        /// Doctor appointment
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>IQueryable<Appointment></returns>
         public async Task<IQueryable<Appointment>> DoctorAppointmentsAsync(string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
